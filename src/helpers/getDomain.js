@@ -6,6 +6,10 @@ import { isProduction } from 'helpers/isProduction'
  * Otherwise, the link localhost:8080 will be returned (Spring server default port).
  * @returns {string}
  */
+
+//DEPLOY
+
+
 export const getDomain = () => {
   const prodUrl = 'https://my-server-url.oa.r.appspot.com/' // TODO: insert your prod url for server (once deployed)
   const devUrl = 'http://localhost:8080'
