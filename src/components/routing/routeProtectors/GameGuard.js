@@ -14,7 +14,7 @@ export const GameGuard = props => {
   if (localStorage.getItem("token")) {
     return props.children;
   }
-  return <Redirect to="/main"/>;
+  return <Redirect to="/login"/>;
 };
 
 GameGuard.propTypes = {
