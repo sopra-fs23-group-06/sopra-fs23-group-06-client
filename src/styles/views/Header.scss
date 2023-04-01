@@ -1,13 +1,11 @@
 @import 'styles/theme';
 
-.header {
-  &.container {
-    @include center;
-  }
+.headerMain {
+    height: 475px;
+    background: url("../images/skull_king_online.png") no-repeat center top;
+}
 
-  &.title {
-    font-weight: bold;
-    color: $background;
-    text-align: center;
-  }
+.headerLobby {
+    height: 475px;
+    background: url("../images/skull_king.png") no-repeat center top;
 }
