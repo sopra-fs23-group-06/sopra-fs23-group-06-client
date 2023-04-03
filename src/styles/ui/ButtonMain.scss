@@ -1,0 +1,105 @@
+@import 'styles/theme';
+
+.button-purple-main{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    &:hover {
+      transform: none;
+    }
+  }
+  padding: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  text-align: center;
+  height: auto;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: white;
+  background-color: $accent;
+  transition: all 0.3s ease;
+  margin-inline: 50px;
+}
+
+.button-white-main{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    &:hover {
+      transform: none;
+    }
+  }
+  padding: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  text-align: center;
+  height: auto;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: $accent;
+  background-color: white;
+  transition: all 0.3s ease;
+  margin-inline: 50px;
+}
+
+.button-purple-lobby{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    &:hover {
+      transform: none;
+    }
+  }
+  padding: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  text-align: center;
+  height: auto;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: white;
+  background-color: $accent;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.button-white-lobby{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+    &:hover {
+      transform: none;
+    }
+  }
+  padding: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  text-align: center;
+  height: auto;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: $accent;
+  background-color: white;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
