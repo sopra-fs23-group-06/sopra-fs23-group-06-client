@@ -2,11 +2,17 @@ import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
-import MainMenu from "components/views/MainMenu";
-import Username from "components/views/Username";
-import LobbyCode from "components/views/LobbyCode";
+import Login from "components/views/Login";
 
-
+/**
+ * Main router of your application.
+ * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
+ * and another Router that matches the route "/game".
+ * The main difference between these two routes is the following:
+ * /login renders another component without any sub-route
+ * /game renders a Router that contains other sub-routes that render in turn other react components
+ * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
+ */
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -16,28 +22,13 @@ const AppRouter = () => {
             <GameRouter base="/game"/>
           </GameGuard>
         </Route>
-        <Route exact path="/main">
+        <Route exact path="/login">
           <LoginGuard>
-            <MainMenu/>
-          </LoginGuard>
-        </Route>
-        <Route exact path="/join/code">
-          <LoginGuard>
-            <LobbyCode/>
-          </LoginGuard>
-        </Route>
-        <Route exact path="/join/username">
-          <LoginGuard>
-            <Username/>
-          </LoginGuard>
-        </Route>
-        <Route exact path="/host/username">
-          <LoginGuard>
-            <Username/>
+            <Login/>
           </LoginGuard>
         </Route>
         <Route exact path="/">
-          <Redirect to="/main"/>
+          <Redirect to="/game"/>
         </Route>
       </Switch>
     </BrowserRouter>
