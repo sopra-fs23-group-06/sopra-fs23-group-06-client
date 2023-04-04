@@ -75,7 +75,7 @@ const Username = () => {
     async function addUserToLobby() {
         try {
             const requestBody = JSON.stringify({username});
-            const responseUser = await api.post(`/users/${getLobby()}`, requestBody);
+            await api.post(`/users/${getLobby()}`, requestBody);
 
             if(!isHost){history.push('/join/lobby/'+getLobby())}
         } catch (error) {

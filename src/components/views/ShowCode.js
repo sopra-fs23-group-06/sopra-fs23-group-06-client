@@ -4,7 +4,7 @@ import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
+import {ButtonPurpleLobby} from "../ui/ButtonMain";
 
 const FormField = props => {
 
@@ -29,7 +29,6 @@ FormField.propTypes = {
     onChange: PropTypes.func
 };
 const ShowCode = () => {
-    const [code, setCode] = useState(null);
     const history = useHistory();
     const lobbyCode = getLobby();
 
@@ -37,9 +36,7 @@ const ShowCode = () => {
 
         return localStorage.getItem("lobbyCode");
     }
-    function goBack() {
-        history.go(-1)
-    }
+
 
     function goToLobby() {
         history.push('/host/lobby/'+lobbyCode)

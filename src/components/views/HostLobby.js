@@ -7,10 +7,8 @@ import PropTypes from "prop-types";
 import {
     ButtonKick,
     ButtonPurpleList,
-    ButtonPurpleLobby,
-    ButtonPurpleMain, ButtonWhiteList,
+    ButtonWhiteList,
     ButtonWhiteLobby,
-    ButtonWhiteMain
 } from "../ui/ButtonMain";
 import {api, handleError} from "../../helpers/api";
 
@@ -49,9 +47,6 @@ const HostLobby = () => {
         const url = window.location.pathname
         const split = url.split("/")
         return split[split.length-1]
-    }
-    function goBack() {
-        history.go(-1)
     }
 
     function viewCode() {

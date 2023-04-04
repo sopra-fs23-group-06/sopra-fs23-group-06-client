@@ -6,10 +6,6 @@ import HeaderLobby from "components/views/HeaderLobby";
 import PropTypes from "prop-types";
 import {
     ButtonPurpleList,
-    ButtonPurpleLobby,
-    ButtonPurpleMain, ButtonWhiteList,
-    ButtonWhiteLobby,
-    ButtonWhiteMain
 } from "../ui/ButtonMain";
 import {api, handleError} from "../../helpers/api";
 
@@ -37,16 +33,12 @@ FormField.propTypes = {
 };
 const HostLobby = () => {
     const history = useHistory();
-    const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
 
     function getLobby() {
         const url = window.location.pathname
         const split = url.split("/")
         return split[split.length-1]
-    }
-    function goBack() {
-        history.go(-1)
     }
 
 

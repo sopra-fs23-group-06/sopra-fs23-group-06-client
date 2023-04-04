@@ -6,7 +6,7 @@ import HeaderLobby from "components/views/HeaderLobby";
 import PropTypes from "prop-types";
 import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
 import {api, handleError} from "../../helpers/api";
-import lobby from "../../models/Lobby";
+
 
 const FormField = props => {
 
