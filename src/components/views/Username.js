@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import 'styles/views/Inputs.scss';
+import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/HeaderLobby";
 import PropTypes from "prop-types";
 import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
+import {api, handleError} from 'helpers/api';
 
 const FormField = props => {
 
@@ -31,9 +32,64 @@ FormField.propTypes = {
 const Username = () => {
     const [username, setUsername] = useState(null);
     const history = useHistory();
+    const isHost = hostOrJoin();
+    function getLobby() {
+        return localStorage.getItem("lobbyCode");
+    }
+
+
+
+    function hostOrJoin(){
+        const url = window.location.pathname
+        const split = url.split("/")
+        return "host" === split[split.length-2]
+    }
+
 
     function goBack() {
+        localStorage.removeItem("lobbyCode")
         history.go(-1)
+    }
+
+    async function createNewLobby() {
+        try {
+            const lobbies = await api.post('/lobbies');
+            const lobby = lobbies.data
+            localStorage.setItem("lobbyCode", lobby.lobbyCode)
+
+        } catch (error) {
+            alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
+        }
+    }
+
+    async function joinLobby() {
+        try {
+            await api.put(`/lobbies/${getLobby()}`);
+            history.push('/host/lobby/'+getLobby()+"/code")
+
+        } catch (error) {
+            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+        }
+    }
+
+    async function addUserToLobby() {
+        try {
+            const requestBody = JSON.stringify({username});
+            const responseUser = await api.post(`/users/${getLobby()}`, requestBody);
+
+            if(!isHost){history.push('/join/lobby/'+getLobby())}
+        } catch (error) {
+            alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
+        }
+    }
+
+    function goToLobby() {
+        if (isHost){
+            createNewLobby().then(() =>joinLobby().then(() =>addUserToLobby()));
+        }
+        else {
+            addUserToLobby();
+        }
     }
 
     return (
@@ -47,10 +103,11 @@ const Username = () => {
                   value={username}
                   onChange={un => setUsername(un)}
               />
-                  <div className="lobby button-container">
+                  <div className="lobby button-container1">
                   <ButtonPurpleLobby
                       disabled={!username}
                       width="75%"
+                      onClick={() => goToLobby()}
                       >
                       Enter
                   </ButtonPurpleLobby>

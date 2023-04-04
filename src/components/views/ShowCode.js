@@ -5,8 +5,6 @@ import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/HeaderLobby";
 import PropTypes from "prop-types";
 import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
-import {api, handleError} from "../../helpers/api";
-import lobby from "../../models/Lobby";
 
 const FormField = props => {
 
@@ -30,24 +28,22 @@ FormField.propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func
 };
-const LobbyCode = () => {
-    const [lobbyCode, setLobbyCode] = useState(null);
+const ShowCode = () => {
+    const [code, setCode] = useState(null);
     const history = useHistory();
+    const lobbyCode = getLobby();
+
+    function getLobby() {
+
+        return localStorage.getItem("lobbyCode");
+    }
     function goBack() {
-        localStorage.removeItem("lobbyCode")
         history.go(-1)
     }
 
-    async function joinLobby() {
-        try {
-            await api.put(`/lobbies/${lobbyCode}`);
-            localStorage.setItem("lobbyCode", lobbyCode)
-            history.push('/join/username')
-
-        } catch (error) {
-            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
-        }
-    };
+    function goToLobby() {
+        history.push('/host/lobby/'+lobbyCode)
+    }
 
     return (
 
@@ -55,25 +51,19 @@ const LobbyCode = () => {
       <HeaderLobby/>
           <div className="lobby container">
               <div className="lobby form">
-              <FormField
-                  label="Enter Code"
-                  value={lobbyCode}
-                  onChange={un => setLobbyCode(un)}
-              />
+                  <div className= "lobby label">
+                      Lobby Code:
+                  </div>
+              <div className= "lobby code">
+                  {lobbyCode}
+              </div>
                   <div className="lobby button-container1">
                   <ButtonPurpleLobby
-                      disabled={!lobbyCode}
                       width="75%"
-                      onClick={() => joinLobby()}
+                      onClick={() => goToLobby()}
                       >
-                      Enter
+                      View Lobby
                   </ButtonPurpleLobby>
-                  <ButtonWhiteLobby
-                      width="75%"
-                      onClick={() => goBack()}
-                      >
-                      Cancel
-                  </ButtonWhiteLobby>
                   </div>
               </div>
           </div>
@@ -82,4 +72,4 @@ const LobbyCode = () => {
 };
 
 
-export default LobbyCode;
+export default ShowCode;
