@@ -1,13 +1,13 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
-import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
-import MainMenu from "components/views/MainMenu";
-import Username from "components/views/Username";
-import LobbyCode from "components/views/LobbyCode";
-import ShowCode from "components/views/ShowCode";
-import HostLobby from "../../views/HostLobby";
-import JoinLobby from "../../views/JoinLobby";
+import {CodeGuard, LobbyGuard, NameGuard} from "components/routing/routeProtectors/LoginGuard";
+import MainMenu from "../../views/lobby/MainMenu";
+import EnterCode from "../../views/lobby/EnterCode";
+import Username from "../../views/lobby/Username";
+import ShowCode from "../../views/lobby/ShowCode";
+import HostLobby from "../../views/lobby/HostLobby";
+import JoinLobby from "../../views/lobby/JoinLobby";
 
 
 const AppRouter = () => {
@@ -20,39 +20,39 @@ const AppRouter = () => {
           </GameGuard>
         </Route>
         <Route exact path="/main">
-          <LoginGuard>
+          <LobbyGuard>
             <MainMenu/>
-          </LoginGuard>
+          </LobbyGuard>
         </Route>
         <Route exact path="/join/code">
-          <LoginGuard>
-            <LobbyCode/>
-          </LoginGuard>
+          <LobbyGuard>
+            <EnterCode/>
+          </LobbyGuard>
         </Route>
         <Route exact path="/join/username">
-          <LoginGuard>
+          <CodeGuard>
             <Username/>
-          </LoginGuard>
+          </CodeGuard>
         </Route>
         <Route exact path="/host/username">
-          <LoginGuard>
+          <LobbyGuard>
             <Username/>
-          </LoginGuard>
+          </LobbyGuard>
         </Route>
         <Route exact path="/host/lobby/:id/code">
-          <LoginGuard>
+          <NameGuard>
             <ShowCode/>
-          </LoginGuard>
+          </NameGuard>
         </Route>
         <Route exact path="/host/lobby/:id/">
-          <LoginGuard>
+          <NameGuard>
             <HostLobby/>
-          </LoginGuard>
+          </NameGuard>
         </Route>
         <Route exact path="/join/lobby/:id/">
-          <LoginGuard>
+          <NameGuard>
             <JoinLobby/>
-          </LoginGuard>
+          </NameGuard>
         </Route>
         <Route exact path="/">
           <Redirect to="/main"/>
@@ -61,8 +61,7 @@ const AppRouter = () => {
     </BrowserRouter>
   );
 };
+//can be divided into Join Router and Host router, follow Game Router as an example
 
-
-//currently a big mess, will clean up once all lobby sites are created
 
 export default AppRouter;
