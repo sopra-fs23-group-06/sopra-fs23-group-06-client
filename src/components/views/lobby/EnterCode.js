@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/HeaderLobby";
+import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
-import {api, handleError} from "../../helpers/api";
+import {ButtonPurpleLobby, ButtonWhiteLobby} from "../../ui/ButtonMain";
+import {api, handleError} from "../../../helpers/api";
 
 
 const FormField = props => {
@@ -30,16 +30,16 @@ FormField.propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func
 };
-const LobbyCode = () => {
+const EnterCode = () => {
     const [lobbyCode, setLobbyCode] = useState(null);
     const history = useHistory();
-    function goBack() {
-        localStorage.removeItem("lobbyCode")
+    function goBack() { //goes back to previous screen
         history.go(-1)
     }
 
-    async function joinLobby() {
+    async function joinLobby() { //checks if lobby exists and is joinable (e.g. has less than 6 players)
         try {
+            await api.get(`/lobbies/${lobbyCode}`)
             await api.put(`/lobbies/${lobbyCode}`);
             localStorage.setItem("lobbyCode", lobbyCode)
             history.push('/join/username')
@@ -47,7 +47,7 @@ const LobbyCode = () => {
         } catch (error) {
             alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
         }
-    };
+    }
 
     return (
 
@@ -82,4 +82,4 @@ const LobbyCode = () => {
 };
 
 
-export default LobbyCode;
+export default EnterCode;

@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/HeaderLobby";
+import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
 import {
     ButtonKick,
     ButtonPurpleList,
     ButtonWhiteList,
     ButtonWhiteLobby,
-} from "../ui/ButtonMain";
-import {api, handleError} from "../../helpers/api";
+} from "../../ui/ButtonMain";
+import {api, handleError} from "../../../helpers/api";
 
 const FormField = props => {
 
@@ -43,39 +43,39 @@ const HostLobby = () => {
         if(users.length > 1) {isButtonDisabled = false}
     }
 
-    function getLobby() {
+    function getLobby() { //identifies lobby based on URL
         const url = window.location.pathname
         const split = url.split("/")
         return split[split.length-1]
     }
 
-    function viewCode() {
+    function viewCode() { //route to lobby Code show screen
         history.push('/host/lobby/'+lobbyCode+"/code")
     }
 
-    async function closeLobby() {
+    async function closeLobby() { //function to implement closing lobby, not fully functional yet
         try {
-            await api.put(`/lobbies/${getLobby()}/closeHandler`);
+            //await api.put(`/lobbies/${getLobby()}/closeHandler`);
             localStorage.removeItem("lobbyCode")
+            localStorage.removeItem("userId")
             history.push("/")
+
         } catch (error) {
-            alert(`Closing lobby is not implemented yet: \n${handleError(error)}`);
+            alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
     }
 
-    function startGame() {
+    function startGame() { //yet to be implemented, function to start game
 
     }
 
     useEffect(() => {
-        // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-        async function fetchData() {
+        async function fetchData() {  //get user list from server
             try {
-                const response = await api.get(`/users/${getLobby()}`);
+                const response = await api.get(`/lobbies/${getLobby()}/users`);
 
                 // Get the returned users and update the state.
                 setUsers(response.data);
-
                 console.log(response);
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
@@ -87,7 +87,7 @@ const HostLobby = () => {
         fetchData();
     }, []);
 
-    function removePlayer() {
+    function removePlayer() {//yet to be implemented, used when removing a player
 
     }
 

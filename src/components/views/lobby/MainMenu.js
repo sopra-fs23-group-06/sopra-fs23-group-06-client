@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {ButtonPurpleMain, ButtonWhiteMain} from 'components/ui/ButtonMain';
 import 'styles/views/Home.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderMain from "components/views/HeaderMain";
+import HeaderMain from "components/views/lobby/HeaderMain";
 
 
 
@@ -11,11 +11,11 @@ const MainMenu = props => {
     const history = useHistory();
 
 
-    function doJoin() {
+    function doJoin() { //start join process
         history.push('/join/code')
     }
 
-    function doHost() {
+    function doHost() {//start host process
         history.push('/host/username')
     }
 

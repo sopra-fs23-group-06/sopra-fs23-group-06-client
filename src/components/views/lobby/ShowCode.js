@@ -2,9 +2,9 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/HeaderLobby";
+import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby} from "../ui/ButtonMain";
+import {ButtonPurpleLobby} from "../../ui/ButtonMain";
 
 const FormField = props => {
 
@@ -32,13 +32,14 @@ const ShowCode = () => {
     const history = useHistory();
     const lobbyCode = getLobby();
 
-    function getLobby() {
-
-        return localStorage.getItem("lobbyCode");
+    function getLobby() { //identifies lobby based on URL
+        const url = window.location.pathname
+        const split = url.split("/")
+        return split[split.length-2]
     }
 
 
-    function goToLobby() {
+    function goToLobby() { //go to lobby view
         history.push('/host/lobby/'+lobbyCode)
     }
 

@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/HeaderLobby";
+import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../ui/ButtonMain";
+import {ButtonPurpleLobby, ButtonWhiteLobby} from "../../ui/ButtonMain";
 import {api, handleError} from 'helpers/api';
+import User from "../../../models/User";
 
 const FormField = props => {
 
@@ -39,19 +40,19 @@ const Username = () => {
 
 
 
-    function hostOrJoin(){
+    function hostOrJoin(){ //differentiate if user is in host or join process
         const url = window.location.pathname
         const split = url.split("/")
         return "host" === split[split.length-2]
     }
 
 
-    function goBack() {
+    function goBack() { //goes back to previous screen, could be used if wrong lobby was entered on join process
         localStorage.removeItem("lobbyCode")
         history.go(-1)
     }
 
-    async function createNewLobby() {
+    const createNewLobby = async () =>{ //creates new lobby
         try {
             const lobbies = await api.post('/lobbies');
             const lobby = lobbies.data
@@ -62,22 +63,19 @@ const Username = () => {
         }
     }
 
-    async function joinLobby() {
-        try {
-            await api.put(`/lobbies/${getLobby()}`);
-            history.push('/host/lobby/'+getLobby()+"/code")
 
-        } catch (error) {
-            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
-        }
-    }
 
-    async function addUserToLobby() {
+    const addUserToLobby = async () =>{ //adds user to the playerList in the lobby
         try {
-            const requestBody = JSON.stringify({username});
-            await api.post(`/users/${getLobby()}`, requestBody);
+            const user = new User()
+            user.username = username;
+            user.lobby = getLobby();
+            const response = await api.post('/users', user);
+            const created = new User (response.data);
+            localStorage.setItem("userId", created.id)
 
             if(!isHost){history.push('/join/lobby/'+getLobby())}
+            else { history.push('/host/lobby/'+getLobby()+"/code")}
         } catch (error) {
             alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
         }
@@ -85,7 +83,7 @@ const Username = () => {
 
     function goToLobby() {
         if (isHost){
-            createNewLobby().then(() =>joinLobby().then(() =>addUserToLobby()));
+            createNewLobby().then(() =>addUserToLobby());
         }
         else {
             addUserToLobby();

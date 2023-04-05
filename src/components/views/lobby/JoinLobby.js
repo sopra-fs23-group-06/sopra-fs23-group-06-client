@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/HeaderLobby";
+import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {
-    ButtonPurpleList,
-} from "../ui/ButtonMain";
-import {api, handleError} from "../../helpers/api";
+import {ButtonPurpleList} from "../../ui/ButtonMain";
+import {api, handleError} from "../../../helpers/api";
+import User from "../../../models/User";
 
 const FormField = props => {
 
@@ -31,7 +30,7 @@ FormField.propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func
 };
-const HostLobby = () => {
+const JoinLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
 
@@ -42,14 +41,17 @@ const HostLobby = () => {
     }
 
 
-
-    async function leaveLobby() {
+    async function leaveLobby() { //removes player from the lobby and returns to main screen
         try {
-            await api.put(`/lobbies/${getLobby()}/closeHandler`);
+            const user = new User()
+            user.id = localStorage.getItem("userId");
+            user.lobby = localStorage.getItem("lobbyCode");
+            await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
             localStorage.removeItem("lobbyCode")
+            localStorage.removeItem("userId")
             history.push("/")
         } catch (error) {
-            alert(`Leaving is not implemented yet: \n${handleError(error)}`);
+            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -57,7 +59,7 @@ const HostLobby = () => {
         // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
         async function fetchData() {
             try {
-                const response = await api.get(`/users/${getLobby()}`);
+                const response = await api.get(`/lobbies/${getLobby()}/users`);
 
                 // Get the returned users and update the state.
                 setUsers(response.data);
@@ -149,4 +151,4 @@ const HostLobby = () => {
 };
 
 
-export default HostLobby;
+export default JoinLobby;
