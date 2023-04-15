@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import {ButtonPurpleList} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
-import {getDomain} from "../../../helpers/getDomain";
 
 const FormField = props => {
 
@@ -48,29 +47,24 @@ const JoinLobby = () => {
             user.id = localStorage.getItem("userId");
             user.lobby = localStorage.getItem("lobbyCode");
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
-            returnToMain(false)
+            localStorage.removeItem("lobbyCode")
+            localStorage.removeItem("userId")
+            history.push("/")
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
-function returnToMain(kicked) {
-    localStorage.removeItem("lobbyCode")
-    localStorage.removeItem("userId")
-    history.push("/")
-}
-
-
-
     useEffect(() => {
+        // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
         async function fetchData() {
             try {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
+
+                // Get the returned users and update the state.
                 setUsers(response.data);
-                const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
-                if (!userExists){
-                    returnToMain(true);
-                }
+
+                console.log(response);
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -79,18 +73,6 @@ function returnToMain(kicked) {
         }
 
         fetchData();
-
-        const handleSSE = function(event) {
-            if (event.data === "update") {
-                fetchData();
-            }
-        };
-        const source = new EventSource(getDomain()+'/updates');
-        source.addEventListener('message', handleSSE);
-        return () => {
-            source.removeEventListener('message', handleSSE);
-            source.close();
-        };
     }, []);
 
 
