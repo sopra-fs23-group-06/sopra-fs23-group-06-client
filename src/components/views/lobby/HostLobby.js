@@ -102,7 +102,7 @@ const HostLobby = () => {
             source.removeEventListener('message', handleSSE);
             source.close();
         };
-    }, []);
+    }, [history]);
 
 
     async function removePlayer(leavingUser) {//yet to be implemented, used when removing a player
