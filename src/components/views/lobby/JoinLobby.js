@@ -48,7 +48,7 @@ const JoinLobby = () => {
             user.id = localStorage.getItem("userId");
             user.lobby = localStorage.getItem("lobbyCode");
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
-            returnToMain(false)
+            returnToMain()
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
@@ -69,7 +69,7 @@ function returnToMain(kicked) {
                 setUsers(response.data);
                 const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
                 if (!userExists){
-                    returnToMain(true);
+                    returnToMain();
                 }
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
