@@ -48,20 +48,14 @@ const JoinLobby = () => {
             user.id = localStorage.getItem("userId");
             user.lobby = localStorage.getItem("lobbyCode");
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
-            returnToMain()
+            localStorage.removeItem("lobbyCode")
+            localStorage.removeItem("userId")
+            history.push("/")
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
-
-function returnToMain(kicked) {
-    localStorage.removeItem("lobbyCode")
-    localStorage.removeItem("userId")
-    history.push("/")
-}
-
-
-
+    
     useEffect(() => {
         async function fetchData() {
             try {
@@ -69,7 +63,9 @@ function returnToMain(kicked) {
                 setUsers(response.data);
                 const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
                 if (!userExists){
-                    returnToMain();
+                    localStorage.removeItem("lobbyCode")
+                    localStorage.removeItem("userId")
+                    history.push("/")
                 }
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
