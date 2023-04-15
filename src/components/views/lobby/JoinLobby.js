@@ -55,7 +55,7 @@ const JoinLobby = () => {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
-    
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -87,7 +87,7 @@ const JoinLobby = () => {
             source.removeEventListener('message', handleSSE);
             source.close();
         };
-    }, []);
+    }, [history]);
 
 
     //need to figure out how to better move buttons to the right
