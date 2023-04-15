@@ -90,6 +90,11 @@ const HostLobby = () => {
             if (event.data === "update") {
                 fetchData();
             }
+            if (event.data === "close") {
+                localStorage.removeItem("lobbyCode")
+                localStorage.removeItem("userId")
+                history.push("/")
+            }
         };
         const source = new EventSource(getDomain()+'/updates');
         source.addEventListener('message', handleSSE);
