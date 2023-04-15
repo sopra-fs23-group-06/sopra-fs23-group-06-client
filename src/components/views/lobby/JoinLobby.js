@@ -49,19 +49,19 @@ const JoinLobby = () => {
             user.lobby = localStorage.getItem("lobbyCode");
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
             returnToMain()
-
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
-
 
 function returnToMain() {
     localStorage.removeItem("lobbyCode")
     localStorage.removeItem("userId")
     history.push("/")
 }
-    
+
+
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -69,7 +69,6 @@ function returnToMain() {
                 setUsers(response.data);
                 const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
                 if (!userExists){
-
                     returnToMain();
                 }
             } catch (error) {
@@ -92,7 +91,7 @@ function returnToMain() {
             source.removeEventListener('message', handleSSE);
             source.close();
         };
-    }, [returnToMain()]);
+    }, []);
 
 
     //need to figure out how to better move buttons to the right
