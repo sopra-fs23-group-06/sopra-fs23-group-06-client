@@ -87,10 +87,10 @@ const HostLobby = () => {
         fetchData();
 
         const handleSSE = function(event) {
-            if (event.data === "update") {
+            if (event.data === "update:"+ getLobby()) {
                 fetchData();
             }
-            if (event.data === "close") {
+            if (event.data === "close:"+ getLobby()) {
                 localStorage.removeItem("lobbyCode")
                 localStorage.removeItem("userId")
                 history.push("/")
