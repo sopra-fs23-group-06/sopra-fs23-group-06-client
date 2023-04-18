@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import {ButtonPurpleList} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
+import {getDomain} from "../../../helpers/getDomain";
 
 const FormField = props => {
 
@@ -56,15 +57,16 @@ const JoinLobby = () => {
     }
 
     useEffect(() => {
-        // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
         async function fetchData() {
             try {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
-
-                // Get the returned users and update the state.
                 setUsers(response.data);
-
-                console.log(response);
+                const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
+                if (!userExists){
+                    localStorage.removeItem("lobbyCode")
+                    localStorage.removeItem("userId")
+                    history.push("/")
+                }
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);
@@ -73,7 +75,25 @@ const JoinLobby = () => {
         }
 
         fetchData();
-    }, []);
+
+        const handleSSE = function(event) {
+            if (event.data === "update:"+ getLobby()) {
+                fetchData();
+            }
+            if (event.data === "close:"+ getLobby()) {
+                localStorage.removeItem("lobbyCode")
+                localStorage.removeItem("userId")
+                history.push("/")
+            }
+        };
+
+        const source = new EventSource(getDomain()+'/updates');
+        source.addEventListener('message', handleSSE);
+        return () => {
+            source.removeEventListener('message', handleSSE);
+            source.close();
+        };
+    }, [history]);
 
 
     //need to figure out how to better move buttons to the right

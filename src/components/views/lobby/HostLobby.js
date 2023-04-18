@@ -10,7 +10,9 @@ import {
     ButtonWhiteList,
     ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
-import { api, handleError } from "../../../helpers/api";
+import {api, handleError} from "../../../helpers/api";
+import {getDomain} from "../../../helpers/getDomain";
+import User from "../../../models/User";
 
 const FormField = props => {
 
@@ -57,11 +59,10 @@ const HostLobby = () => {
 
     async function closeLobby() { //function to implement closing lobby, not fully functional yet
         try {
-            //await api.put(`/lobbies/${getLobby()}/closeHandler`);
+            await api.put(`/lobbies/${getLobby()}/closeHandler`);
             localStorage.removeItem("lobbyCode")
             localStorage.removeItem("userId")
             history.push("/")
-
         } catch (error) {
             alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
@@ -74,12 +75,11 @@ const HostLobby = () => {
 
     }
 
+
     useEffect(() => {
-        async function fetchData() {  //get user list from server
+        async function fetchData() {
             try {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
-
-                // Get the returned users and update the state.
                 setUsers(response.data);
                 console.log(response);
             } catch (error) {
@@ -90,10 +90,35 @@ const HostLobby = () => {
         }
 
         fetchData();
-    }, []);
 
-    function removePlayer() {//yet to be implemented, used when removing a player
+        const handleSSE = function(event) {
+            if (event.data === "update:"+ getLobby()) {
+                fetchData();
+            }
+            if (event.data === "close:"+ getLobby()) {
+                localStorage.removeItem("lobbyCode")
+                localStorage.removeItem("userId")
+                history.push("/")
+            }
+        };
+        const source = new EventSource(getDomain()+'/updates');
+        source.addEventListener('message', handleSSE);
+        return () => {
+            source.removeEventListener('message', handleSSE);
+            source.close();
+        };
+    }, [history]);
 
+
+    async function removePlayer(leavingUser) {//yet to be implemented, used when removing a player
+        try {
+            const user = new User()
+            user.id = leavingUser.id
+            user.lobby = leavingUser.lobby
+            await api.put(`/lobbies/${getLobby()}/kickHandler`, user);
+        } catch (error) {
+            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+        }
     }
 
 
@@ -112,7 +137,7 @@ const HostLobby = () => {
                 <div className="lobby player-container-odd">
                     <div className="lobby username">{user.username}
                         <ButtonKick
-                            onClick={() => removePlayer()}
+                            onClick= {() => removePlayer(user)}
                         >Remove</ButtonKick>
                     </div>
                 </div>)
@@ -121,9 +146,9 @@ const HostLobby = () => {
             return (
                 <div className="lobby player-container-even">
                     <div className="lobby username">{user.username}
-                        <ButtonKick
-                            onClick={() => removePlayer()}
-                        >Remove</ButtonKick>
+                    <ButtonKick
+                        onClick= {() => removePlayer(user)}
+                    >Remove</ButtonKick>
                     </div>
                 </div>)
         }
