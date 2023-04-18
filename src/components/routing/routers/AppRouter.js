@@ -8,6 +8,7 @@ import Username from "../../views/lobby/Username";
 import ShowCode from "../../views/lobby/ShowCode";
 import HostLobby from "../../views/lobby/HostLobby";
 import JoinLobby from "../../views/lobby/JoinLobby";
+import GameView from "components/views/lobby/GameView";
 
 
 const AppRouter = () => {
@@ -43,6 +44,12 @@ const AppRouter = () => {
           <NameGuard>
             <ShowCode/>
           </NameGuard>
+        </Route>
+        <Route exact path="/gameview">
+          
+          {/*ADD GAME GUARD*/}
+          
+          <GameView/>          
         </Route>
         <Route exact path="/host/lobby/:id/">
           <NameGuard>

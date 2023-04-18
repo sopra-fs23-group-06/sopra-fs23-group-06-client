@@ -7,6 +7,7 @@
     min-height: 300px;
     @include center;
     flex-direction: column;
+    margin-top: -150px;
   }
 
   &.form {
@@ -106,7 +107,7 @@
   &.username {
     font-weight: 700;
     color: White;
-    font-size: 56px;
+    font-size: 40px;
   }
   &.host {
     display: inline-block;

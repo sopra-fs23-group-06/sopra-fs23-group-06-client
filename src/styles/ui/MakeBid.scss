@@ -1,0 +1,66 @@
+@import 'styles/theme';
+
+.make-bid {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.336);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.make-bid h2 {
+    position: absolute;
+    margin-bottom: 10px;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-self: center;
+    font-size: 50px;
+    text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+    text-transform: uppercase;
+    text-decoration: solid underline rgb(255, 255, 255) 4px
+}
+
+.make-bid-content {
+    background-color: rgb(21, 23, 66);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+}
+
+
+.make-bid-content label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.make-bid-content input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 20px;
+    width: 30%;
+    text-align: center;
+    background-color: #e1e3f9;
+
+}
+
+.make-bid-content button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #1b1b1b;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+
+}

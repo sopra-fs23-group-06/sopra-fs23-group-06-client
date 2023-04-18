@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
@@ -10,7 +10,7 @@ import {
     ButtonWhiteList,
     ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
-import {api, handleError} from "../../../helpers/api";
+import { api, handleError } from "../../../helpers/api";
 
 const FormField = props => {
 
@@ -38,19 +38,21 @@ const HostLobby = () => {
     const history = useHistory();
     const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
-    let isButtonDisabled = true;
-    if (users){
-        if(users.length > 1) {isButtonDisabled = false}
+
+    let isButtonDisabled = false; //TEST PURPOSE -> TRUE
+
+    if (users) {
+        if (users.length > 1) { isButtonDisabled = false }
     }
 
     function getLobby() { //identifies lobby based on URL
         const url = window.location.pathname
         const split = url.split("/")
-        return split[split.length-1]
+        return split[split.length - 1]
     }
 
     function viewCode() { //route to lobby Code show screen
-        history.push('/host/lobby/'+lobbyCode+"/code")
+        history.push('/host/lobby/' + lobbyCode + "/code")
     }
 
     async function closeLobby() { //function to implement closing lobby, not fully functional yet
@@ -65,7 +67,10 @@ const HostLobby = () => {
         }
     }
 
-    function startGame() { //yet to be implemented, function to start game
+    function startGame() {
+        history.push("/gameview")
+        //JUST FOR TEST PURPOSE
+        //yet to be implemented, function to start game
 
     }
 
@@ -93,12 +98,12 @@ const HostLobby = () => {
 
 
     //need to figure out how to better move buttons to the right
-    const Player = ({user}) => {
+    const Player = ({ user }) => {
         if (user.id === 1) {
             return (
                 <div className="lobby player-container-host">
                     <div className="lobby username">{user.username}
-                    <div className="lobby host">★</div>
+                        <div className="lobby host">★</div>
                     </div>
                 </div>)
         }
@@ -107,7 +112,7 @@ const HostLobby = () => {
                 <div className="lobby player-container-odd">
                     <div className="lobby username">{user.username}
                         <ButtonKick
-                            onClick= {() => removePlayer()}
+                            onClick={() => removePlayer()}
                         >Remove</ButtonKick>
                     </div>
                 </div>)
@@ -116,9 +121,9 @@ const HostLobby = () => {
             return (
                 <div className="lobby player-container-even">
                     <div className="lobby username">{user.username}
-                    <ButtonKick
-                        onClick= {() => removePlayer()}
-                    >Remove</ButtonKick>
+                        <ButtonKick
+                            onClick={() => removePlayer()}
+                        >Remove</ButtonKick>
                     </div>
                 </div>)
         }
@@ -141,7 +146,7 @@ const HostLobby = () => {
             <div className="lobby">
                 <ul className="lobby user-list">
                     {users.map(user => (
-                        <Player user={user} key={user.id}/>
+                        <Player user={user} key={user.id} />
                     ))}
                 </ul>
 
@@ -153,38 +158,38 @@ const HostLobby = () => {
 
     return (
 
-    <BaseContainer>
-      <HeaderLobby/>
-          <div className="lobby container">
-              <div className="lobby form">
-                  {content}
-                  <div className="lobby button-container1">
-                  <ButtonWhiteLobby
-                      width="50%"
-                      onClick={() => viewCode()}
-                      >
-                      View Code
-                  </ButtonWhiteLobby>
-                  </div>
-                  <div className="lobby button-container2">
-                      <ButtonWhiteList
-                          width="100%"
-                          onClick={() => closeLobby()}
-                      >
-                          Close
-                      </ButtonWhiteList>
-                      <ButtonPurpleList
-                          disabled = {isButtonDisabled}
-                          width="100%"
-                          onClick={() => startGame()}
-                      >
-                          Start
-                      </ButtonPurpleList>
-                  </div>
-              </div>
-          </div>
-    </BaseContainer>
-  );
+        <BaseContainer>
+            <HeaderLobby />
+            <div className="lobby container">
+                <div className="lobby form">
+                    {content}
+                    <div className="lobby button-container1">
+                        <ButtonWhiteLobby
+                            width="50%"
+                            onClick={() => viewCode()}
+                        >
+                            View Code
+                        </ButtonWhiteLobby>
+                    </div>
+                    <div className="lobby button-container2">
+                        <ButtonWhiteList
+                            width="100%"
+                            onClick={() => closeLobby()}
+                        >
+                            Close
+                        </ButtonWhiteList>
+                        <ButtonPurpleList
+                            disabled={isButtonDisabled}
+                            width="100%"
+                            onClick={() => startGame()}
+                        >
+                            Start
+                        </ButtonPurpleList>
+                    </div>
+                </div>
+            </div>
+        </BaseContainer>
+    );
 };
 
 

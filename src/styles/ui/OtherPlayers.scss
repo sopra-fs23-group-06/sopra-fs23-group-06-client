@@ -1,0 +1,54 @@
+@import 'styles/theme';
+
+.other-players-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    padding: 10px;
+}
+
+.other-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.other-player.upper {
+    align-self: flex-start;
+    margin-top: -10px;
+    margin-left: 100px;
+    margin-right: 100px;
+    justify-content: center;
+}
+
+.other-player.left {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    align-self: center;
+    margin-right: 0px;
+}
+
+.other-player.right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    align-self: center;
+    margin-left: 0px;
+
+}
+
+.other-player-name {
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+    ;
+}
+
+.other-player-bid {
+    font-weight: bold;
+    font-size: 15px;
+}

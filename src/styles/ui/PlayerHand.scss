@@ -1,0 +1,78 @@
+@import 'styles/theme';
+
+.player-hand {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.player-hand-card {
+  &:hover {
+    transform: translateY(-50px);
+  }
+
+  margin-bottom: -20px;
+  width: 150px;
+  height: 200px;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+  transform: rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)));
+  margin-inline: -25px;
+
+  &.selected {
+    transform: translateY(-150px) rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)));
+    z-index: 1;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.player-hand-bid {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  font-size: 45px;
+  font-weight: bold;
+}
+
+.selected-card-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.selected-card-button {
+  background-color: #7a8b8b;
+  color: #ffffff;
+  text-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+  border: 10px;
+  padding: 10px 20px;
+  border: 3px solid #3b3b3b;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  top: 50%;
+  margin-right: 20px;
+  text-transform: uppercase;
+  height: 70px;
+  width: 150px;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+
+}
+
+.selected-card-button:hover {
+  background-color: #3c4a4a;
+  transform: translateY(3px);
+}
