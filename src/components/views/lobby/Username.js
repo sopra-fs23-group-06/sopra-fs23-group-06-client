@@ -73,7 +73,7 @@ const Username = () => {
             const response = await api.post('/users', user);
             const created = new User (response.data);
             localStorage.setItem("userId", created.id)
-
+            localStorage.setItem("username", created.username);
             if(!isHost){history.push('/join/lobby/'+getLobby())}
             else { history.push('/host/lobby/'+getLobby()+"/code")}
         } catch (error) {
