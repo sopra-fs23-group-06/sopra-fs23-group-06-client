@@ -39,9 +39,9 @@ const GameView = props => {
 
   };
 
-  const handleOpenPopup = () => {
+  /*const handleOpenPopup = () => {
     setShowPopup(true);
-  };
+  };*/
 
   const handleClosePopup = () => {
     setShowPopup(false);

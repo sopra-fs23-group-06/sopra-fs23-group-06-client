@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
 
-function getImagePath(cardItem) {
+/*function getImagePath(cardItem) {
   if (cardItem[0] === "SPECIAL") {
     return cardItem[0] + '/' + cardItem[1];
   }
   return cardItem[0] + '/' + cardItem[0] + cardItem[1];
 
   //JUST AN IDEA, NEEDS TO BE IMPROVED
-}
+}*/
 
 const PlayerHand = (props) => {
   const { cards, bid } = props;
