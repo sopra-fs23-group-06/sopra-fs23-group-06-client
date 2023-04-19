@@ -9,7 +9,7 @@ const Card = (props) => (
     {props.children}
     <img
       className="card image"
-      src={require(`styles/images/cards/${props.path}.png`)}
+      src={require(`../../styles/images/cards/${props.path}.png`)}
       alt="card front"
       width="150"
       height="150"

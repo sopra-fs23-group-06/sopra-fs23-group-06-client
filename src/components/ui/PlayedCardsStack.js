@@ -13,7 +13,7 @@ const PlayedCardsStack = ({ cards }) => {
 
         return (
           <div className="played-card" key={index} style={{ transform: transformStyle }}>
-            <img src={require(`styles/images/cards/${card}.png`)} alt={card} />
+            <img src={require(`../../styles/images/cards/${card}.png`)} alt={card} />
           </div>
         );
       })}
