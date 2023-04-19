@@ -22,8 +22,8 @@ const GameView = props => {
     { name: 'Player 6', bid: '0/0' },
 
   ];
-  const playerHand = ['Black/Black1', 'Black/Black2', 'Red/Red1', 'Special/Escape', 'Special/Scary_Mary', 'Black/Black11', 'Red/Red9', 'Special/Badeye_Joe'];
-  const playedCards = ['Black/Black6', 'Red/Red7', 'Yellow/Yellow13'];
+  const playerHand = ['black/Black1', 'black/Black2', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
+  const playedCards = ['black/Black6', 'red/Red7', 'yellow/Yellow13'];
 
   const roundNumber = 1;
   const [bid, setBid] = useState(null);
