@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import {ButtonPurpleList} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
-import {getDomain} from "../../../helpers/getDomain";
 import {JitsiMeeting} from "@jitsi/react-sdk";
 
 const FormField = props => {

@@ -11,7 +11,6 @@ import {
     ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
-import {getDomain} from "../../../helpers/getDomain";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
 
