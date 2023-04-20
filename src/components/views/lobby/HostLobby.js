@@ -110,7 +110,13 @@ const HostLobby = () => {
 
         fetchData();
 
-        const intervalId = setInterval(fetchData, 500);
+        const intervalId = setInterval(async () => {
+            try {
+                await fetchData();
+            } catch (error) {
+                clearInterval(intervalId); // Stop the interval loop
+            }
+        }, 500);
 
         // Clean up the interval when the component is unmounted
         return () => clearInterval(intervalId);
