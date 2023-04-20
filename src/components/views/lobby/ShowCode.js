@@ -5,6 +5,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
 import {ButtonPurpleLobby} from "../../ui/ButtonMain";
+import {JitsiMeeting} from "@jitsi/react-sdk";
 
 const FormField = props => {
 
@@ -46,6 +47,28 @@ const ShowCode = () => {
     return (
 
     <BaseContainer>
+        <JitsiMeeting
+            configOverwrite = {{
+                startWithAudioMuted: false,
+                hiddenPremeetingButtons: ['microphone'],
+                prejoinPageEnabled: false,
+                startAudioOnly: false,
+                startWithVideoMuted: true,
+                toolbarButtons: ['microphone']
+            }}
+            interfaceConfigOverwrite = {{
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUESTS: false,
+                SHOW_BRAND_WATERMARK: false,
+                SHOW_CHROME_EXTENSION_BANNER: false,
+                TOOLBAR_ALWAYS_VISIBLE: true
+            }}
+            userInfo = {{
+                displayName: localStorage.getItem("username")
+            }}
+            roomName = { "SkullKingLobby" + getLobby() }
+            getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
+        />
       <HeaderLobby/>
           <div className="lobby container">
               <div className="lobby form">
