@@ -58,8 +58,28 @@ const HostLobby = () => {
         history.push('/host/lobby/' + lobbyCode + "/code")
     }
 
-    async function closeLobby() { //function to implement closing lobby, not fully functional yet
+    async function removePlayer(leavingUser) {
         try {
+            const user = new User()
+            user.id = leavingUser.id
+            user.lobby = leavingUser.lobby
+            await api.put(`/lobbies/${getLobby()}/kickHandler`, user);
+        } catch (error) {
+            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+        }
+    }
+
+    async function closeLobby() {
+        try {
+            for (let i = 0; i< users.length; i++){
+                const user = users[i]
+                if (user.id !== parseInt(localStorage.getItem("userId"))){
+                    await removePlayer(user)
+                }
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             await api.put(`/lobbies/${getLobby()}/closeHandler`);
             localStorage.removeItem("lobbyCode")
             localStorage.removeItem("userId")
@@ -76,7 +96,6 @@ const HostLobby = () => {
 
     }
 
-
     useEffect(() => {
         async function fetchData() {
             try {
@@ -92,35 +111,13 @@ const HostLobby = () => {
 
         fetchData();
 
-        const handleSSE = function(event) {
-            if (event.data === "update:"+ getLobby()) {
-                fetchData();
-            }
-            if (event.data === "close:"+ getLobby()) {
-                localStorage.removeItem("lobbyCode")
-                localStorage.removeItem("userId")
-                history.push("/")
-            }
-        };
-        const source = new EventSource(getDomain()+'/updates');
-        source.addEventListener('message', handleSSE);
-        return () => {
-            source.removeEventListener('message', handleSSE);
-            source.close();
-        };
+        const intervalId = setInterval(fetchData, 500);
+
+        // Clean up the interval when the component is unmounted
+        return () => clearInterval(intervalId);
+
     }, [history]);
 
-
-    async function removePlayer(leavingUser) {//yet to be implemented, used when removing a player
-        try {
-            const user = new User()
-            user.id = leavingUser.id
-            user.lobby = leavingUser.lobby
-            await api.put(`/lobbies/${getLobby()}/kickHandler`, user);
-        } catch (error) {
-            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
-        }
-    }
 
 
     //need to figure out how to better move buttons to the right

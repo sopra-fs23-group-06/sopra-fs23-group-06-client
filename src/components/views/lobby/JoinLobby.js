@@ -77,23 +77,11 @@ const JoinLobby = () => {
 
         fetchData();
 
-        const handleSSE = function(event) {
-            if (event.data === "update:"+ getLobby()) {
-                fetchData();
-            }
-            if (event.data === "close:"+ getLobby()) {
-                localStorage.removeItem("lobbyCode")
-                localStorage.removeItem("userId")
-                history.push("/")
-            }
-        };
+        const intervalId = setInterval(fetchData, 500);
 
-        const source = new EventSource(getDomain()+'/updates');
-        source.addEventListener('message', handleSSE);
-        return () => {
-            source.removeEventListener('message', handleSSE);
-            source.close();
-        };
+        // Clean up the interval when the component is unmounted
+        return () => clearInterval(intervalId);
+
     }, [history]);
 
 
