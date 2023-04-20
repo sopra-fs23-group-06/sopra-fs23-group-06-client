@@ -70,13 +70,14 @@ const HostLobby = () => {
 
     async function closeLobby() {
         try {
-            for (let i = 0; i< users.length; i++){
-                const user = users[i]
-                if (user.id !== parseInt(localStorage.getItem("userId"))){
-                    await removePlayer(user)
+            if(users) {
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i]
+                    if (user.id !== parseInt(localStorage.getItem("userId"))) {
+                        await removePlayer(user)
+                    }
                 }
             }
-
             await new Promise(resolve => setTimeout(resolve, 500));
 
             await api.put(`/lobbies/${getLobby()}/closeHandler`);
@@ -104,6 +105,7 @@ const HostLobby = () => {
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);
+                clearInterval(intervalId)
                 alert("Something went wrong while fetching the users! See the console for details.");
             }
         }
