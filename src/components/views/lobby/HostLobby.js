@@ -90,7 +90,7 @@ const HostLobby = () => {
     }
 
     function startGame() {
-        history.push("/gameview")
+        history.push("/game/"+lobbyCode)
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
 
