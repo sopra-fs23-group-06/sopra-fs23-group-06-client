@@ -12,8 +12,6 @@ export const LobbyGuard = props => {  // if user is already logged in, redirects
   const id = localStorage.getItem("userId")
   const lobby = localStorage.getItem("lobbyCode")
 
-
-
   if (id === "1") {
    return <Redirect to={`/host/lobby/${lobby}`}/>
   }
@@ -28,7 +26,7 @@ LobbyGuard.propTypes = {
 export const NameGuard = props => { //if user has not entered a name, redirect to main
   if (localStorage.getItem("userId")) {
     return props.children;
-  }
+  }// needs functionality to prevent switching lobby once logged in
   return <Redirect to="/main"/>;
 };
 

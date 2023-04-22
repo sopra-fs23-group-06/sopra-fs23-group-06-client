@@ -67,6 +67,8 @@ const JoinLobby = () => {
                     localStorage.removeItem("userId")
                     history.push("/")
                 }
+                const rounds = await api.get(`/games/${getLobby()}/rounds`);
+                if (rounds.data > 0){history.push(`/game/${getLobby()}`)}
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);

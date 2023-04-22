@@ -4,8 +4,10 @@ import BaseContainer from "components/ui/BaseContainer";
 import PlayerHand from 'components/ui/PlayerHand';
 import OtherPlayers from 'components/ui/OtherPlayers';
 import MakeBid from 'components/ui/MakeBid';
-import { api } from "../../../helpers/api";
+import { api } from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
+import User from "../../models/User";
+
 
 
 
@@ -22,17 +24,22 @@ const GameView = props => {
     { name: 'Player 6', bid: '0/0' },
 
   ];
-  const playerHand = ['black/Black1', 'black/Black2', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
+  const playerHand = ['black/Black1', 'special/Skull_King', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
   const playedCards = ['black/Black6', 'red/Red7', 'yellow/Yellow13'];
-
-  const roundNumber = 1;
-  const [bid, setBid] = useState(null);
-
+  const roundNumber = 8;
+  const [bid, setBid] = useState("");
+  const [tricks, setTricks] = useState("")
   const [showPopup, setShowPopup] = useState(true);
 
-  const handleConfirm = (bid) => {
-    setBid(`0/${bid}`);
-    api.post(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, bid);
+
+  const handleConfirm = async (bid) => {
+    const user = new User();
+    user.id = localStorage.getItem("userId");
+    user.bid = bid;
+    const response =await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
+    const bidIsSet = new User(response.data)
+    setBid(bidIsSet.bid);
+    setTricks(0)
     setShowPopup(false);
 
     // Send bid to server
@@ -47,11 +54,20 @@ const GameView = props => {
     setShowPopup(false);
   };
 
+  function divider() {
+    if (showPopup){return ""}
+    return "/";
+  }
+
+
+
+
   return (
 
     <BaseContainer>
+
       <PlayedCardsStack cards={playedCards} />
-      <PlayerHand cards={playerHand} bid={bid} />
+      <PlayerHand cards={playerHand} bid={tricks+divider()+bid} />
       <OtherPlayers players={otherPlayers} />
       {showPopup && (
         <MakeBid roundNumber={roundNumber} onClose={handleClosePopup} onSubmit={handleConfirm} />

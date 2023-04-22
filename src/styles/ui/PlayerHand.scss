@@ -26,7 +26,7 @@
   margin-inline: -25px;
 
   &.selected {
-    transform: translateY(-150px) rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)));
+    transform: translateY(-250px) /*rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)))*/;
     z-index: 1;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
   }

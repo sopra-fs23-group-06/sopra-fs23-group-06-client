@@ -89,8 +89,12 @@ const HostLobby = () => {
         }
     }
 
-    function startGame() {
-        history.push("/gameview")
+    async function startGame() {
+        try{
+            await api.post(`/games/${getLobby()}`)
+        } catch (error){
+            alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
+        }
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
 
@@ -101,7 +105,8 @@ const HostLobby = () => {
             try {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
-                console.log(response);
+                const rounds = await api.get(`/games/${getLobby()}/rounds`);
+                if (rounds.data > 0){history.push(`/game/${getLobby()}`)}
             } catch (error) {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);

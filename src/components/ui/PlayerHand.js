@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
+import {ButtonPurpleMain} from "./ButtonMain";
+import {useHistory} from "react-router-dom";
 
 /*function getImagePath(cardItem) {
   if (cardItem[0] === "SPECIAL") {
@@ -14,6 +16,7 @@ import "styles/ui/PlayerHand.scss";
 const PlayerHand = (props) => {
   const { cards, bid } = props;
   const [selectedCard, setSelectedCard] = useState(null);
+  const history = useHistory();//temporary to leave game view
 
   const handleCardClick = (card, index) => {
     if (selectedCard === card) {
@@ -57,6 +60,12 @@ const PlayerHand = (props) => {
     left: '50%',
   } : null;
 
+  function leaveGame() { //temporary, to leave gameview
+    localStorage.removeItem("lobbyCode")
+    localStorage.removeItem("userId")
+    history.push("/")
+  }
+
   return (
     <div className="player-hand">
       {cards.map((card, index) => (
@@ -73,6 +82,7 @@ const PlayerHand = (props) => {
           <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay}>Play</button>
         </div>
       )}
+      <ButtonPurpleMain onClick={()=> leaveGame()} >Leave</ButtonPurpleMain>
     </div>
   );
 

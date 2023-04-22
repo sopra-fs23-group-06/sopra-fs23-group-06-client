@@ -8,17 +8,18 @@ import Username from "../../views/lobby/Username";
 import ShowCode from "../../views/lobby/ShowCode";
 import HostLobby from "../../views/lobby/HostLobby";
 import JoinLobby from "../../views/lobby/JoinLobby";
-import GameView from "components/views/lobby/GameView";
+import GameView from "components/views/GameView";
 
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/game">
-          <GameGuard>
-            <GameRouter base="/game"/>
-          </GameGuard>
+        <Route exact path="/game/:id">
+
+          {/*ADD GAME GUARD*/}
+
+          <GameView/>
         </Route>
         <Route exact path="/main">
           <LobbyGuard>
@@ -44,12 +45,6 @@ const AppRouter = () => {
           <NameGuard>
             <ShowCode/>
           </NameGuard>
-        </Route>
-        <Route exact path="/gameview">
-          
-          {/*ADD GAME GUARD*/}
-          
-          <GameView/>          
         </Route>
         <Route exact path="/host/lobby/:id/">
           <NameGuard>
