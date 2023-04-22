@@ -1,6 +1,6 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import {GameGuard} from "components/routing/routeProtectors/GameGuard";
-import GameRouter from "components/routing/routers/GameRouter";
+//import {GameGuard} from "components/routing/routeProtectors/GameGuard";
+//import GameRouter from "components/routing/routers/GameRouter";
 import {CodeGuard, LobbyGuard, NameGuard} from "components/routing/routeProtectors/LoginGuard";
 import MainMenu from "../../views/lobby/MainMenu";
 import EnterCode from "../../views/lobby/EnterCode";
