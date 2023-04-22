@@ -10,6 +10,7 @@ import User from "../../models/User";
 
 
 
+
 const GameView = props => {
   //seperate player from other players while considering the order
 
@@ -25,11 +26,11 @@ const GameView = props => {
   ];
   const playerHand = ['black/Black1', 'special/Skull_King', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
   const playedCards = ['black/Black6', 'red/Red7', 'yellow/Yellow13'];
-
   const roundNumber = 8;
   const [bid, setBid] = useState("");
   const [tricks, setTricks] = useState("")
   const [showPopup, setShowPopup] = useState(true);
+
 
   const handleConfirm = async (bid) => {
     const user = new User();
@@ -59,9 +60,12 @@ const GameView = props => {
   }
 
 
+
+
   return (
 
     <BaseContainer>
+
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={tricks+divider()+bid} />
       <OtherPlayers players={otherPlayers} />
