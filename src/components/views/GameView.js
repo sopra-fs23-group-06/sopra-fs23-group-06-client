@@ -7,6 +7,7 @@ import MakeBid from 'components/ui/MakeBid';
 import { api } from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
+import {JitsiMeeting} from "@jitsi/react-sdk";
 
 
 
@@ -59,13 +60,40 @@ const GameView = props => {
     return "/";
   }
 
+  function getGame() { //identifies lobby based on URL
+    const url = window.location.pathname
+    const split = url.split("/")
+    return split[split.length - 1]
+  }
+
 
 
 
   return (
 
     <BaseContainer>
-
+      <JitsiMeeting
+          configOverwrite = {{
+            startWithAudioMuted: false,
+            hiddenPremeetingButtons: ['microphone'],
+            prejoinPageEnabled: false,
+            startAudioOnly: false,
+            startWithVideoMuted: true,
+            toolbarButtons: ['microphone']
+          }}
+          interfaceConfigOverwrite = {{
+            SHOW_JITSI_WATERMARK: false,
+            SHOW_WATERMARK_FOR_GUESTS: false,
+            SHOW_BRAND_WATERMARK: false,
+            SHOW_CHROME_EXTENSION_BANNER: false,
+            TOOLBAR_ALWAYS_VISIBLE: true
+          }}
+          userInfo = {{
+            displayName: localStorage.getItem("username")
+          }}
+          roomName = { "SkullKingLobby" + getGame() }
+          getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
+      />
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={tricks+divider()+bid} />
       <OtherPlayers players={otherPlayers} />
