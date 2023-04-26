@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
-import {ButtonPurpleMain} from "./ButtonMain";
-import {useHistory} from "react-router-dom";
+import { ButtonPurpleMain } from "./ButtonMain";
+import { useHistory } from "react-router-dom";
+import { api } from "../../helpers/api";
 
-/*function getImagePath(cardItem) {
-  if (cardItem[0] === "SPECIAL") {
-    return cardItem[0] + '/' + cardItem[1];
+
+function getImagePath(cardItem) {
+  if (cardItem.color === "SPECIAL") {
+    if (cardItem.aRank === "PIRATE") {
+      return cardItem.color.toLowerCase() + '/badeye_joe';
+    }
+    return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
   }
-  return cardItem[0] + '/' + cardItem[0] + cardItem[1];
+  return cardItem.color.toLowerCase() + '/' + cardItem.color.toLowerCase() + '_' + cardItem.aRank.toLowerCase();
 
   //JUST AN IDEA, NEEDS TO BE IMPROVED
-}*/
+}
 
 const PlayerHand = (props) => {
   const { cards, bid } = props;
@@ -30,12 +35,18 @@ const PlayerHand = (props) => {
     setSelectedCard(null);
   };
 
-  const handlePlay = () => {
-
-    //HANDLE WHEN CARD GETS PLAYED
-
+  const handlePlay = async (card) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const requestBody = JSON.stringify({color: selectedCard.color, aRank: selectedCard.aRank});
+      const lobbyCode = localStorage.getItem("lobbyCode");
+      await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
+    } catch (error) {
+      console.error(error);
+    }  
     setSelectedCard(null);
   };
+  
 
   const cardCount = cards.length;
   const totalRotationAngle = 30;
@@ -71,7 +82,7 @@ const PlayerHand = (props) => {
       {cards.map((card, index) => (
         <div key={index} className="player-hand-card-wrapper"
           style={{ '--index': index, '--initial-angle': `${initialAngle}deg`, '--rotation-angle': `${rotationAngle}deg` }}>
-          <Card className={`player-hand-card ${selectedCard === card ? 'selected' : ''}`} path={card} onClick={() => handleCardClick(card, index)} />
+          <Card className={`player-hand-card ${selectedCard === card ? 'selected' : ''}`} path={getImagePath(card)} disabled={!card.playable} onClick={() => handleCardClick(card, index)} />
         </div>
       ))}
       <div className="player-hand-bid">{bid}</div>
@@ -82,7 +93,7 @@ const PlayerHand = (props) => {
           <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay}>Play</button>
         </div>
       )}
-      <ButtonPurpleMain onClick={()=> leaveGame()} >Leave</ButtonPurpleMain>
+      <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
     </div>
   );
 
