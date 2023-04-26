@@ -41,7 +41,7 @@ const HostLobby = () => {
     const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
 
-    let isButtonDisabled = false; //TEST PURPOSE -> TRUE
+    let isButtonDisabled = true;
 
     if (users) {
         if (users.length > 1) { isButtonDisabled = false }
