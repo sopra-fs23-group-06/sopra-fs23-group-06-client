@@ -4,7 +4,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import PlayerHand from 'components/ui/PlayerHand';
 import OtherPlayers from 'components/ui/OtherPlayers';
 import MakeBid from 'components/ui/MakeBid';
-import { api } from "../../helpers/api";
+import {api, handleError} from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
@@ -27,7 +27,7 @@ const GameView = props => {
   ];
   //const playerHand = ['black/Black1', 'special/Skull_King', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
   const playedCards = [/*'black/Black6', 'red/Red7', 'yellow/Yellow13'*/];
-  const roundNumber = 8;
+  const roundNumber = 1;
 
   const [playerHand, setPlayerHand] = useState([]);
 
@@ -48,22 +48,24 @@ const GameView = props => {
   }, []);
 
 
-
-
-  const [bid, setBid] = useState("");
+  const [bid, setBid] = useState(null);
   const [tricks, setTricks] = useState("")
   const [showPopup, setShowPopup] = useState(true);
 
 
   const handleConfirm = async (bid) => {
-    const user = new User();
-    user.id = localStorage.getItem("userId");
-    const response = await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
-    const bidIsSet = new User(response.data)
-    setBid(bidIsSet.bid);
-    setTricks(0)
-    setShowPopup(false);
-
+    try {
+      const user = new User();
+      user.id = localStorage.getItem("userId");
+      user.bid = bid;
+      const response = await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
+      const bidIsSet = new User(response.data)
+      setBid(bidIsSet.bid);
+      setTricks(0)
+      setShowPopup(false);
+  }catch (error){
+      alert(`Something went wrong while entering bid: \n${handleError(error)}`);
+  }
     // Send bid to server
 
   };
@@ -76,18 +78,16 @@ const GameView = props => {
     setShowPopup(false);
   };
 
-  function divider() {
-    if (showPopup) { return "" }
-    return "/";
-  }
-
   function getGame() { //identifies lobby based on URL
     const url = window.location.pathname
     const split = url.split("/")
     return split[split.length - 1]
   }
 
-
+const displayBid = () => {
+      if(bid === null){return ""}
+      return tricks + "/" + bid
+    }
 
 
   return (
@@ -116,7 +116,7 @@ const GameView = props => {
         getIFrameRef={node => { node.style.height = '50px'; node.style.width = '50px'; }}
       />
       <PlayedCardsStack cards={playedCards} />
-      <PlayerHand cards={playerHand} bid={tricks + divider() + bid} />
+      <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
       {showPopup && (
         <MakeBid roundNumber={roundNumber} onClose={handleClosePopup} onSubmit={handleConfirm} />
