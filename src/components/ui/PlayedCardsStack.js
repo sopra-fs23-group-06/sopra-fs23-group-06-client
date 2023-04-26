@@ -20,7 +20,7 @@ const PlayedCardsStack = ({ cards }) => {
   return (
     <div className="played-cards-stack">
       {cards.map((card, index) => {
-        const rotationAngle = totalRotationAngle - Math.random() * rotationAngleVariation * 2;
+        const rotationAngle = 0;//totalRotationAngle - Math.random() * rotationAngleVariation * 2;
         const transformStyle = `rotate(${rotationAngle}deg)`;
 
         return (
