@@ -9,22 +9,59 @@ import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 
+function setOrder(order) {
+  const currentPlayerId = localStorage.getItem("userId");
+  const currentPlayerIndex = order.findIndex(player => player.id == currentPlayerId); // eslint-disable-line eqeqeq
 
+  if (currentPlayerIndex == -1) {
+    return order;
+  }
+  const newOrder = [...order];
+
+  const currentPlayer = newOrder.splice(currentPlayerIndex, 1)[0];
+  newOrder.unshift(currentPlayer);
+
+  newOrder.sort((a, b) => {
+    const aIndex = order.indexOf(a);
+    const bIndex = order.indexOf(b);
+    const relativeIndexA = (aIndex >= currentPlayerIndex) ? aIndex - currentPlayerIndex : order.length - currentPlayerIndex + aIndex;
+    const relativeIndexB = (bIndex >= currentPlayerIndex) ? bIndex - currentPlayerIndex : order.length - currentPlayerIndex + bIndex;
+    return relativeIndexA - relativeIndexB;
+  });
+  console.log(newOrder);
+  newOrder.splice(0,1);
+
+  return newOrder;
+}
 
 
 const GameView = props => {
-  //seperate player from other players while considering the order
 
-  //DATA JUST FOR TEST PURPOSE
+    const [otherPlayers, setOtherPlayers] = useState([]);
 
-  const otherPlayers = [
-    { name: 'Player 2', bid: '0/1' },
-    { name: 'Player 3', bid: '0/0' },
-    { name: 'Player 4', bid: '0/1' },
-    { name: 'Player 5', bid: '0/1' },
-    { name: 'Player 6', bid: '0/0' },
+    const fetchOrder = async () => {
+      try {
+        const res = await api.get(`/games/${localStorage.getItem("lobbyCode")}/Order`);
+        const order = res[Object.keys(res)[0]];
+        const newOrder = setOrder(order)
+        const players = [];
+  
+        for (const player of newOrder) {
+            players.push({ name: player.username, bid: `0/${player.bid}` });
+        }
+        
 
-  ];
+        setOtherPlayers(players);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    useEffect(() => {
+      fetchOrder();
+    }, [])
+
+    
   //const playerHand = ['black/Black1', 'special/Skull_King', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
   const playedCards = [/*'black/Black6', 'red/Red7', 'yellow/Yellow13'*/];
   const roundNumber = 1;
