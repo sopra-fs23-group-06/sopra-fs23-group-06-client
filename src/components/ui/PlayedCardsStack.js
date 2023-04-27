@@ -14,8 +14,8 @@ function getImagePath(cardItem) {
 }
 
 const PlayedCardsStack = ({ cards }) => {
-  const totalRotationAngle = 5;
-  const rotationAngleVariation = 10;
+  //const totalRotationAngle = 5;
+  //const rotationAngleVariation = 10;
 
   return (
     <div className="played-cards-stack">
