@@ -108,10 +108,8 @@ const HostLobby = () => {
                 const rounds = await api.get(`/games/${getLobby()}/rounds`);
                 if (rounds.data > 0){history.push(`/game/${getLobby()}`)}
             } catch (error) {
-                console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
-                console.error("Details:", error);
                 clearInterval(intervalId)
-                alert("Something went wrong while fetching the users! See the console for details.");
+                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 
