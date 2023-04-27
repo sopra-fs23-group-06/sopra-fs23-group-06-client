@@ -3,7 +3,7 @@ import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
 import { ButtonPurpleMain } from "./ButtonMain";
 import { useHistory } from "react-router-dom";
-import {api, handleError} from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 
 
 function getImagePath(cardItem) {
@@ -24,10 +24,12 @@ const PlayerHand = (props) => {
   const history = useHistory();//temporary to leave game view
 
   const handleCardClick = (card, index) => {
-    if (selectedCard === card) {
-      setSelectedCard(null);
-    } else {
-      setSelectedCard(card);
+    if (card.playable) {
+      if (selectedCard === card) {
+        setSelectedCard(null);
+      } else {
+        setSelectedCard(card);
+      }
     }
   };
 
@@ -38,15 +40,15 @@ const PlayerHand = (props) => {
   const handlePlay = async (card) => {
     try {
       const userId = localStorage.getItem("userId");
-      const requestBody = JSON.stringify({color: selectedCard.color, aRank: selectedCard.aRank});
+      const requestBody = JSON.stringify({ color: selectedCard.color, aRank: selectedCard.aRank });
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      alert (`Something went wrong playing the card: \n${handleError(error)}`);
-    }  
+      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+    }
     setSelectedCard(null);
   };
-  
+
 
   const cardCount = cards.length;
   const totalRotationAngle = 30;
@@ -82,7 +84,7 @@ const PlayerHand = (props) => {
       {cards.map((card, index) => (
         <div key={index} className="player-hand-card-wrapper"
           style={{ '--index': index, '--initial-angle': `${initialAngle}deg`, '--rotation-angle': `${rotationAngle}deg` }}>
-          <Card className={`player-hand-card ${selectedCard === card ? 'selected' : ''}`} path={getImagePath(card)} disabled={!card.playable} onClick={() => handleCardClick(card, index)} />
+          <Card className={`player-hand-card ${selectedCard === card ? 'selected' : ''} ${!card.playable ? 'unplayable' : ''}`} path={getImagePath(card)} onClick={() => handleCardClick(card, index)} disabled={!card.playable} />
         </div>
       ))}
       <div className="player-hand-bid">{bid}</div>
