@@ -9,85 +9,90 @@ import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 
-function setOrder(order) {
-  const currentPlayerId = localStorage.getItem("userId");
-  const currentPlayerIndex = order.findIndex(player => player.id == currentPlayerId); // eslint-disable-line eqeqeq
 
-  if (currentPlayerIndex == -1) {
-    return order;
-  }
-  const newOrder = [...order];
-
-  const currentPlayer = newOrder.splice(currentPlayerIndex, 1)[0];
-  newOrder.unshift(currentPlayer);
-
-  newOrder.sort((a, b) => {
-    const aIndex = order.indexOf(a);
-    const bIndex = order.indexOf(b);
-    const relativeIndexA = (aIndex >= currentPlayerIndex) ? aIndex - currentPlayerIndex : order.length - currentPlayerIndex + aIndex;
-    const relativeIndexB = (bIndex >= currentPlayerIndex) ? bIndex - currentPlayerIndex : order.length - currentPlayerIndex + bIndex;
-    return relativeIndexA - relativeIndexB;
-  });
-  console.log(newOrder);
-  newOrder.splice(0,1);
-
-  return newOrder;
-}
 
 
 const GameView = props => {
-
-    const [otherPlayers, setOtherPlayers] = useState([]);
-
-    const fetchOrder = async () => {
-      try {
-        const res = await api.get(`/games/${localStorage.getItem("lobbyCode")}/Order`);
-        const order = res[Object.keys(res)[0]];
-        const newOrder = setOrder(order)
-        const players = [];
-  
-        for (const player of newOrder) {
-            players.push({ name: player.username, bid: `0/${player.bid}` });
-        }
-        
-
-        setOtherPlayers(players);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  
-    useEffect(() => {
-      fetchOrder();
-    }, [])
-
-    
-  //const playerHand = ['black/Black1', 'special/Skull_King', 'red/Red1', 'special/Escape', 'special/Scary_Mary', 'black/Black11', 'red/Red9', 'special/Badeye_Joe'];
-  const playedCards = [/*'black/Black6', 'red/Red7', 'yellow/Yellow13'*/];
-  const roundNumber = 1;
-
+  const [otherPlayers, setOtherPlayers] = useState([]);
+  const [playedCards, setPlayedCards] = useState([]);
+  const [roundNumber,setRoundNumber] = useState(1)
   const [playerHand, setPlayerHand] = useState([]);
 
-  const loadData = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      const lobbyCode = localStorage.getItem("lobbyCode");
-      const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
-      setPlayerHand(response.data);
-      console.log(playerHand);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
 
   useEffect(() => {
+      const lobbyCode = localStorage.getItem("lobbyCode");
+      const loadData = async () => {
+          try {
+              const userId = localStorage.getItem("userId");
+              const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
+              setPlayerHand(response.data);
+              const tableCards = await  api.get(`/games/${lobbyCode}/playedCards`);
+              setPlayedCards(tableCards.data)
+              const round = await api.get(`/games/${lobbyCode}/rounds`);
+              setRoundNumber(round.data)
+              console.log(playerHand);
+          } catch (error) {
+              console.error(error);
+          }
+      };
+      const fetchOrder = async () => {
+          try {
+              const res = await api.get(`/games/${lobbyCode}/order`);
+              const order = res[Object.keys(res)[0]];
+              const newOrder = setOrder(order)
+              const players = [];
+              for (const player of newOrder) {
+                  players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` });
+              }
+              setOtherPlayers(players);
+          } catch (error) {
+              console.error(error);
+          }
+      }
     loadData();
+    fetchOrder();
+      const intervalId = setInterval(async () => {
+          try {
+              await loadData();
+              await fetchOrder();
+          } catch (error) {
+              clearInterval(intervalId); // Stop the interval loop
+          }
+      }, 500);
+
+      // Clean up the interval when the component is unmounted
+      return () => clearInterval(intervalId);
   }, []);
 
+    function setOrder(order) {
+        const currentPlayerId = parseInt(localStorage.getItem("userId")) ;
+        const currentPlayerIndex = order.findIndex(player => player.id === currentPlayerId); // eslint-disable-line eqeqeq
+        if (currentPlayerIndex === -1) {
+            return order;
+        }
+        const newOrder = [...order];
+        const currentPlayer = newOrder.splice(currentPlayerIndex, 1)[0];
+        setBid(currentPlayer.bid)
+        setTricks(currentPlayer.tricks)
+        newOrder.unshift(currentPlayer);
+
+        newOrder.sort((a, b) => {
+            const aIndex = order.indexOf(a);
+            const bIndex = order.indexOf(b);
+            const relativeIndexA = (aIndex >= currentPlayerIndex) ? aIndex - currentPlayerIndex : order.length - currentPlayerIndex + aIndex;
+            const relativeIndexB = (bIndex >= currentPlayerIndex) ? bIndex - currentPlayerIndex : order.length - currentPlayerIndex + bIndex;
+            return relativeIndexA - relativeIndexB;
+        });
+        console.log(newOrder);
+        newOrder.splice(0,1);
+
+        return newOrder;
+    }
 
   const [bid, setBid] = useState(null);
   const [tricks, setTricks] = useState("")
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(!bid);
 
 
   const handleConfirm = async (bid) => {
@@ -95,11 +100,7 @@ const GameView = props => {
       const user = new User();
       user.id = localStorage.getItem("userId");
       user.bid = bid;
-      const response = await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
-      const bidIsSet = new User(response.data)
-      setBid(bidIsSet.bid);
-      setTricks(0)
-      setShowPopup(false);
+      await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
   }catch (error){
       alert(`Something went wrong while entering bid: \n${handleError(error)}`);
   }
@@ -111,9 +112,6 @@ const GameView = props => {
     setShowPopup(true);
   };*/
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
 
   function getGame() { //identifies lobby based on URL
     const url = window.location.pathname
@@ -155,8 +153,8 @@ const displayBid = () => {
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
-      {showPopup && (
-        <MakeBid roundNumber={roundNumber} onClose={handleClosePopup} onSubmit={handleConfirm} />
+      {bid == null && (
+        <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
     </BaseContainer>
   );

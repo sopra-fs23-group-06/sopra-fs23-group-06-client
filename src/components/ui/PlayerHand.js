@@ -3,7 +3,7 @@ import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
 import { ButtonPurpleMain } from "./ButtonMain";
 import { useHistory } from "react-router-dom";
-import { api } from "../../helpers/api";
+import {api, handleError} from "../../helpers/api";
 
 
 function getImagePath(cardItem) {
@@ -42,7 +42,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      console.error(error);
+      alert (`Something went wrong playing the card: \n${handleError(error)}`);
     }  
     setSelectedCard(null);
   };

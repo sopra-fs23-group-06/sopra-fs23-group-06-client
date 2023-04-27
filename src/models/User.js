@@ -8,6 +8,7 @@ class User {
     this.username = null;
     this.cards = null;
     this.bid = null;
+    this.tricks= null;
     Object.assign(this, data);
   }
 }
