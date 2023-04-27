@@ -31,9 +31,8 @@ const GameView = props => {
               setPlayedCards(tableCards.data)
               const round = await api.get(`/games/${lobbyCode}/rounds`);
               setRoundNumber(round.data)
-              console.log(playerHand);
           } catch (error) {
-              console.error(error);
+              alert (`Something went wrong loading other players data: \n${handleError(error)}`);
           }
       };
       const fetchOrder = async () => {
@@ -92,7 +91,6 @@ const GameView = props => {
 
   const [bid, setBid] = useState(null);
   const [tricks, setTricks] = useState("")
-  const [showPopup, setShowPopup] = useState(!bid);
 
 
   const handleConfirm = async (bid) => {
