@@ -226,15 +226,10 @@ const HostLobby = () => {
             <HeaderLobby />
             <div className="lobby container">
                 <div className="lobby form">
-                    {content}
-                    <div className="lobby button-container1">
-                        <ButtonWhiteLobby
-                            width="50%"
-                            onClick={() => viewCode()}
-                        >
-                            View Code
-                        </ButtonWhiteLobby>
+                    <div className="lobby code">
+                        {getLobby()}
                     </div>
+                    {content}
                     <div className="lobby button-container2">
                         <ButtonWhiteList
                             width="100%"

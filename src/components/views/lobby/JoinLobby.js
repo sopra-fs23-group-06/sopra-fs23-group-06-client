@@ -182,6 +182,9 @@ const JoinLobby = () => {
       <HeaderLobby/>
           <div className="lobby container">
               <div className="lobby form">
+                  <div className="lobby code">
+                      {getLobby()}
+                  </div>
                   {content}
                   <div className="lobby button-container1">
                   <ButtonPurpleList
