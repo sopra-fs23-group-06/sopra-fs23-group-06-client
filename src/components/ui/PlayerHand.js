@@ -4,6 +4,7 @@ import "styles/ui/PlayerHand.scss";
 import { ButtonPurpleMain } from "./ButtonMain";
 import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
+import { bool } from 'prop-types';
 
 
 function getImagePath(cardItem) {
@@ -22,12 +23,14 @@ const PlayerHand = (props) => {
   const { cards, bid } = props;
   const [selectedCard, setSelectedCard] = useState(null);
   const history = useHistory();//temporary to leave game view
+  const [scarryMarry, setScaryMary] = useState(null);
 
   const handleCardClick = (card, index) => {
     if (card.playable) {
       if (selectedCard === card) {
         setSelectedCard(null);
-      } else {
+      } 
+      else {
         setSelectedCard(card);
       }
     }
@@ -37,10 +40,24 @@ const PlayerHand = (props) => {
     setSelectedCard(null);
   };
 
+  const handlePlayClick = (boolean) =>{
+    setScaryMary(boolean);
+  }
+
+  const Scary = (option) =>{
+    selectedCard.aOption=option;
+  }
+
+
   const handlePlay = async (card) => {
     try {
       const userId = localStorage.getItem("userId");
-      const requestBody = JSON.stringify({ color: selectedCard.color, aRank: selectedCard.aRank });
+      if(selectedCard.aRank === "SCARY_MARY"){
+        handlePlayClick(true)
+        return;
+      }
+      else{handlePlayClick(false);}
+      const requestBody = JSON.stringify({ color: selectedCard.color, aRank: selectedCard.aRank, aOption: selectedCard.aOption});
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
@@ -48,6 +65,20 @@ const PlayerHand = (props) => {
     }
     setSelectedCard(null);
   };
+
+  const handlePlayScary = async (card) => {
+    try {
+      handlePlayClick(false);
+      const userId = localStorage.getItem("userId");
+      const requestBody = JSON.stringify({ color: selectedCard.color, aRank: selectedCard.aRank, aOption: selectedCard.aOption});
+      const lobbyCode = localStorage.getItem("lobbyCode");
+      await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
+    } catch (error) {
+      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+    }
+    setSelectedCard(null);
+  };
+
 
 
   const cardCount = cards.length;
@@ -88,11 +119,23 @@ const PlayerHand = (props) => {
         </div>
       ))}
       <div className="player-hand-bid">{bid}</div>
-
+      
       {selectedCard && (
         <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
           <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={handleCancel}>Cancel</button>
           <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay}>Play</button>
+        </div>
+      )}
+      {scarryMarry &&(
+        <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
+          <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={() => {
+            Scary("PIRATE");
+            handlePlayScary();
+          }}>Pirate</button>
+          <button className="selected-card-button play-button" style={playButtonStyle} onClick={() => {
+            Scary("ESCAPE");
+            handlePlayScary();
+          }}>Escape</button>
         </div>
       )}
       <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
