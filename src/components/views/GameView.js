@@ -32,7 +32,8 @@ const GameView = props => {
               const round = await api.get(`/games/${lobbyCode}/rounds`);
               setRoundNumber(round.data)
           } catch (error) {
-              alert (`Something went wrong loading other players data: \n${handleError(error)}`);
+              clearInterval(intervalId)
+              alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       };
       const fetchOrder = async () => {
@@ -46,7 +47,8 @@ const GameView = props => {
               }
               setOtherPlayers(players);
           } catch (error) {
-              console.error(error);
+              clearInterval(intervalId)
+              alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       }
     loadData();
