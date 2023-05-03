@@ -109,10 +109,6 @@ const GameView = props => {
 
   };
 
-  /*const handleOpenPopup = () => {
-    setShowPopup(true);
-  };*/
-
 
   function getGame() { //identifies lobby based on URL
     const url = window.location.pathname

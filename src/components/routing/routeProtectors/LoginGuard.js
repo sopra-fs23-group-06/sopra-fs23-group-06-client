@@ -1,11 +1,11 @@
-import {Redirect} from "react-router-dom";
+import {Redirect, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 
 /**
  *
  * Another way to export directly your functional component.
  */
-export const LobbyGuard = props => {  // if user is already logged in, redirects him to his lobby
+export const MenuGuard = props => {  // if user is already logged in, redirects him to his lobby
   if (!localStorage.getItem("userId")) {
     return props.children;
   }
@@ -18,19 +18,21 @@ export const LobbyGuard = props => {  // if user is already logged in, redirects
   else return <Redirect to={`/join/lobby/${lobby}`}/>;
 };
 
-LobbyGuard.propTypes = {
+MenuGuard.propTypes = {
   children: PropTypes.node
 }
 
 
-export const NameGuard = props => { //if user has not entered a name, redirect to main
-  if (localStorage.getItem("userId")) {
+export const LobbyGuard = props => {;//if user has not entered all info, redirect to main
+  const lobbyCode = localStorage.getItem("lobbyCode");
+  const { id } = useParams()
+  if (localStorage.getItem("userId") && id === lobbyCode) {
     return props.children;
-  }// needs functionality to prevent switching lobby once logged in
+  }
   return <Redirect to="/main"/>;
 };
 
-NameGuard.propTypes = {
+LobbyGuard.propTypes = {
   children: PropTypes.node
 };
 
@@ -42,6 +44,6 @@ export const CodeGuard = props => { //if user has no lobby, redirect to main
   return <Redirect to="/join/code"/>;
 };
 
-NameGuard.propTypes = {
+LobbyGuard.propTypes = {
   children: PropTypes.node
 };

@@ -52,6 +52,7 @@ const JoinLobby = () => {
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
             localStorage.removeItem("lobbyCode")
             localStorage.removeItem("userId")
+            localStorage.removeItem("inGame")
             history.push("/")
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
@@ -67,11 +68,15 @@ const JoinLobby = () => {
                 if (!userExists){
                     localStorage.removeItem("lobbyCode")
                     localStorage.removeItem("userId")
+                    localStorage.removeItem("inGame")
                     history.push("/")
                 }
                 else{
                     const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                    if (rounds.data > 0){history.push(`/game/${getLobby()}`)};
+                    if (rounds.data > 0){
+                        localStorage.setItem("inGame", "yes")
+                        history.push(`/game/${getLobby()}`)
+                    }
                 }
             } catch (error) {
                 clearInterval(intervalId)

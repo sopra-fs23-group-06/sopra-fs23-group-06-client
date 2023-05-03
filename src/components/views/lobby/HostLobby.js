@@ -39,7 +39,6 @@ FormField.propTypes = {
 };
 const HostLobby = () => {
     const history = useHistory();
-    const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
 
@@ -56,9 +55,6 @@ const HostLobby = () => {
         return split[split.length - 1]
     }
 
-    function viewCode() { //route to lobby Code show screen
-        history.push('/host/lobby/' + lobbyCode + "/code")
-    }
 
     async function removePlayer(leavingUser) {
         try {
@@ -82,10 +78,10 @@ const HostLobby = () => {
                 }
             }
             await new Promise(resolve => setTimeout(resolve, 500));
-
             await api.put(`/lobbies/${getLobby()}/closeHandler`);
             localStorage.removeItem("lobbyCode")
             localStorage.removeItem("userId")
+            localStorage.removeItem("inGame")
             history.push("/")
         } catch (error) {
             alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
@@ -109,7 +105,10 @@ const HostLobby = () => {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
                 const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                if (rounds.data > 0){history.push(`/game/${getLobby()}`)}
+                if (rounds.data > 0){
+                    localStorage.setItem("inGame", "yes")
+                    history.push(`/game/${getLobby()}`)
+                }
             } catch (error) {
                 clearInterval(intervalId)
                 alert(`Something went wrong while fetching the users: \n${handleError(error)}`);

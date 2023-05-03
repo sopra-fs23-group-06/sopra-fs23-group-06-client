@@ -1,4 +1,4 @@
-import {Redirect} from "react-router-dom";
+import {Redirect, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 
 /**
@@ -11,8 +11,10 @@ import PropTypes from "prop-types";
  * @param props
  */
 export const GameGuard = props => {
-  if (localStorage.getItem("token")) {
-    return props.children;
+  const lobbyCode = localStorage.getItem("lobbyCode");
+  const { id } = useParams()
+  if (localStorage.getItem("userId") && id === lobbyCode) {
+    if(localStorage.getItem("inGame")){return props.children;}
   }
   return <Redirect to="/main"/>;
 };

@@ -107,6 +107,7 @@ const PlayerHand = (props) => {
   function leaveGame() { //temporary, to leave gameview
     localStorage.removeItem("lobbyCode")
     localStorage.removeItem("userId")
+    localStorage.removeItem("inGame")
     history.push("/")
   }
 
