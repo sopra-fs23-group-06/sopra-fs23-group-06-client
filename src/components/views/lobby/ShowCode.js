@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby} from "../../ui/ButtonMain";
+import {ButtonPurpleLobby, ButtonRules} from "../../ui/ButtonMain";
 import {JitsiMeeting} from "@jitsi/react-sdk";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -32,6 +33,7 @@ FormField.propTypes = {
 const ShowCode = () => {
     const history = useHistory();
     const lobbyCode = getLobby();
+    const [rulesOpen, setRulesOpen] = useState(false)
 
     function getLobby() { //identifies lobby based on URL
         const url = window.location.pathname
@@ -42,6 +44,14 @@ const ShowCode = () => {
 
     function goToLobby() { //go to lobby view
         history.push('/host/lobby/'+lobbyCode)
+    }
+
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
     }
 
     return (
@@ -88,6 +98,14 @@ const ShowCode = () => {
                   </div>
               </div>
           </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

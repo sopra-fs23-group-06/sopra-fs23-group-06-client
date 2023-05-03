@@ -8,6 +8,8 @@ import {api, handleError} from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
+import {ButtonRules} from "../ui/ButtonMain";
+import RuleBook from "../ui/RuleBook";
 
 
 
@@ -17,8 +19,7 @@ const GameView = props => {
   const [playedCards, setPlayedCards] = useState([]);
   const [roundNumber,setRoundNumber] = useState(1)
   const [playerHand, setPlayerHand] = useState([]);
-
-
+  const [rulesOpen, setRulesOpen] = useState(false)
 
   useEffect(() => {
       const lobbyCode = localStorage.getItem("lobbyCode");
@@ -122,6 +123,13 @@ const displayBid = () => {
       return tricks + "/" + bid
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
+    }
 
   return (
 
@@ -154,6 +162,14 @@ const displayBid = () => {
       {bid == null && (
         <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
+        <ButtonRules
+            className= "corner"
+            onClick={ ()=>{openRules()}}
+        >?
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

@@ -61,3 +61,12 @@ export const ButtonKick = props => (
         {props.children}
     </button>
 );
+
+export const ButtonRules = props => (
+    <button
+        {...props}
+        style={{width: props.width, ...props.style}}
+        className={`button-rules ${props.className}`}>
+        {props.children}
+    </button>
+);

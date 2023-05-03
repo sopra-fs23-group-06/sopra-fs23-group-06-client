@@ -4,10 +4,11 @@ import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleList} from "../../ui/ButtonMain";
+import {ButtonPurpleList, ButtonRules} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -34,6 +35,7 @@ FormField.propTypes = {
 const JoinLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
+    const [rulesOpen, setRulesOpen] = useState(false)
 
     function getLobby() {
         const url = window.location.pathname
@@ -144,7 +146,13 @@ const JoinLobby = () => {
         );
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
 
+    function closeRules() {
+        setRulesOpen(false)
+    }
 
     return (
 
@@ -185,6 +193,14 @@ const JoinLobby = () => {
                   </div>
               </div>
           </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

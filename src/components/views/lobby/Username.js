@@ -4,9 +4,10 @@ import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../../ui/ButtonMain";
+import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonMain";
 import {api, handleError} from 'helpers/api';
 import User from "../../../models/User";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -34,6 +35,7 @@ const Username = () => {
     const [username, setUsername] = useState(null);
     const history = useHistory();
     const isHost = hostOrJoin();
+    const [rulesOpen, setRulesOpen] = useState(false)
     function getLobby() {
         return localStorage.getItem("lobbyCode");
     }
@@ -90,6 +92,13 @@ const Username = () => {
         }
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
+    }
     return (
 
     <BaseContainer>
@@ -118,6 +127,14 @@ const Username = () => {
                   </div>
               </div>
           </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

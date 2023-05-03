@@ -6,13 +6,14 @@ import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
 import {
     ButtonKick,
-    ButtonPurpleList,
+    ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
     ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -40,6 +41,8 @@ const HostLobby = () => {
     const history = useHistory();
     const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
+    const [rulesOpen, setRulesOpen] = useState(false)
+
 
     let isButtonDisabled = true;
 
@@ -187,7 +190,13 @@ const HostLobby = () => {
         );
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
 
+    function closeRules() {
+        setRulesOpen(false)
+    }
 
     return (
 
@@ -243,6 +252,14 @@ const HostLobby = () => {
                     </div>
                 </div>
             </div>
+            <ButtonRules
+                className= "bottom"
+                onClick={ ()=>{openRules()}}
+            >Game Rules
+            </ButtonRules>
+            {rulesOpen && (
+                <RuleBook onClick={closeRules} />
+            )}
         </BaseContainer>
     );
 };

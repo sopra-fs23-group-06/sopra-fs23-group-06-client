@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {ButtonPurpleMain, ButtonWhiteMain} from 'components/ui/ButtonMain';
+import {ButtonPurpleMain, ButtonRules, ButtonWhiteMain} from 'components/ui/ButtonMain';
 import 'styles/views/Home.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderMain from "components/views/lobby/HeaderMain";
+import RuleBook from "../../ui/RuleBook";
 
 
 
 const MainMenu = props => {
     const history = useHistory();
+    const [rulesOpen, setRulesOpen] = useState(false)
 
 
     function doJoin() { //start join process
@@ -17,6 +19,14 @@ const MainMenu = props => {
 
     function doHost() {//start host process
         history.push('/host/username')
+    }
+
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
     }
 
     return (
@@ -37,6 +47,14 @@ const MainMenu = props => {
               Host
             </ButtonWhiteMain>
       </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

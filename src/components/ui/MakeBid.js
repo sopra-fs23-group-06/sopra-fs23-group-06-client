@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'styles/ui/MakeBid.scss';
 import { ButtonPurpleMain } from './ButtonMain';
 
-const MakeBid = ({ roundNumber, onClose, onSubmit }) => {
+const MakeBid = ({ roundNumber, onSubmit }) => {
   const [bid, setBid] = useState('');
   const [isValid, setIsValid] = useState(false);
   const maxBid = roundNumber;

@@ -75,7 +75,6 @@
   color: white;
   background-color: $accent;
   transition: all 0.3s ease;
-  margin-bottom: 10px;
 }
 
 .button-white-lobby{
@@ -101,7 +100,7 @@
   color: $accent;
   background-color: white;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .button-purple-list{
@@ -181,4 +180,31 @@
   transition: all 0.3s ease;
   flex-direction: row-reverse;
 
+}
+
+.button-rules{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  font-size: 24px;
+  border: 1px;
+  border-radius: 0.2em;;
+  cursor: pointer;
+  color: grey;
+  background: none;
+  transition: all 0.3s ease;
+
+  &.bottom{
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.corner{
+    top: 1%;
+    right: 1%;
+    position: absolute;
+
+  }
 }
