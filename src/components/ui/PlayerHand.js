@@ -25,6 +25,7 @@ const PlayerHand = (props) => {
   const history = useHistory();//temporary to leave game view
   const [scarryMarry, setScaryMary] = useState(null);
 
+
   const handleCardClick = (card, index) => {
     if (card.playable) {
       if (selectedCard === card) {
@@ -143,6 +144,8 @@ const PlayerHand = (props) => {
         </div>
       )}
       <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
+
+
     </div>
   );
 
