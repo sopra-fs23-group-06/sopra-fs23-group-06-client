@@ -41,7 +41,11 @@ const HostLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
-
+    const userId = localStorage.getItem("userId");
+    if (userId !== "1") {
+        history.push(`/join/lobby/${localStorage.getItem("lobbyCode")}`);
+        return null; // You can return null to prevent rendering the rest of the HostLobby component
+    }
 
     let isButtonDisabled = true;
 
@@ -58,39 +62,53 @@ const HostLobby = () => {
 
     async function removePlayer(leavingUser) {
         try {
+            const userId = localStorage.getItem('userId'); // retrieve userId from localStorage
             const user = new User()
             user.id = leavingUser.id
             user.lobby = leavingUser.lobby
-            await api.put(`/lobbies/${getLobby()}/kickHandler`, user);
+            await api.put(`/lobbies/${getLobby()}/kickHandler`, user, {
+                headers: {
+                    'userId': userId, // set userId as a header in the request
+                },
+            });
         } catch (error) {
             alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
+
     async function closeLobby() {
         try {
-            if(users) {
+            const userId = localStorage.getItem("userId");
+            if (users) {
                 for (let i = 0; i < users.length; i++) {
-                    const user = users[i]
-                    if (user.id !== parseInt(localStorage.getItem("userId"))) {
-                        await removePlayer(user)
+                    const user = users[i];
+                    if (user.id !== parseInt(userId)) {
+                        await removePlayer(user);
                     }
                 }
             }
             await new Promise(resolve => setTimeout(resolve, 500));
-            await api.put(`/lobbies/${getLobby()}/closeHandler`);
-            localStorage.removeItem("lobbyCode")
-            localStorage.removeItem("userId")
-            localStorage.removeItem("inGame")
-            history.push("/")
+            await api.put(`/lobbies/${getLobby()}/closeHandler`, null, {
+                headers: {
+                    "userId": userId
+                }
+            });
+            localStorage.removeItem("lobbyCode");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("inGame");
+            history.push("/");
         } catch (error) {
             alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
     }
 
+
     async function startGame() {
         try{
-            await api.post(`/games/${getLobby()}`)
+            const user = new User();
+            user.id = localStorage.getItem("userId");
+            await api.post(`/games/${getLobby()}`, user);
         } catch (error){
             alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
@@ -126,7 +144,7 @@ const HostLobby = () => {
         }, 500);
 
         // Clean up the interval when the component is unmounted
-        return () => clearInterval(intervalId);
+        return () => {clearInterval(intervalId);};
 
     }, [history]);
 
