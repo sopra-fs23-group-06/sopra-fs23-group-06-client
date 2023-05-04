@@ -29,7 +29,8 @@ const PlayerHand = (props) => {
     if (card.playable) {
       if (selectedCard === card) {
         setSelectedCard(null);
-      } 
+      }
+      else if (scarryMarry){}
       else {
         setSelectedCard(card);
       }
@@ -94,19 +95,20 @@ const PlayerHand = (props) => {
 
   const cancelButtonStyle = selectedCard ? {
     position: 'absolute',
-    top: '-30%',
+    top: '100%',
     right: '50%'
   } : null;
 
   const playButtonStyle = selectedCard ? {
     position: 'absolute',
-    top: '-30%',
+    top: '100%',
     left: '50%',
   } : null;
 
   function leaveGame() { //temporary, to leave gameview
     localStorage.removeItem("lobbyCode")
     localStorage.removeItem("userId")
+    localStorage.removeItem("inGame")
     history.push("/")
   }
 
@@ -122,12 +124,14 @@ const PlayerHand = (props) => {
       
       {selectedCard && (
         <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
+          <Card path={getImagePath(selectedCard)} />
           <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={handleCancel}>Cancel</button>
           <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay}>Play</button>
         </div>
       )}
       {scarryMarry &&(
         <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
+          <Card path={getImagePath(selectedCard)} />
           <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={() => {
             Scary("PIRATE");
             handlePlayScary();

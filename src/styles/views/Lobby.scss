@@ -67,11 +67,11 @@
 
 
   &.code {
-    font-size: 100px;
+    font-weight: 700;
     text-align: center;
-    color: $textColor;
-    margin-bottom: 20px;
-    font-weight: 1000;
+    justify-content: center;
+    color: White;
+    font-size: 50px;
   }
 
 
@@ -113,7 +113,5 @@
     display: inline-block;
   }
 
-  & p, h2 {
-    margin: 0.5em 0;
-  }
+
 }
