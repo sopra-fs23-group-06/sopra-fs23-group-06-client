@@ -1,7 +1,7 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 //import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 //import GameRouter from "components/routing/routers/GameRouter";
-import {CodeGuard, MenuGuard, LobbyGuard} from "components/routing/routeProtectors/LoginGuard";
+import {CodeGuard, MenuGuard, HostGuard, JoinGuard} from "components/routing/routeProtectors/LoginGuard";
 import MainMenu from "../../views/lobby/MainMenu";
 import EnterCode from "../../views/lobby/EnterCode";
 import Username from "../../views/lobby/Username";
@@ -36,9 +36,9 @@ const AppRouter = () => {
           </CodeGuard>
         </Route>
         <Route exact path="/join/lobby/:id/">
-          <LobbyGuard>
+          <JoinGuard>
             <JoinLobby/>
-          </LobbyGuard>
+          </JoinGuard>
         </Route>
         <Route exact path="/host/username">
           <MenuGuard>
@@ -46,9 +46,9 @@ const AppRouter = () => {
           </MenuGuard>
         </Route>
         <Route exact path="/host/lobby/:id/">
-          <LobbyGuard>
+          <HostGuard>
             <HostLobby/>
-          </LobbyGuard>
+          </HostGuard>
         </Route>
         <Route exact path="/">
           <Redirect to="/main"/>

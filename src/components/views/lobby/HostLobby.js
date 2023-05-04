@@ -8,7 +8,6 @@ import {
     ButtonKick,
     ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
-    ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
@@ -42,10 +41,7 @@ const HostLobby = () => {
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
     const userId = localStorage.getItem("userId");
-    if (userId !== "1") {
-        history.push(`/join/lobby/${localStorage.getItem("lobbyCode")}`);
-        return null; // You can return null to prevent rendering the rest of the HostLobby component
-    }
+
 
     let isButtonDisabled = true;
 

@@ -23,16 +23,29 @@ MenuGuard.propTypes = {
 }
 
 
-export const LobbyGuard = props => {;//if user has not entered all info, redirect to main
+export const JoinGuard = props => {//if user has not entered all info, redirect to main
   const lobbyCode = localStorage.getItem("lobbyCode");
   const { id } = useParams()
-  if (localStorage.getItem("userId") && id === lobbyCode) {
+  if (localStorage.getItem("userId") > "1" && id === lobbyCode) {
     return props.children;
   }
-  return <Redirect to="/main"/>;
+  return <Redirect to="/"/>;
 };
 
-LobbyGuard.propTypes = {
+JoinGuard.propTypes = {
+  children: PropTypes.node
+};
+
+export const HostGuard = props => {//if user has not entered all info, redirect to main
+  const lobbyCode = localStorage.getItem("lobbyCode");
+  const { id } = useParams()
+  if (localStorage.getItem("userId") === "1" && id === lobbyCode) {
+    return props.children;
+  }
+  return <Redirect to="/"/>;
+};
+
+HostGuard.propTypes = {
   children: PropTypes.node
 };
 
@@ -44,6 +57,6 @@ export const CodeGuard = props => { //if user has no lobby, redirect to main
   return <Redirect to="/join/code"/>;
 };
 
-LobbyGuard.propTypes = {
+CodeGuard.propTypes = {
   children: PropTypes.node
 };
