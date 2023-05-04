@@ -29,7 +29,8 @@ const PlayerHand = (props) => {
     if (card.playable) {
       if (selectedCard === card) {
         setSelectedCard(null);
-      } 
+      }
+      else if (scarryMarry){}
       else {
         setSelectedCard(card);
       }
@@ -130,6 +131,7 @@ const PlayerHand = (props) => {
       )}
       {scarryMarry &&(
         <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
+          <Card path={getImagePath(selectedCard)} />
           <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={() => {
             Scary("PIRATE");
             handlePlayScary();
