@@ -14,14 +14,19 @@ import RuleBook from "../ui/RuleBook";
 
 
 
+
 const GameView = props => {
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
   const [roundNumber,setRoundNumber] = useState(1)
   const [playerHand, setPlayerHand] = useState([]);
   const [rulesOpen, setRulesOpen] = useState(false)
+  const [bid, setBid] = useState(null);
+  const [tricks, setTricks] = useState("")
 
-  useEffect(() => {
+
+
+    useEffect(() => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       const loadData = async () => {
           try {
@@ -41,10 +46,12 @@ const GameView = props => {
           try {
               const res = await api.get(`/games/${lobbyCode}/order`);
               const order = res[Object.keys(res)[0]];
+              const allBidsSet = order.every(player => player.bid !== null);
               const newOrder = setOrder(order)
               const players = [];
               for (const player of newOrder) {
-                  players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` });
+                  if (allBidsSet){players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` });}
+                  else{players.push({ name: player.username, bid: `` });}
               }
               setOtherPlayers(players);
           } catch (error) {
@@ -86,14 +93,10 @@ const GameView = props => {
             const relativeIndexB = (bIndex >= currentPlayerIndex) ? bIndex - currentPlayerIndex : order.length - currentPlayerIndex + bIndex;
             return relativeIndexA - relativeIndexB;
         });
-        console.log(newOrder);
         newOrder.splice(0,1);
 
         return newOrder;
     }
-
-  const [bid, setBid] = useState(null);
-  const [tricks, setTricks] = useState("")
 
 
   const handleConfirm = async (bid) => {
@@ -129,8 +132,8 @@ const displayBid = () => {
         setRulesOpen(false)
     }
 
-  return (
 
+  return (
     <BaseContainer>
       <JitsiMeeting
         configOverwrite={{
