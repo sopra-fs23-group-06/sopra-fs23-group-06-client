@@ -10,8 +10,8 @@ import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import {ButtonRules} from "../ui/ButtonMain";
 import RuleBook from "../ui/RuleBook";
-
-
+import { ButtonScoreboard } from 'components/ui/ButtonMain';
+import Scoreboard from "components/ui/Scoreboard";
 
 
 
@@ -22,8 +22,8 @@ const GameView = props => {
   const [playerHand, setPlayerHand] = useState([]);
   const [rulesOpen, setRulesOpen] = useState(false)
   const [bid, setBid] = useState(null);
-  const [tricks, setTricks] = useState("")
-
+  const [tricks, setTricks] = useState("");
+  const [showScoreboard, setShowScoreboard] = useState(false);
 
 
     useEffect(() => {
@@ -98,6 +98,9 @@ const GameView = props => {
         return newOrder;
     }
 
+    const toggleScoreboard = () => {
+      setShowScoreboard(prevState => !prevState);
+    };
 
   const handleConfirm = async (bid) => {
     try {
@@ -171,6 +174,10 @@ const displayBid = () => {
         {rulesOpen && (
             <RuleBook onClick={closeRules} />
         )}
+      <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
+      {showScoreboard && (
+        <Scoreboard onClose={toggleScoreboard} />
+      )}
     </BaseContainer>
   );
 };
