@@ -69,7 +69,7 @@ export const ButtonKick = props => (
 export const ButtonScoreboard = props => (
     <button
       {...props}
-      style={{ position: "absolute", top: 0, right: 10 }}
+      style={{width: props.width, ...props.style}}
       className="button-scoreboard"
     >
       <img className="icon" src={trophyIcon} alt="Trophy Icon" />

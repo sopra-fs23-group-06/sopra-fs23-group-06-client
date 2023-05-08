@@ -169,7 +169,7 @@ const displayBid = () => {
         <ButtonRules
             className= "corner"
             onClick={ ()=>{openRules()}}
-        >?
+        >Rules
         </ButtonRules>
         {rulesOpen && (
             <RuleBook onClick={closeRules} />
