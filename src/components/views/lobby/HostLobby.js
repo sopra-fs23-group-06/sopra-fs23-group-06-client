@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
 import {
     ButtonKick,
@@ -42,8 +41,6 @@ const HostLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
-    const userId = localStorage.getItem("userId");
-
 
     let isButtonDisabled = true;
 
