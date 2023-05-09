@@ -104,7 +104,7 @@ const Username = () => {
     <BaseContainer>
       <HeaderLobby/>
           <div className="lobby container">
-              <div className="lobby form">
+              <div className="lobby form2">
               <FormField
                   label="Enter Username"
                   value={username}

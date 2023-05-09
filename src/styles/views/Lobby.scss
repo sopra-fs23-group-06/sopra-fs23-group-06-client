@@ -7,7 +7,6 @@
     min-height: 300px;
     @include center;
     flex-direction: column;
-    margin-top: 50px;
   }
 
   &.form {
@@ -17,6 +16,24 @@
     justify-content: center;
     width: 100%;
     max-width: 30em;
+    height: auto;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 40px;
+    border-radius: 0.75em;
+    background-color: $background;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    box-shadow: $dropShadow;
+  }
+
+  &.form2 {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 30em;
+    margin-top: -300px;
     height: auto;
     font-size: 16px;
     font-weight: 300;
@@ -111,6 +128,7 @@
   }
   &.host {
     display: inline-block;
+    margin-left: 10px;
   }
 
 

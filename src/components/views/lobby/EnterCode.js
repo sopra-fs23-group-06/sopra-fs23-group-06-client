@@ -64,7 +64,7 @@ const EnterCode = () => {
     <BaseContainer>
       <HeaderLobby/>
           <div className="lobby container">
-              <div className="lobby form">
+              <div className="lobby form2">
               <FormField
                   label="Enter Code"
                   value={lobbyCode}

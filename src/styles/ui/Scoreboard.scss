@@ -26,7 +26,7 @@
 }
 
 .scoreboard-content-header {
-  color: rgb(231, 231, 231);
+  color: rgb(29, 28, 28);
   display: flex;
   align-self: center;
   font-size: 50px;
@@ -66,9 +66,22 @@ tbody td {
   text-align:center;
 }
 
+tbody tr:last-child td.no-border {
+  border: none;
+  font-size: larger;
+}
+
 .scoreboard-content > div:last-child {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.scoreboard .medal {
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  margin-bottom: -10px;
+  
 }
