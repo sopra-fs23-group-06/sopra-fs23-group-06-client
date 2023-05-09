@@ -216,7 +216,9 @@
       transform: none;
     }
   }
-
+  top: 1%;
+  right: 1%;
+  position: absolute;
   padding: 10px;
   height: auto;
   border: none;
@@ -226,7 +228,6 @@
   color: black;
   background-color: white;
   transition: all 0.3s ease;
-  margin-top: 10px;
 }
 
 .button-scoreboard .icon {
@@ -256,7 +257,7 @@
   }
 
   &.corner{
-    top: 1%;
+    top: 6%;
     right: 1%;
     position: absolute;
 
