@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'styles/ui/RoundSummary.scss';
+import 'styles/ui/Arrow.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
 
@@ -63,7 +64,7 @@ const RoundSummary = ({ curRound, onContinue }) => {
                 </tr>
               </tbody>
             </table>
-            <ButtonPurpleMain onClick={handleClick}>Continue</ButtonPurpleMain>
+            <ButtonPurpleMain onClick={handleClick}>Continue<div class="arrow right"></div></ButtonPurpleMain>
           </div>
         )}
       </div>

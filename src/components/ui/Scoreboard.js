@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'styles/ui/Scoreboard.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
+import 'styles/ui/Arrow.scss';
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
@@ -67,7 +68,7 @@ const Scoreboard = ({ onClose }) => {
                 </tr>
               </tbody>
             </table>
-            <ButtonPurpleMain onClick={handleClick}>Back</ButtonPurpleMain>
+            <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
           </div>
         )}
       </div>
