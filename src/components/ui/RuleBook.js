@@ -1,5 +1,5 @@
 import 'styles/ui/RuleBook.scss';
-import { ButtonPurpleLobby, ButtonRules } from './ButtonMain';
+import { ButtonPurpleLobby } from './ButtonMain';
 
 const RuleBook = ({onClick}) => {
   const handleClose = (event) => {
