@@ -5,6 +5,8 @@ import { ButtonPurpleMain } from "./ButtonMain";
 import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 import { bool } from 'prop-types';
+import "../../helpers/alert";
+
 
 
 function getImagePath(cardItem) {
@@ -63,7 +65,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      window.alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      alert(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };
@@ -76,7 +78,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      window.alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      alert(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };

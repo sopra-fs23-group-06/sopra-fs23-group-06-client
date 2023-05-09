@@ -26,7 +26,7 @@ export const handleError = error => {
     return info;
   } else {
     if (error.message.match(/Network Error/)) {
-      window.alert('The server cannot be reached.\nDid you start it?');
+      alert('The server cannot be reached.\nDid you start it?');
     }
 
     console.log('Something else happened.', error);

@@ -14,6 +14,8 @@ import { ButtonScoreboard } from 'components/ui/ButtonMain';
 import Scoreboard from "components/ui/Scoreboard";
 import RoundSummary from 'components/ui/RoundSummary';
 import FinalScoreboard from 'components/ui/FinalScoreboard';
+import "helpers/alert";
+
 
 
 
@@ -44,7 +46,7 @@ const GameView = props => {
               setRoundNumber(round.data)
           } catch (error) {
               clearInterval(intervalId)
-              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
+              alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       };
       const fetchOrder = async () => {
@@ -55,13 +57,13 @@ const GameView = props => {
               const newOrder = setOrder(order)
               const players = [];
               for (const player of newOrder) {
-                  if (allBidsSet){players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` });}
-                  else{players.push({ name: player.username, bid: `` });}
+                  if (allBidsSet){players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand });}
+                  else{players.push({ name: player.username, bid: ``, hand: player.hand });}
               }
               setOtherPlayers(players);
           } catch (error) {
               clearInterval(intervalId)
-              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
+              alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       }
     loadData();
@@ -123,7 +125,7 @@ const GameView = props => {
       user.bid = bid;
       await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
   }catch (error){
-      window.alert(`Something went wrong while entering bid: \n${handleError(error)}`);
+      alert(`Something went wrong while entering bid: \n${handleError(error)}`);
   }
     // Send bid to server
 

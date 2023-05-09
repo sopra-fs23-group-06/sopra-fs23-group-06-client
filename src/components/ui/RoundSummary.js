@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'styles/ui/RoundSummary.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
+import "../../helpers/alert";
+
 
 const RoundSummary = ({ curRound, onContinue }) => {
   const [roundScoreboardData, setScoreboardData] = useState(null);

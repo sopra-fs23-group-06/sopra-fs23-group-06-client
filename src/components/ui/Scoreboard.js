@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'styles/ui/Scoreboard.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
+import "../../helpers/alert";
+
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
@@ -13,7 +15,7 @@ const Scoreboard = ({ onClose }) => {
         const response = await api.get(`/games/${lobbyCode}/scoreboard`);
         setScoreboardData(response.data.scoreboard);
       } catch (error) {
-        window.alert(`Something went wrong loading the score board: \n${handleError(error)}`);
+        alert(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
     };
     fetchScoreboardData();
