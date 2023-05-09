@@ -236,11 +236,10 @@ const HostLobby = () => {
                 roomName = { "SkullKingLobby" + getLobby() }
                 getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
             />
-            <HeaderLobby />
             <div className="lobby container">
                 <div className="lobby form">
                     <div className="lobby code">
-                        {getLobby()}
+                        Lobby: {getLobby()}
                     </div>
                     {content}
                     <div className="lobby button-container2">
