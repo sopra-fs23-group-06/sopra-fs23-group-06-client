@@ -10,8 +10,8 @@ import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import {ButtonRules} from "../ui/ButtonMain";
 import RuleBook from "../ui/RuleBook";
-import { ButtonScoreboard } from 'components/ui/ButtonMain';
-import Scoreboard from "components/ui/Scoreboard";
+
+
 
 
 
@@ -22,8 +22,8 @@ const GameView = props => {
   const [playerHand, setPlayerHand] = useState([]);
   const [rulesOpen, setRulesOpen] = useState(false)
   const [bid, setBid] = useState(null);
-  const [tricks, setTricks] = useState("");
-  const [showScoreboard, setShowScoreboard] = useState(false);
+  const [tricks, setTricks] = useState("")
+
 
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const GameView = props => {
               setRoundNumber(round.data)
           } catch (error) {
               clearInterval(intervalId)
-              alert (`Something went wrong loading players data: \n${handleError(error)}`);
+              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       };
       const fetchOrder = async () => {
@@ -56,7 +56,7 @@ const GameView = props => {
               setOtherPlayers(players);
           } catch (error) {
               clearInterval(intervalId)
-              alert (`Something went wrong loading players data: \n${handleError(error)}`);
+              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       }
     loadData();
@@ -73,7 +73,7 @@ const GameView = props => {
       // Clean up the interval when the component is unmounted
       return () => clearInterval(intervalId);
   }, []);
-
+    
     function setOrder(order) {
         const currentPlayerId = parseInt(localStorage.getItem("userId")) ;
         const currentPlayerIndex = order.findIndex(player => player.id === currentPlayerId); // eslint-disable-line eqeqeq
@@ -98,9 +98,6 @@ const GameView = props => {
         return newOrder;
     }
 
-    const toggleScoreboard = () => {
-      setShowScoreboard(prevState => !prevState);
-    };
 
   const handleConfirm = async (bid) => {
     try {
@@ -109,7 +106,7 @@ const GameView = props => {
       user.bid = bid;
       await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
   }catch (error){
-      alert(`Something went wrong while entering bid: \n${handleError(error)}`);
+      window.alert(`Something went wrong while entering bid: \n${handleError(error)}`);
   }
     // Send bid to server
 
@@ -169,15 +166,11 @@ const displayBid = () => {
         <ButtonRules
             className= "corner"
             onClick={ ()=>{openRules()}}
-        >Rules
+        >?
         </ButtonRules>
         {rulesOpen && (
             <RuleBook onClick={closeRules} />
         )}
-      <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
-      {showScoreboard && (
-        <Scoreboard onClose={toggleScoreboard} />
-      )}
     </BaseContainer>
   );
 };

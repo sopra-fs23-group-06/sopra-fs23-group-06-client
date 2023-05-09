@@ -63,7 +63,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      window.alert(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };
@@ -76,7 +76,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      window.alert(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };

@@ -55,7 +55,7 @@ const JoinLobby = () => {
             localStorage.removeItem("inGame")
             history.push("/")
         } catch (error) {
-            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -80,7 +80,7 @@ const JoinLobby = () => {
                 }
             } catch (error) {
                 clearInterval(intervalId)
-                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                window.alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 

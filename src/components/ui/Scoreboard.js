@@ -13,7 +13,7 @@ const Scoreboard = ({ onClose }) => {
         const response = await api.get(`/games/${lobbyCode}/scoreboard`);
         setScoreboardData(response.data.scoreboard);
       } catch (error) {
-        alert(`Something went wrong loading the score board: \n${handleError(error)}`);
+        window.alert(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
     };
     fetchScoreboardData();
