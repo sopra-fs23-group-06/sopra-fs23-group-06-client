@@ -6,13 +6,13 @@ import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
 import {
     ButtonKick,
-    ButtonPurpleList,
+    ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
-    ButtonWhiteLobby,
 } from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -38,8 +38,10 @@ FormField.propTypes = {
 };
 const HostLobby = () => {
     const history = useHistory();
-    const lobbyCode = getLobby();
     const [users, setUsers] = useState(null);
+    const [rulesOpen, setRulesOpen] = useState(false)
+    const userId = localStorage.getItem("userId");
+
 
     let isButtonDisabled = true;
 
@@ -53,47 +55,58 @@ const HostLobby = () => {
         return split[split.length - 1]
     }
 
-    function viewCode() { //route to lobby Code show screen
-        history.push('/host/lobby/' + lobbyCode + "/code")
-    }
 
     async function removePlayer(leavingUser) {
         try {
+            const userId = localStorage.getItem('userId'); // retrieve userId from localStorage
             const user = new User()
             user.id = leavingUser.id
             user.lobby = leavingUser.lobby
-            await api.put(`/lobbies/${getLobby()}/kickHandler`, user);
+            await api.put(`/lobbies/${getLobby()}/kickHandler`, user, {
+                headers: {
+                    'userId': userId, // set userId as a header in the request
+                },
+            });
         } catch (error) {
-            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
+
     async function closeLobby() {
         try {
-            if(users) {
+            const userId = localStorage.getItem("userId");
+            if (users) {
                 for (let i = 0; i < users.length; i++) {
-                    const user = users[i]
-                    if (user.id !== parseInt(localStorage.getItem("userId"))) {
-                        await removePlayer(user)
+                    const user = users[i];
+                    if (user.id !== parseInt(userId)) {
+                        await removePlayer(user);
                     }
                 }
             }
             await new Promise(resolve => setTimeout(resolve, 500));
-
-            await api.put(`/lobbies/${getLobby()}/closeHandler`);
-            localStorage.removeItem("lobbyCode")
-            localStorage.removeItem("userId")
-            history.push("/")
+            await api.put(`/lobbies/${getLobby()}/closeHandler`, null, {
+                headers: {
+                    "userId": userId
+                }
+            });
+            localStorage.removeItem("lobbyCode");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("inGame");
+            history.push("/");
         } catch (error) {
-            alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
     }
 
+
     async function startGame() {
         try{
-            await api.post(`/games/${getLobby()}`)
+            const user = new User();
+            user.id = localStorage.getItem("userId");
+            await api.post(`/games/${getLobby()}`, user);
         } catch (error){
-            alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
+            window.alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
@@ -106,10 +119,13 @@ const HostLobby = () => {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
                 const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                if (rounds.data > 0){history.push(`/game/${getLobby()}`)}
+                if (rounds.data > 0){
+                    localStorage.setItem("inGame", "yes")
+                    history.push(`/game/${getLobby()}`)
+                }
             } catch (error) {
                 clearInterval(intervalId)
-                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                window.alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 
@@ -124,7 +140,7 @@ const HostLobby = () => {
         }, 500);
 
         // Clean up the interval when the component is unmounted
-        return () => clearInterval(intervalId);
+        return () => {clearInterval(intervalId);};
 
     }, [history]);
 
@@ -187,7 +203,13 @@ const HostLobby = () => {
         );
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
 
+    function closeRules() {
+        setRulesOpen(false)
+    }
 
     return (
 
@@ -214,18 +236,12 @@ const HostLobby = () => {
                 roomName = { "SkullKingLobby" + getLobby() }
                 getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
             />
-            <HeaderLobby />
             <div className="lobby container">
                 <div className="lobby form">
-                    {content}
-                    <div className="lobby button-container1">
-                        <ButtonWhiteLobby
-                            width="50%"
-                            onClick={() => viewCode()}
-                        >
-                            View Code
-                        </ButtonWhiteLobby>
+                    <div className="lobby code">
+                        Lobby: {getLobby()}
                     </div>
+                    {content}
                     <div className="lobby button-container2">
                         <ButtonWhiteList
                             width="100%"
@@ -243,6 +259,14 @@ const HostLobby = () => {
                     </div>
                 </div>
             </div>
+            <ButtonRules
+                className= "bottom"
+                onClick={ ()=>{openRules()}}
+            >Game Rules
+            </ButtonRules>
+            {rulesOpen && (
+                <RuleBook onClick={closeRules} />
+            )}
         </BaseContainer>
     );
 };

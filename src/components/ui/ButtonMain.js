@@ -1,4 +1,8 @@
 import "styles/ui/MainButton.scss";
+//import trophyIcon from "styles/images/trophyIcon.svg";
+import trophyIcon from "styles/images/trophy.png";
+
+
 export const ButtonPurpleMain = props => (
   <button
     {...props}
@@ -58,6 +62,25 @@ export const ButtonKick = props => (
         {...props}
         style={{width: props.width, ...props.style}}
         className={`button-kick ${props.className}`}>
+        {props.children}
+    </button>
+);
+
+export const ButtonScoreboard = props => (
+    <button
+      {...props}
+      style={{width: props.width, ...props.style}}
+      className="button-scoreboard"
+    >
+      <img className="icon" src={trophyIcon} alt="Trophy Icon" />
+    </button>
+  );
+
+export const ButtonRules = props => (
+    <button
+        {...props}
+        style={{width: props.width, ...props.style}}
+        className={`button-rules ${props.className}`}>
         {props.children}
     </button>
 );

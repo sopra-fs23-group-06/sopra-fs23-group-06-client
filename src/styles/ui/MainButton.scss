@@ -1,16 +1,19 @@
 @import 'styles/theme';
 
-.button-purple-main{
+.button-purple-main {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -26,17 +29,20 @@
   margin-inline: 50px;
 }
 
-.button-white-main{
+.button-white-main {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -52,17 +58,20 @@
   margin-inline: 50px;
 }
 
-.button-purple-lobby{
+.button-purple-lobby {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -75,20 +84,22 @@
   color: white;
   background-color: $accent;
   transition: all 0.3s ease;
-  margin-bottom: 10px;
 }
 
-.button-white-lobby{
+.button-white-lobby {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -101,20 +112,23 @@
   color: $accent;
   background-color: white;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
-.button-purple-list{
+.button-purple-list {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -131,17 +145,20 @@
   margin-inline: 25px;
 }
 
-.button-white-list{
+.button-white-list {
   &:hover {
     transform: translateY(-2px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
+
   padding: 6px;
   font-weight: 700;
   text-transform: uppercase;
@@ -158,27 +175,91 @@
   margin-inline: 25px;
 }
 
-.button-kick{
+.button-kick {
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(1px);
   }
+
   &:disabled {
     cursor: default;
     opacity: 0.4;
+
     &:hover {
       transform: none;
     }
   }
-  margin-left: 15px;
+  margin-left: 35px;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 32px;
+  font-size: 25px;
   border: 1px;
-  border-radius: 0.2em;;
+  border-radius: 0.2em;
+  ;
   cursor: pointer;
   color: black;
   background-color: white;
   transition: all 0.3s ease;
   flex-direction: row-reverse;
 
+}
+
+.button-scoreboard {
+  &:hover {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+
+    &:hover {
+      transform: none;
+    }
+  }
+  top: 1%;
+  right: 1%;
+  position: absolute;
+  padding: 10px;
+  height: auto;
+  border: none;
+  align-items: center;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.button-scoreboard .icon {
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  margin-bottom: -5px;
+}
+
+.button-rules{
+  &:hover {
+    transform: translateY(-2px);
+  }
+  font-size: 24px;
+  border: 1px;
+  border-radius: 0.2em;;
+  cursor: pointer;
+  color: grey;
+  background: none;
+  transition: all 0.3s ease;
+
+  &.bottom{
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.corner{
+    top: 2%;
+    right: 5%;
+    position: absolute;
+    margin-right: 10px;
+  }
 }

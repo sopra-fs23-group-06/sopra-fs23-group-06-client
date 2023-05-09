@@ -1,14 +1,14 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 //import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 //import GameRouter from "components/routing/routers/GameRouter";
-import {CodeGuard, LobbyGuard, NameGuard} from "components/routing/routeProtectors/LoginGuard";
+import {CodeGuard, MenuGuard, HostGuard, JoinGuard} from "components/routing/routeProtectors/LoginGuard";
 import MainMenu from "../../views/lobby/MainMenu";
 import EnterCode from "../../views/lobby/EnterCode";
 import Username from "../../views/lobby/Username";
-import ShowCode from "../../views/lobby/ShowCode";
 import HostLobby from "../../views/lobby/HostLobby";
 import JoinLobby from "../../views/lobby/JoinLobby";
 import GameView from "components/views/GameView";
+import {GameGuard} from "../routeProtectors/GameGuard";
 
 
 const AppRouter = () => {
@@ -16,45 +16,39 @@ const AppRouter = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/game/:id">
-
-          {/*ADD GAME GUARD*/}
-
-          <GameView/>
+          <GameGuard>
+            <GameView/>
+          </GameGuard>
         </Route>
         <Route exact path="/main">
-          <LobbyGuard>
+          <MenuGuard>
             <MainMenu/>
-          </LobbyGuard>
+          </MenuGuard>
         </Route>
         <Route exact path="/join/code">
-          <LobbyGuard>
+          <MenuGuard>
             <EnterCode/>
-          </LobbyGuard>
+          </MenuGuard>
         </Route>
         <Route exact path="/join/username">
           <CodeGuard>
             <Username/>
           </CodeGuard>
         </Route>
-        <Route exact path="/host/username">
-          <LobbyGuard>
-            <Username/>
-          </LobbyGuard>
+        <Route exact path="/join/lobby/:id/">
+          <JoinGuard>
+            <JoinLobby/>
+          </JoinGuard>
         </Route>
-        <Route exact path="/host/lobby/:id/code">
-          <NameGuard>
-            <ShowCode/>
-          </NameGuard>
+        <Route exact path="/host/username">
+          <MenuGuard>
+            <Username/>
+          </MenuGuard>
         </Route>
         <Route exact path="/host/lobby/:id/">
-          <NameGuard>
+          <HostGuard>
             <HostLobby/>
-          </NameGuard>
-        </Route>
-        <Route exact path="/join/lobby/:id/">
-          <NameGuard>
-            <JoinLobby/>
-          </NameGuard>
+          </HostGuard>
         </Route>
         <Route exact path="/">
           <Redirect to="/main"/>

@@ -4,9 +4,10 @@ import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../../ui/ButtonMain";
+import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonMain";
 import {api, handleError} from 'helpers/api';
 import User from "../../../models/User";
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -34,6 +35,7 @@ const Username = () => {
     const [username, setUsername] = useState(null);
     const history = useHistory();
     const isHost = hostOrJoin();
+    const [rulesOpen, setRulesOpen] = useState(false)
     function getLobby() {
         return localStorage.getItem("lobbyCode");
     }
@@ -59,7 +61,7 @@ const Username = () => {
             localStorage.setItem("lobbyCode", lobby.lobbyCode)
 
         } catch (error) {
-            alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
+            window.alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
         }
     }
 
@@ -75,9 +77,9 @@ const Username = () => {
             localStorage.setItem("userId", created.id)
             localStorage.setItem("username", created.username);
             if(!isHost){history.push('/join/lobby/'+getLobby())}
-            else { history.push('/host/lobby/'+getLobby()+"/code")}
+            else { history.push('/host/lobby/'+getLobby())}
         } catch (error) {
-            alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -90,12 +92,19 @@ const Username = () => {
         }
     }
 
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
+    }
     return (
 
     <BaseContainer>
       <HeaderLobby/>
           <div className="lobby container">
-              <div className="lobby form">
+              <div className="lobby form2">
               <FormField
                   label="Enter Username"
                   value={username}
@@ -118,6 +127,14 @@ const Username = () => {
                   </div>
               </div>
           </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

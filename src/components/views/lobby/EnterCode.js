@@ -4,9 +4,9 @@ import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonWhiteLobby} from "../../ui/ButtonMain";
+import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";
-
+import RuleBook from "../../ui/RuleBook";
 
 const FormField = props => {
 
@@ -29,10 +29,11 @@ FormField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.number,
     onChange: PropTypes.func
-};
+}
 const EnterCode = () => {
     const [lobbyCode, setLobbyCode] = useState(null);
     const history = useHistory();
+    const [rulesOpen, setRulesOpen] = useState(false)
     function goBack() { //goes back to previous screen
         history.go(-1)
     }
@@ -45,8 +46,16 @@ const EnterCode = () => {
             history.push('/join/username')
 
         } catch (error) {
-            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
         }
+    }
+
+    function openRules() {
+        setRulesOpen(true)
+    }
+
+    function closeRules() {
+        setRulesOpen(false)
     }
 
     return (
@@ -54,7 +63,7 @@ const EnterCode = () => {
     <BaseContainer>
       <HeaderLobby/>
           <div className="lobby container">
-              <div className="lobby form">
+              <div className="lobby form2">
               <FormField
                   label="Enter Code"
                   value={lobbyCode}
@@ -77,6 +86,14 @@ const EnterCode = () => {
                   </div>
               </div>
           </div>
+        <ButtonRules
+            className= "bottom"
+            onClick={ ()=>{openRules()}}
+        >Game Rules
+        </ButtonRules>
+        {rulesOpen && (
+            <RuleBook onClick={closeRules} />
+        )}
     </BaseContainer>
   );
 };

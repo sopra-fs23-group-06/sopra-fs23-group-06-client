@@ -1,16 +1,9 @@
 @import 'styles/theme';
 
 .card {
-    &:hover {
-        transform: translateY(-5px);
-
-      }
     &:disabled {
         cursor: default;
         opacity: 0.4;
-        &:hover {
-          transform: none;
-        }
       }
     padding: 1px;
     height: auto;

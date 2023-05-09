@@ -7,7 +7,6 @@
     min-height: 300px;
     @include center;
     flex-direction: column;
-    margin-top: -150px;
   }
 
   &.form {
@@ -17,6 +16,24 @@
     justify-content: center;
     width: 100%;
     max-width: 30em;
+    height: auto;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 40px;
+    border-radius: 0.75em;
+    background-color: $background;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    box-shadow: $dropShadow;
+  }
+
+  &.form2 {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 30em;
+    margin-top: -300px;
     height: auto;
     font-size: 16px;
     font-weight: 300;
@@ -67,16 +84,16 @@
 
 
   &.code {
-    font-size: 100px;
+    font-weight: 700;
     text-align: center;
-    color: $textColor;
-    margin-bottom: 20px;
-    font-weight: 1000;
+    justify-content: center;
+    color: White;
+    font-size: 50px;
   }
 
 
   &.player-container-host {
-    padding: 1em;
+    padding: 8px;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
@@ -84,7 +101,7 @@
   }
 
   &.player-container-odd {
-    padding: 1em;
+    padding: 8px;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
@@ -92,7 +109,7 @@
   }
 
   &.player-container-even {
-    padding: 1em;
+    padding: 8px;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
@@ -107,13 +124,12 @@
   &.username {
     font-weight: 700;
     color: White;
-    font-size: 40px;
+    font-size: 25px;
   }
   &.host {
     display: inline-block;
+    margin-left: 10px;
   }
 
-  & p, h2 {
-    margin: 0.5em 0;
-  }
+
 }
