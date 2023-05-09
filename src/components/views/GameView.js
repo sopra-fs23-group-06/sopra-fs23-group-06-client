@@ -31,39 +31,39 @@ const GameView = props => {
 
 
 
-  useEffect(() => {
-    const lobbyCode = localStorage.getItem("lobbyCode");
-    const loadData = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
-        setPlayerHand(response.data);
-        const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
-        setPlayedCards(tableCards.data)
-        const round = await api.get(`/games/${lobbyCode}/rounds`);
-        setRoundNumber(round.data)
-      } catch (error) {
-        clearInterval(intervalId)
-        alert(`Something went wrong loading players data: \n${handleError(error)}`);
+    useEffect(() => {
+      const lobbyCode = localStorage.getItem("lobbyCode");
+      const loadData = async () => {
+          try {
+              const userId = localStorage.getItem("userId");
+              const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
+              setPlayerHand(response.data);
+              const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
+              setPlayedCards(tableCards.data)
+              const round = await api.get(`/games/${lobbyCode}/rounds`);
+              setRoundNumber(round.data)
+          } catch (error) {
+              clearInterval(intervalId)
+              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
+          }
+      };
+      const fetchOrder = async () => {
+          try {
+              const res = await api.get(`/games/${lobbyCode}/order`);
+              const order = res[Object.keys(res)[0]];
+              const allBidsSet = order.every(player => player.bid !== null);
+              const newOrder = setOrder(order)
+              const players = [];
+              for (const player of newOrder) {
+                  if (allBidsSet){players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` });}
+                  else{players.push({ name: player.username, bid: `` });}
+              }
+              setOtherPlayers(players);
+          } catch (error) {
+              clearInterval(intervalId)
+              window.alert (`Something went wrong loading players data: \n${handleError(error)}`);
+          }
       }
-    };
-    const fetchOrder = async () => {
-      try {
-        const res = await api.get(`/games/${lobbyCode}/order`);
-        const order = res[Object.keys(res)[0]];
-        const allBidsSet = order.every(player => player.bid !== null);
-        const newOrder = setOrder(order)
-        const players = [];
-        for (const player of newOrder) {
-          if (allBidsSet) { players.push({ name: player.username, bid: `${player.tricks}/${player.bid}` }); }
-          else { players.push({ name: player.username, bid: `` }); }
-        }
-        setOtherPlayers(players);
-      } catch (error) {
-        clearInterval(intervalId)
-        alert(`Something went wrong loading players data: \n${handleError(error)}`);
-      }
-    }
     loadData();
     fetchOrder();
     const intervalId = setInterval(async () => {
@@ -112,9 +112,9 @@ const GameView = props => {
     return newOrder;
   }
 
-  const toggleScoreboard = () => {
-    setShowScoreboard(prevState => !prevState);
-  };
+    const toggleScoreboard = () => {
+      setShowScoreboard(prevState => !prevState);
+    };
 
   const handleConfirm = async (bid) => {
     try {
@@ -122,9 +122,9 @@ const GameView = props => {
       user.id = localStorage.getItem("userId");
       user.bid = bid;
       await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
-    } catch (error) {
-      alert(`Something went wrong while entering bid: \n${handleError(error)}`);
-    }
+  }catch (error){
+      window.alert(`Something went wrong while entering bid: \n${handleError(error)}`);
+  }
     // Send bid to server
 
   };
@@ -193,7 +193,7 @@ const GameView = props => {
       <ButtonRules
         className="corner"
         onClick={() => { openRules() }}
-      >Rules
+      >?
       </ButtonRules>
       {rulesOpen && (
         <RuleBook onClick={closeRules} />

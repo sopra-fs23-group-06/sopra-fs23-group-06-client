@@ -61,7 +61,7 @@ const Username = () => {
             localStorage.setItem("lobbyCode", lobby.lobbyCode)
 
         } catch (error) {
-            alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
+            window.alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
         }
     }
 
@@ -79,7 +79,7 @@ const Username = () => {
             if(!isHost){history.push('/join/lobby/'+getLobby())}
             else { history.push('/host/lobby/'+getLobby())}
         } catch (error) {
-            alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
         }
     }
 

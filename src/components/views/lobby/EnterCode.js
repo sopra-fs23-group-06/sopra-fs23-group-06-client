@@ -8,7 +8,6 @@ import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonM
 import {api, handleError} from "../../../helpers/api";
 import RuleBook from "../../ui/RuleBook";
 
-
 const FormField = props => {
 
 
@@ -30,7 +29,7 @@ FormField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.number,
     onChange: PropTypes.func
-};
+}
 const EnterCode = () => {
     const [lobbyCode, setLobbyCode] = useState(null);
     const history = useHistory();
@@ -47,7 +46,7 @@ const EnterCode = () => {
             history.push('/join/username')
 
         } catch (error) {
-            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+            window.alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
         }
     }
 
