@@ -8,6 +8,8 @@ import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonM
 import {api, handleError} from 'helpers/api';
 import User from "../../../models/User";
 import RuleBook from "../../ui/RuleBook";
+import "../../../helpers/alert";
+
 
 const FormField = props => {
 
@@ -61,7 +63,7 @@ const Username = () => {
             localStorage.setItem("lobbyCode", lobby.lobbyCode)
 
         } catch (error) {
-            window.alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
+            alert(`Something went wrong during lobby creation: \n${handleError(error)}`);
         }
     }
 
@@ -79,7 +81,7 @@ const Username = () => {
             if(!isHost){history.push('/join/lobby/'+getLobby())}
             else { history.push('/host/lobby/'+getLobby())}
         } catch (error) {
-            window.alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
+            alert(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
         }
     }
 

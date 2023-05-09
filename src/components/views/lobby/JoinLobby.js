@@ -8,6 +8,8 @@ import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
+import "../../../helpers/alert";
+
 
 const FormField = props => {
 
@@ -54,7 +56,7 @@ const JoinLobby = () => {
             localStorage.removeItem("inGame")
             history.push("/")
         } catch (error) {
-            window.alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -79,7 +81,7 @@ const JoinLobby = () => {
                 }
             } catch (error) {
                 clearInterval(intervalId)
-                window.alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 

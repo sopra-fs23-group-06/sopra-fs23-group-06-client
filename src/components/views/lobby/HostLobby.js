@@ -12,6 +12,8 @@ import {api, handleError} from "../../../helpers/api";
 import User from "../../../models/User";
 import {JitsiMeeting} from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
+import "../../../helpers/alert";
+
 
 const FormField = props => {
 
@@ -65,7 +67,7 @@ const HostLobby = () => {
                 },
             });
         } catch (error) {
-            window.alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -92,7 +94,7 @@ const HostLobby = () => {
             localStorage.removeItem("inGame");
             history.push("/");
         } catch (error) {
-            window.alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
+            alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
     }
 
@@ -103,7 +105,7 @@ const HostLobby = () => {
             user.id = localStorage.getItem("userId");
             await api.post(`/games/${getLobby()}`, user);
         } catch (error){
-            window.alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
+            alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
@@ -122,7 +124,7 @@ const HostLobby = () => {
                 }
             } catch (error) {
                 clearInterval(intervalId)
-                window.alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 

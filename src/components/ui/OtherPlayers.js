@@ -7,8 +7,33 @@ const OtherPlayers = ({ players }) => {
     <div className={`other-player ${position}`}>
       <div className="other-player-name">{player.name}</div>
       <div className="other-player-bid">{player.bid}</div>
+      <div className="other-player-hand">{otherPlayerHand(player)}</div>
     </div>
   );
+
+  function otherPlayerHand(player) {
+    const amount = player.hand.length;
+  
+    return (
+      <div className="other-player-hand">
+        {Array.from({ length: amount }).map((_, index) => {
+          const rotationAngle = (index - Math.floor(amount / 2)) * 5;
+          return (
+            <img
+              key={index}
+              src={require(`../../styles/images/cards/Backside.png`)}
+              alt="card"
+              className="card-image"
+              style={{ transform: `rotate(${rotationAngle}deg)` }}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+  
+  
+  
 
   const renderPlayers = () => {
     const numPlayers = players.length;

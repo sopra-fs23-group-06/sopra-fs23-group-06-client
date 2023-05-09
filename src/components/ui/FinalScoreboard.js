@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import GoldMedal from "styles/images/medals/gold_medal.png";
 import SilverMedal from "styles/images/medals/silver_medal.png";
 import BronzeMedal from "styles/images/medals/bronze_medal.png";
+import "helpers/alert";
+
 
 
 const FinalScoreboard = ({ onClose }) => {

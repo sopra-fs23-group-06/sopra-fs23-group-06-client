@@ -3,6 +3,8 @@ import 'styles/ui/RoundSummary.scss';
 import 'styles/ui/Arrow.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
+import "../../helpers/alert";
+
 
 const RoundSummary = ({ curRound, onContinue }) => {
   const [roundScoreboardData, setScoreboardData] = useState(null);
