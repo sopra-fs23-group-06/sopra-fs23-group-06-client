@@ -14,9 +14,22 @@ const MakeBid = ({ roundNumber, onSubmit }) => {
   };
 
   const handleConfirm = (event) => {
+    showScream();
     event.preventDefault();
     onSubmit(bid);
   };
+
+  function showScream() {
+    const scream = document.createElement("div");
+    scream.classList.add("scream");
+  
+    const screamContent = document.createElement("div");
+    screamContent.classList.add("scream-content");
+    screamContent.innerText = "YO-HO-HO!";
+  
+    scream.appendChild(screamContent);
+    document.body.appendChild(scream);
+  }
 
   return (
     <div className="make-bid">
