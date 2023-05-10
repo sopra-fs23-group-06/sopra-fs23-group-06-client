@@ -44,6 +44,7 @@ const GameView = props => {
               setPlayedCards(tableCards.data)
               const round = await api.get(`/games/${lobbyCode}/rounds`);
               setRoundNumber(round.data)
+              if(round.data > 10){clearInterval(intervalId); }
           } catch (error) {
               clearInterval(intervalId)
               alert (`Something went wrong loading players data: \n${handleError(error)}`);

@@ -80,9 +80,9 @@ const Scoreboard = ({ onClose }) => {
               </tbody>
             </table>
             <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
-            <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
           </div>
         )}
+        <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
       </div>
     </div>
   );

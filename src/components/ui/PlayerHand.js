@@ -12,7 +12,7 @@ import "../../helpers/alert";
 function getImagePath(cardItem) {
   if (cardItem.color === "SPECIAL") {
     if (cardItem.aRank === "PIRATE") {
-      return cardItem.color.toLowerCase() + '/badeye_joe';
+      return cardItem.color.toLowerCase() +'/'+ cardItem.aOption.toLowerCase();
     }
     return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
   }
