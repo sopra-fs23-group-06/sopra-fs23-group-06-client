@@ -6,20 +6,10 @@ import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 //import { bool } from 'prop-types';
 import "../../helpers/alert";
+import getImagePath from "../../helpers/getImagePath";
 
 
 
-function getImagePath(cardItem) {
-  if (cardItem.color === "SPECIAL") {
-    if (cardItem.aRank === "PIRATE") {
-      return cardItem.color.toLowerCase() +'/'+ cardItem.aOption.toLowerCase();
-    }
-    return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
-  }
-  return cardItem.color.toLowerCase() + '/' + cardItem.color.toLowerCase() + '_' + cardItem.aRank.toLowerCase();
-
-  //JUST AN IDEA, NEEDS TO BE IMPROVED
-}
 
 const PlayerHand = (props) => {
   const { cards, bid } = props;
