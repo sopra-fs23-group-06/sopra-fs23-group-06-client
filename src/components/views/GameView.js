@@ -15,6 +15,7 @@ import Scoreboard from "components/ui/Scoreboard";
 import RoundSummary from 'components/ui/RoundSummary';
 import FinalScoreboard from 'components/ui/FinalScoreboard';
 import "helpers/alert";
+import "components/views/GameView"
 
 
 
@@ -30,6 +31,10 @@ const GameView = props => {
   const [showScoreboard, setShowScoreboard] = useState(false);
   const [showRoundSummary, setShowRoundSummary] = useState(false);
   const [showFinalScoreboard, setShowFinalScoreboard]= useState(false);
+  var showedAnimationBid = false;
+  var showedAnimationTrickWinner = false;
+
+
 
 
 
@@ -43,6 +48,17 @@ const GameView = props => {
               const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
               setPlayedCards(tableCards.data)
               const round = await api.get(`/games/${lobbyCode}/rounds`);
+              const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
+              if (tableCards.data.length===playerSize){
+                if(showedAnimationTrickWinner === false){
+                  const trickWinner = await api.get(`/games/${lobbyCode}/trickWinner`);
+                  showedAnimationTrickWinner = true;
+                  displayTrickWinner(trickWinner.data);
+                }
+              }
+              else{
+                showedAnimationTrickWinner = false;
+              }
               setRoundNumber(round.data)
           } catch (error) {
               clearInterval(intervalId)
@@ -57,8 +73,16 @@ const GameView = props => {
               const newOrder = setOrder(order)
               const players = [];
               for (const player of newOrder) {
-                  if (allBidsSet){players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand });}
-                  else{players.push({ name: player.username, bid: ``, hand: player.hand });}
+                if (allBidsSet){
+                    players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand });
+                    if(showedAnimationBid === false){
+                      showAnimation("YO-HO-HO!");
+                    }
+                }
+                else{
+                    players.push({ name: player.username, bid: ``, hand: player.hand });
+                    showedAnimationBid = false;
+                }
               }
               setOtherPlayers(players);
           } catch (error) {
@@ -66,6 +90,41 @@ const GameView = props => {
               alert (`Something went wrong loading players data: \n${handleError(error)}`);
           }
       }
+      function showAnimation(content) {
+        const scream = document.createElement("div");
+        scream.classList.add("scream");
+    
+        const screamContent = document.createElement("div");
+        screamContent.classList.add("scream-content");
+        screamContent.innerText = content;
+    
+        scream.appendChild(screamContent);
+        document.body.appendChild(scream);
+        showedAnimationBid = true;
+      }
+
+      function displayTrickWinner(trickWinner) {
+        const trophyAnimation = document.createElement("div");
+        trophyAnimation.classList.add("trophy-animation");
+      
+        const trophyImg = document.createElement("img");
+        trophyImg.src = require('../../styles/images/pokal.png');
+        trophyImg.classList.add("trophy-img");
+        trophyAnimation.appendChild(trophyImg);
+      
+        const username = document.createElement("div");
+        username.textContent = trickWinner.username;
+        username.classList.add("trophy-username");
+        trophyAnimation.appendChild(username);
+      
+        document.body.appendChild(trophyAnimation);
+      
+        setTimeout(() => {
+          trophyAnimation.remove();
+        }, 3000);
+      }
+      
+      
     loadData();
     fetchOrder();
     const intervalId = setInterval(async () => {
@@ -82,7 +141,7 @@ const GameView = props => {
   }, []);
 
   useEffect(() => {
-    if (roundNumber !== 1 && roundNumber !== 10) {
+    if (roundNumber !== 1 && roundNumber !== 11) {
       setShowRoundSummary(true);
     }
     if (roundNumber === 11) {
