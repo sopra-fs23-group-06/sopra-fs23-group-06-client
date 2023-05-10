@@ -1,17 +1,9 @@
 import React from 'react';
 import 'styles/ui/PlayedCardsStack.scss';
+import getImagePath from "../../helpers/getImagePath";
 
-function getImagePath(cardItem) {
-  if (cardItem.color === "SPECIAL") {
-    if (cardItem.aRank === "PIRATE") {
-      return cardItem.color.toLowerCase() + '/badeye_joe';
-    }
-    return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
-  }
-  return cardItem.color.toLowerCase() + '/' + cardItem.color.toLowerCase() + '_' + cardItem.aRank.toLowerCase();
 
-  //JUST AN IDEA, NEEDS TO BE IMPROVED
-}
+
 
 const PlayedCardsStack = ({ cards }) => {
   //const totalRotationAngle = 5;

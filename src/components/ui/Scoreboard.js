@@ -5,9 +5,11 @@ import { ButtonPurpleMain } from './ButtonMain';
 import "../../helpers/alert";
 
 import 'styles/ui/Arrow.scss';
+import {useHistory} from "react-router-dom";
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
+  const history = useHistory();//temporary to leave game view
 
   useEffect(() => {
     const fetchScoreboardData = async () => {
@@ -26,6 +28,13 @@ const Scoreboard = ({ onClose }) => {
     event.preventDefault();
     onClose();
   };
+
+  function leaveGame() { //temporary, to leave gameview
+    localStorage.removeItem("lobbyCode")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("inGame")
+    history.push("/")
+  }
 
   return (
     <div className="scoreboard">
@@ -73,6 +82,7 @@ const Scoreboard = ({ onClose }) => {
             <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
           </div>
         )}
+        <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
       </div>
     </div>
   );

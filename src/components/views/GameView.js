@@ -60,6 +60,7 @@ const GameView = props => {
                 showedAnimationTrickWinner = false;
               }
               setRoundNumber(round.data)
+              if(round.data > 10){clearInterval(intervalId); }
           } catch (error) {
               clearInterval(intervalId)
               alert (`Something went wrong loading players data: \n${handleError(error)}`);
@@ -242,7 +243,7 @@ const GameView = props => {
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
-      {bid == null && (
+      {(bid == null && roundNumber <11) && (
         <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
       {showRoundSummary && (

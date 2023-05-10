@@ -6,25 +6,14 @@ import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 //import { bool } from 'prop-types';
 import "../../helpers/alert";
+import getImagePath from "../../helpers/getImagePath";
 
 
 
-function getImagePath(cardItem) {
-  if (cardItem.color === "SPECIAL") {
-    if (cardItem.aRank === "PIRATE") {
-      return cardItem.color.toLowerCase() + '/badeye_joe';
-    }
-    return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
-  }
-  return cardItem.color.toLowerCase() + '/' + cardItem.color.toLowerCase() + '_' + cardItem.aRank.toLowerCase();
-
-  //JUST AN IDEA, NEEDS TO BE IMPROVED
-}
 
 const PlayerHand = (props) => {
   const { cards, bid } = props;
   const [selectedCard, setSelectedCard] = useState(null);
-  const history = useHistory();//temporary to leave game view
   const [scarryMarry, setScaryMary] = useState(null);
 
 
@@ -108,12 +97,6 @@ const PlayerHand = (props) => {
     left: '50%',
   } : null;
 
-  function leaveGame() { //temporary, to leave gameview
-    localStorage.removeItem("lobbyCode")
-    localStorage.removeItem("userId")
-    localStorage.removeItem("inGame")
-    history.push("/")
-  }
 
   return (
     <div className="player-hand">
@@ -145,7 +128,7 @@ const PlayerHand = (props) => {
           }}>Escape</button>
         </div>
       )}
-      <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
+
 
 
     </div>

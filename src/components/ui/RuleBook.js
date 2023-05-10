@@ -87,13 +87,13 @@ let rules =
                 However, if all the players play an "Escape" card, the trick is won by the player who played the first Escape card.
 
                 <h3>Mermaid Card</h3>
-                <img src={require(`../../styles/images/cards/special/mermaid.png`)} alt="Escape Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
+                <img src={require(`../../styles/images/cards/special/mermaid.png`)} alt="Mermaid Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
                 <div style={{ marginBottom: '1.2em' }}></div>
                 The Mermaid is higher than all cards in the suits (also higher than the skull and crossbones flag), but is trumped by Pirate cards.
                 It is also higher than the Skull King because the latter lets himself be beguiled by her: If the Mermaid is in the same trick as the Skull King, the Mermaid always wins the trick (no matter which other cards are also in the trick) and the player receives an additional bonus.
 
                 <h3>Pirate Cards</h3>
-                <img src={require(`../../styles/images/cards/special/badeye_joe.png`)} alt="Escape Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
+                <img src={require(`../../styles/images/cards/special/badeye_joe.png`)} alt="Pirate Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
                 <div style={{ marginBottom: '1.2em' }}></div>
                 These cards are higher than all the cards of a suit (irrespective of the suit or value) and the Mermaid.
                 There are only 3 ways not to win any tricks with a Pirate card:
@@ -102,13 +102,14 @@ let rules =
                 It is trumped by a Mermaid played in the same trick as the Skull King.
 
                 <h3>Scary Mary Card</h3>
-                <img src={require(`../../styles/images/cards/special/scary_mary.png`)} alt="Escape Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
+                <img src={require(`../../styles/images/cards/special/scary_mary_none.png`)} alt="Scary Mary Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
                 <div style={{ marginBottom: '1.2em' }}></div>
                 The Scary Mary can be played either as a Pirate card or as an Escape card.
                 When playing this card the player says in which function he wishes to use the Scary Mary.
+                If chosen as an Escape, only flags will be displayed in the corners, if chosen as a pirate, only skulls will be displayed.
 
                 <h3> Skull King Card</h3>
-                <img src={require(`../../styles/images/cards/special/skull_king.png`)} alt="Escape Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
+                <img src={require(`../../styles/images/cards/special/skull_king.png`)} alt="Skull King Card" style={{ width: '22%', display: 'block', margin: '0 auto' }}></img>
                 <div style={{ marginBottom: '1.2em' }}></div>
                 The Skull King can only be trumped by a Mermaid.
                 All other cards are lower than the Skull King.
