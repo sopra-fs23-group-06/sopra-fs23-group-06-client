@@ -82,7 +82,7 @@ const GameView = props => {
   }, []);
 
   useEffect(() => {
-    if (roundNumber !== 1 && roundNumber !== 10) {
+    if (roundNumber !== 1 && roundNumber !== 11) {
       setShowRoundSummary(true);
     }
     if (roundNumber === 11) {
@@ -183,7 +183,7 @@ const GameView = props => {
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
-      {bid == null && (
+      {(bid == null && roundNumber <11) && (
         <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
       {showRoundSummary && (

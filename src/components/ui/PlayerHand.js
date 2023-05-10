@@ -24,7 +24,6 @@ function getImagePath(cardItem) {
 const PlayerHand = (props) => {
   const { cards, bid } = props;
   const [selectedCard, setSelectedCard] = useState(null);
-  const history = useHistory();//temporary to leave game view
   const [scarryMarry, setScaryMary] = useState(null);
 
 
@@ -108,12 +107,6 @@ const PlayerHand = (props) => {
     left: '50%',
   } : null;
 
-  function leaveGame() { //temporary, to leave gameview
-    localStorage.removeItem("lobbyCode")
-    localStorage.removeItem("userId")
-    localStorage.removeItem("inGame")
-    history.push("/")
-  }
 
   return (
     <div className="player-hand">
@@ -145,7 +138,7 @@ const PlayerHand = (props) => {
           }}>Escape</button>
         </div>
       )}
-      <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
+
 
 
     </div>
