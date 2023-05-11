@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import 'styles/views/GameView.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PlayerHand from 'components/ui/PlayerHand';
@@ -31,8 +31,8 @@ const GameView = props => {
   const [showScoreboard, setShowScoreboard] = useState(false);
   const [showRoundSummary, setShowRoundSummary] = useState(false);
   const [showFinalScoreboard, setShowFinalScoreboard]= useState(false);
-  var showedAnimationBid = false;
-  var showedAnimationTrickWinner = false;
+  const showedAnimationBid = useRef(false);
+  const showedAnimationTrickWinner = useRef(false);
 
 
 
@@ -50,14 +50,14 @@ const GameView = props => {
               const round = await api.get(`/games/${lobbyCode}/rounds`);
               const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
               if (tableCards.data.length===playerSize){
-                if(showedAnimationTrickWinner === false){
+                if(showedAnimationTrickWinner.current === false){
                   const trickWinner = await api.get(`/games/${lobbyCode}/trickWinner`);
-                  showedAnimationTrickWinner = true;
+                  showedAnimationTrickWinner.current = true;
                   displayTrickWinner(trickWinner.data);
                 }
               }
               else{
-                showedAnimationTrickWinner = false;
+                showedAnimationTrickWinner.current = false;
               }
               setRoundNumber(round.data)
               if(round.data > 10){clearInterval(intervalId); }
@@ -76,13 +76,13 @@ const GameView = props => {
               for (const player of newOrder) {
                 if (allBidsSet){
                     players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand, hasTurn: player.hasTurn });
-                    if(showedAnimationBid === false){
+                    if(showedAnimationBid.current === false){
                       showAnimation("YO-HO-HO!");
                     }
                 }
                 else{
                     players.push({ name: player.username, bid: ``, hand: player.hand });
-                    showedAnimationBid = false;
+                    showedAnimationBid.current = false;
                 }
               }
               setOtherPlayers(players);
@@ -101,7 +101,7 @@ const GameView = props => {
     
         scream.appendChild(screamContent);
         document.body.appendChild(scream);
-        showedAnimationBid = true;
+        showedAnimationBid.current = true;
       }
 
       function displayTrickWinner(trickWinner) {
