@@ -5,7 +5,7 @@ import { ButtonPurpleMain } from './ButtonMain';
 import "../../helpers/alert";
 
 import 'styles/ui/Arrow.scss';
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
@@ -80,9 +80,9 @@ const Scoreboard = ({ onClose }) => {
               </tbody>
             </table>
             <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
+            <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
           </div>
         )}
-        <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
       </div>
     </div>
   );

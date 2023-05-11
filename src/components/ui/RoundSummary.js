@@ -26,8 +26,6 @@ const RoundSummary = ({ curRound, onContinue }) => {
     event.preventDefault();
     onContinue();
   };
-  console.log(roundScoreboardData);
-
 
   return (
     <div className="round-summary">

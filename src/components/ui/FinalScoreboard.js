@@ -10,7 +10,7 @@ import "helpers/alert";
 
 
 
-const FinalScoreboard = ({ onClose }) => {
+const FinalScoreboard = () => {
   const [scoreboardData, setScoreboardData] = useState(null);
   const [rankings, setRankings] = useState([]);
   const history = useHistory();
@@ -20,25 +20,29 @@ const FinalScoreboard = ({ onClose }) => {
       try {
         const lobbyCode = localStorage.getItem("lobbyCode");
         const response = await api.get(`/games/${lobbyCode}/scoreboard`);
-        setScoreboardData(response.data.scoreboard);
+        const scoreboardData = response.data.scoreboard;
 
-        const summedScores = response.data.scoreboard.reduce(
-            (acc, playerData) => {
-              const totalPoints = playerData.reduce(
-                (sum, score) => sum + score.curPoints,
-                0
-              );
-              return [...acc, { player: playerData[0].curPlayer, points: totalPoints }];
-            },
-            []
+        const summedScores = scoreboardData.reduce((acc, playerData) => {
+          const totalPoints = playerData.reduce((sum, score) => sum + score.curPoints, 0);
+          return [...acc, { player: playerData[0].curPlayer, points: totalPoints }];
+        }, []);
+        const sortedRankings = summedScores
+          .slice()
+          .sort((a, b) => b.points - a.points)
+          .map((score, index) => ({ ...score, rank: index + 1 }));
+        const rankingsWithOriginalIndex = sortedRankings.map((ranking) => {
+          const originalIndex = scoreboardData.findIndex(
+            (playerData) => playerData[0].curPlayer === ranking.player
           );
-  
-          const sortedRankings = summedScores
-            .slice()
-            .sort((a, b) => b.points - a.points)
-            .map((score, index) => ({ ...score, rank: index + 1 }));
-  
-          setRankings(sortedRankings);
+          return { ...ranking, originalIndex };
+        });
+
+        const sortedRankingsByOriginalIndex = rankingsWithOriginalIndex.sort(
+          (a, b) => a.originalIndex - b.originalIndex
+        );
+
+        setScoreboardData(scoreboardData);
+        setRankings(sortedRankingsByOriginalIndex);
       } catch (error) {
         alert(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
@@ -60,16 +64,16 @@ const FinalScoreboard = ({ onClose }) => {
 
   const getMedal = (rank) => {
     if (rank === 1) {
-        return <img className="medal" src={GoldMedal} alt="Gold Medal"/>;
-      } else if (rank === 2) {
-        return <img className="medal" src={SilverMedal} alt="Silver Medal"/>;
-      } else if (rank === 3) {
-        return <img className="medal" src={BronzeMedal} alt="Bronze Medal"/>;
-      } else {return "";}
+      return <img className="medal" src={GoldMedal} alt="Gold Medal" />;
+    } else if (rank === 2) {
+      return <img className="medal" src={SilverMedal} alt="Silver Medal" />;
+    } else if (rank === 3) {
+      return <img className="medal" src={BronzeMedal} alt="Bronze Medal" />;
+    } else { return ""; }
 
   }
 
-  function leaveGame() { 
+  function leaveGame() {
     localStorage.removeItem("lobbyCode")
     localStorage.removeItem("userId")
     localStorage.removeItem("inGame")
