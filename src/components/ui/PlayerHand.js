@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Card from "components/ui/Card";
 import "styles/ui/PlayerHand.scss";
-import { ButtonPurpleMain } from "./ButtonMain";
-import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 //import { bool } from 'prop-types';
 import "../../helpers/alert";

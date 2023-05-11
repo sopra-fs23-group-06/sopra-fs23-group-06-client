@@ -5,8 +5,11 @@ import 'styles/ui/OtherPlayers.scss';
 const OtherPlayers = ({ players }) => {
   const renderPlayer = (player, position) => (
     <div className={`other-player ${position}`}>
-      <div className="other-player-name">{player.name}</div>
-      <div className="other-player-bid">{player.bid}</div>
+      {player.hasTurn && (<div className="other-player-name hasTurn">{player.name}</div>)}
+      {!player.hasTurn && (<div className="other-player-name">{player.name}</div>)}
+      {player.hasTurn && (<div className="other-player-bid hasTurn">{player.bid}</div>)}
+      {!player.hasTurn && (<div className="other-player-bid">{player.bid}</div>)}
+
       <div className="other-player-hand">{otherPlayerHand(player)}</div>
     </div>
   );

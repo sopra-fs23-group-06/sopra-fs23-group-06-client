@@ -75,7 +75,7 @@ const GameView = props => {
               const players = [];
               for (const player of newOrder) {
                 if (allBidsSet){
-                    players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand });
+                    players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand, hasTurn: player.hasTurn });
                     if(showedAnimationBid === false){
                       showAnimation("YO-HO-HO!");
                     }

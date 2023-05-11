@@ -45,7 +45,9 @@
     font-weight: bold;
     font-size: 20px;
     text-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
-    ;
+    &.hasTurn{
+        color: red;
+    }
 }
 
 .other-player-hand {
@@ -63,4 +65,7 @@
 .other-player-bid {
     font-weight: bold;
     font-size: 15px;
+    &.hasTurn{
+        color: red;
+    }
 }
