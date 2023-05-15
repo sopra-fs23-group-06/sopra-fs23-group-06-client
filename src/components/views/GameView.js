@@ -155,7 +155,7 @@ const GameView = props => {
       setShowRoundSummary(true);
       setTimeout(() => {
         setShowRoundSummary(false);
-      }, 4000); // Display for 4 seconds (4000 milliseconds)
+      }, 6000); // Display for 6 seconds (6000 milliseconds)
     }
     if (roundNumber === 11) {
       setShowFinalScoreboard(true);

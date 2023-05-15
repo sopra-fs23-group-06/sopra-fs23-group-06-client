@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ButtonPurpleMain } from './ButtonMain';
 import 'styles/ui/Settings.scss';
 
 
 const Settings = ({ onBackgroundChange, onClick }) => {
-  const [selectedBackground, setSelectedBackground] = useState('skully_bg2');
 
   const backgrounds = [
     'skully_bg1',
@@ -20,7 +19,6 @@ const Settings = ({ onBackgroundChange, onClick }) => {
   };
 
   const handleBackgroundClick = (background) => {
-    setSelectedBackground(background);
     onBackgroundChange(background);
   };
 
