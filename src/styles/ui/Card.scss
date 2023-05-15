@@ -1,21 +1,18 @@
 @import 'styles/theme';
 
 .card {
-    &:disabled {
-        cursor: default;
-        opacity: 0.4;
-      }
     padding: 1px;
     height: auto;
-    border: none;
     border-radius: $borderRadius + 1;
-    cursor: pointer;
     transition: all 0.3s ease;
     margin-inline: 5px;
 
-    &.unplayable {
-      filter: grayscale(60%);
-      opacity: 0.9;
-      pointer-events: none;
+  &.unplayable {
+    filter: grayscale(60%);
+    opacity: 0.75;
+    &:hover{
+      transform: rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)));
+      cursor: not-allowed;
     }
+  }
 }

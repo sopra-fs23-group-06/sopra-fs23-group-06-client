@@ -17,10 +17,7 @@ const PlayerHand = (props) => {
 
   const handleCardClick = (card, index) => {
     if (card.playable) {
-      if (selectedCard === card) {
-        setSelectedCard(null);
-      }
-      else if (scarryMarry){}
+      if (scarryMarry){}
       else {
         setSelectedCard(card);
       }
