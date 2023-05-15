@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import 'styles/ui/RoundSummary.scss';
 import 'styles/ui/Arrow.scss';
 import { api, handleError } from "../../helpers/api";
-import { ButtonPurpleMain } from './ButtonMain';
 import "../../helpers/alert";
 
 
-const RoundSummary = ({ curRound, onContinue }) => {
+const RoundSummary = ({ curRound }) => {
   const [roundScoreboardData, setScoreboardData] = useState(null);
 
   useEffect(() => {
@@ -22,10 +21,6 @@ const RoundSummary = ({ curRound, onContinue }) => {
     fetchScoreboardData();
   }, []);
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    onContinue();
-  };
 
   return (
     <div className="round-summary">
@@ -64,7 +59,6 @@ const RoundSummary = ({ curRound, onContinue }) => {
                 </tr>
               </tbody>
             </table>
-            <ButtonPurpleMain onClick={handleClick}>Continue<div class="arrow right"></div></ButtonPurpleMain>
           </div>
         )}
       </div>

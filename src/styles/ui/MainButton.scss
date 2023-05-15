@@ -204,23 +204,12 @@
 }
 
 .button-scoreboard {
-  &:hover {
-    transform: translateY(1px);
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.4;
-
-    &:hover {
-      transform: none;
-    }
-  }
-  top: 1%;
+  top: 2%;
   right: 1%;
   position: absolute;
   padding: 10px;
-  height: auto;
+  width: 58px;
+  height: 58px;
   border: none;
   align-items: center;
   border-radius: $borderRadius;
@@ -231,22 +220,70 @@
 }
 
 .button-scoreboard .icon {
-  width: 32px;
-  height: 32px;
+  &:hover {
+    animation: pulse 1s infinite;
+    animation-timing-function: linear;   
+  }
+
+  width: 35px;
+  height: 35px;
   margin-top: 2px;
   margin-bottom: -5px;
 }
 
-.button-rules{
-  &:hover {
-    transform: translateY(-2px);
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
   }
-  font-size: 24px;
-  border: 1px;
-  border-radius: 0.2em;;
+
+
+.button-rules{
+  font-size: 28px;
+  font-weight: bold;
+  border: 10px;
+  padding: 5px;
+  border-radius: 0.2em;
   cursor: pointer;
   color: grey;
-  background: none;
+  transition: all 0.3s ease;
+
+  &.bottom{
+    &:hover {
+      font-size: 22px;
+    }
+    font-size: 24px;
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+  }
+
+  &.corner{
+    &:hover {
+      font-size: 18px;
+    }
+    top: 2%;
+    right: 5%;
+    position: absolute;
+    margin-right: 10px;
+    height: 58px;
+    width: 40px;
+    background-color: white;
+
+  }
+}
+
+.button-settings{
+  font-size: 28px;
+  font-weight: bold;
+  border: 10px;
+  padding: 5px;
+  border-radius: 0.2em;
+  cursor: pointer;
+  color: grey;
+  //background: none;
   transition: all 0.3s ease;
 
   &.bottom{
@@ -258,8 +295,52 @@
 
   &.corner{
     top: 2%;
-    right: 5%;
+    left: 1%;
     position: absolute;
     margin-right: 10px;
+    height: 50px;
+    width: 50px;
+    background-color: white;
   }
+}
+
+.button-settings .icon {
+  &:hover {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+     transform: rotate(360deg);
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+     transition-duration: 1s;
+  }
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  margin-bottom: -5px;
+}
+
+.button-copy {
+  &:hover {
+    transform: translateY(-1px);
+  }
+  padding: 5px;
+  height: auto;
+  border: none;
+  align-items: center;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.button-copy .icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  margin-bottom: -5px;
+  margin-right: 10px;
 }

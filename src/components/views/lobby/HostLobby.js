@@ -7,10 +7,11 @@ import {
     ButtonKick,
     ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
+    ButtonCopy
 } from "../../ui/ButtonMain";
-import {api, handleError} from "../../../helpers/api";
+import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
-import {JitsiMeeting} from "@jitsi/react-sdk";
+import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 
@@ -100,11 +101,11 @@ const HostLobby = () => {
 
 
     async function startGame() {
-        try{
+        try {
             const user = new User();
             user.id = localStorage.getItem("userId");
             await api.post(`/games/${getLobby()}`, user);
-        } catch (error){
+        } catch (error) {
             alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
         //JUST FOR TEST PURPOSE
@@ -118,7 +119,7 @@ const HostLobby = () => {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
                 const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                if (rounds.data > 0){
+                if (rounds.data > 0) {
                     localStorage.setItem("inGame", "yes")
                     history.push(`/game/${getLobby()}`)
                 }
@@ -139,7 +140,7 @@ const HostLobby = () => {
         }, 500);
 
         // Clean up the interval when the component is unmounted
-        return () => {clearInterval(intervalId);};
+        return () => { clearInterval(intervalId); };
 
     }, [history]);
 
@@ -160,7 +161,7 @@ const HostLobby = () => {
                 <div className="lobby player-container-odd">
                     <div className="lobby username">{user.username}
                         <ButtonKick
-                            onClick= {() => removePlayer(user)}
+                            onClick={() => removePlayer(user)}
                         >Remove</ButtonKick>
                     </div>
                 </div>)
@@ -169,9 +170,9 @@ const HostLobby = () => {
             return (
                 <div className="lobby player-container-even">
                     <div className="lobby username">{user.username}
-                    <ButtonKick
-                        onClick= {() => removePlayer(user)}
-                    >Remove</ButtonKick>
+                        <ButtonKick
+                            onClick={() => removePlayer(user)}
+                        >Remove</ButtonKick>
                     </div>
                 </div>)
         }
@@ -210,11 +211,15 @@ const HostLobby = () => {
         setRulesOpen(false)
     }
 
+    function copyId() {
+        navigator.clipboard.writeText(getLobby());
+    }
+
     return (
 
         <BaseContainer>
             <JitsiMeeting
-                configOverwrite = {{
+                configOverwrite={{
                     startWithAudioMuted: false,
                     hiddenPremeetingButtons: ['microphone'],
                     prejoinPageEnabled: false,
@@ -222,24 +227,27 @@ const HostLobby = () => {
                     startWithVideoMuted: true,
                     toolbarButtons: ['microphone']
                 }}
-                interfaceConfigOverwrite = {{
+                interfaceConfigOverwrite={{
                     SHOW_JITSI_WATERMARK: false,
                     SHOW_WATERMARK_FOR_GUESTS: false,
                     SHOW_BRAND_WATERMARK: false,
                     SHOW_CHROME_EXTENSION_BANNER: false,
                     TOOLBAR_ALWAYS_VISIBLE: true
                 }}
-                userInfo = {{
+                userInfo={{
                     displayName: localStorage.getItem("username")
                 }}
-                roomName = { "SkullKingLobby" + getLobby() }
-                getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
+                roomName={"SkullKingLobby" + getLobby()}
+                getIFrameRef={node => { node.style.height = '50px'; node.style.width = '50px'; }}
             />
             <div className="lobby container">
                 <div className="lobby form">
                     <div className="lobby code">
                         Lobby: {getLobby()}
                     </div>
+                    <ButtonCopy width="100%" onClick={() => copyId()}
+                    >Copy Lobby Code
+                    </ButtonCopy>
                     {content}
                     <div className="lobby button-container2">
                         <ButtonWhiteList
@@ -259,8 +267,8 @@ const HostLobby = () => {
                 </div>
             </div>
             <ButtonRules
-                className= "bottom"
-                onClick={ ()=>{openRules()}}
+                className="bottom"
+                onClick={() => { openRules() }}
             >Game Rules
             </ButtonRules>
             {rulesOpen && (

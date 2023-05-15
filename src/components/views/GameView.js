@@ -8,7 +8,7 @@ import { api, handleError } from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
-import { ButtonRules } from "../ui/ButtonMain";
+import { ButtonRules, ButtonSettings } from "../ui/ButtonMain";
 import RuleBook from "../ui/RuleBook";
 import { ButtonScoreboard } from 'components/ui/ButtonMain';
 import Scoreboard from "components/ui/Scoreboard";
@@ -16,116 +16,125 @@ import RoundSummary from 'components/ui/RoundSummary';
 import FinalScoreboard from 'components/ui/FinalScoreboard';
 import "helpers/alert";
 import "components/views/GameView"
+import Settings from 'components/ui/Settings';
 
 
 
 
 const GameView = props => {
+  const [backgroundImage, setBackgroundImage] = useState('skully_bg1');
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1)
   const [playerHand, setPlayerHand] = useState([]);
-  const [rulesOpen, setRulesOpen] = useState(false)
+  const [rulesOpen, setRulesOpen] = useState(false);
+  const [SettingsOpen, setSettingsOpen] = useState(false);
   const [bid, setBid] = useState(null);
   const [tricks, setTricks] = useState("");
   const [showScoreboard, setShowScoreboard] = useState(false);
   const [showRoundSummary, setShowRoundSummary] = useState(false);
-  const [showFinalScoreboard, setShowFinalScoreboard]= useState(false);
+  const [showFinalScoreboard, setShowFinalScoreboard] = useState(false);
   const showedAnimationBid = useRef(false);
   const showedAnimationTrickWinner = useRef(false);
 
+  const handleBackgroundChange = (background) => {
+    setBackgroundImage(background);
+  };
+
+  useEffect(() => {
+    //DOESN'T WORK CORRECTLY YET!
+    document.documentElement.style.setProperty('--selected-background', `url("styles/images/backgrounds/${backgroundImage}.png")`);
+  }, [backgroundImage]);
 
 
-
-
-    useEffect(() => {
-      const lobbyCode = localStorage.getItem("lobbyCode");
-      const loadData = async () => {
-          try {
-              const userId = localStorage.getItem("userId");
-              const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
-              setPlayerHand(response.data);
-              const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
-              setPlayedCards(tableCards.data)
-              const round = await api.get(`/games/${lobbyCode}/rounds`);
-              const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
-              if (tableCards.data.length===playerSize){
-                if(showedAnimationTrickWinner.current === false){
-                  const trickWinner = await api.get(`/games/${lobbyCode}/trickWinner`);
-                  showedAnimationTrickWinner.current = true;
-                  displayTrickWinner(trickWinner.data);
-                }
-              }
-              else{
-                showedAnimationTrickWinner.current = false;
-              }
-              setRoundNumber(round.data)
-              if(round.data > 10){clearInterval(intervalId); }
-          } catch (error) {
-              clearInterval(intervalId)
-              alert (`Something went wrong loading players data: \n${handleError(error)}`);
+  useEffect(() => {
+    const lobbyCode = localStorage.getItem("lobbyCode");
+    const loadData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const response = await api.get(`/games/${lobbyCode}/cardHandler?userId=${userId}`);
+        setPlayerHand(response.data);
+        const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
+        setPlayedCards(tableCards.data)
+        const round = await api.get(`/games/${lobbyCode}/rounds`);
+        const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
+        if (tableCards.data.length === playerSize) {
+          if (showedAnimationTrickWinner.current === false) {
+            const trickWinner = await api.get(`/games/${lobbyCode}/trickWinner`);
+            showedAnimationTrickWinner.current = true;
+            displayTrickWinner(trickWinner.data);
           }
-      };
-      const fetchOrder = async () => {
-          try {
-              const res = await api.get(`/games/${lobbyCode}/order`);
-              const order = res[Object.keys(res)[0]];
-              const allBidsSet = order.every(player => player.bid !== null);
-              const newOrder = setOrder(order)
-              const players = [];
-              for (const player of newOrder) {
-                if (allBidsSet){
-                    players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`,hand: player.hand, hasTurn: player.hasTurn });
-                    if(showedAnimationBid.current === false){
-                      showAnimation("YO-HO-HO!");
-                    }
-                }
-                else{
-                    players.push({ name: player.username, bid: ``, hand: player.hand });
-                    showedAnimationBid.current = false;
-                }
-              }
-              setOtherPlayers(players);
-          } catch (error) {
-              clearInterval(intervalId)
-              alert (`Something went wrong loading players data: \n${handleError(error)}`);
+        }
+        else {
+          showedAnimationTrickWinner.current = false;
+        }
+        setRoundNumber(round.data)
+        if (round.data > 10) { clearInterval(intervalId); }
+      } catch (error) {
+        clearInterval(intervalId)
+        alert(`Something went wrong loading players data: \n${handleError(error)}`);
+      }
+    };
+    const fetchOrder = async () => {
+      try {
+        const res = await api.get(`/games/${lobbyCode}/order`);
+        const order = res[Object.keys(res)[0]];
+        const allBidsSet = order.every(player => player.bid !== null);
+        const newOrder = setOrder(order)
+        const players = [];
+        for (const player of newOrder) {
+          if (allBidsSet) {
+            players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`, hand: player.hand, hasTurn: player.hasTurn });
+            if (showedAnimationBid.current === false) {
+              showAnimation("YO-HO-HO!");
+            }
           }
+          else {
+            players.push({ name: player.username, bid: ``, hand: player.hand });
+            showedAnimationBid.current = false;
+          }
+        }
+        setOtherPlayers(players);
+      } catch (error) {
+        clearInterval(intervalId)
+        alert(`Something went wrong loading players data: \n${handleError(error)}`);
       }
-      function showAnimation(content) {
-        const scream = document.createElement("div");
-        scream.classList.add("scream");
-    
-        const screamContent = document.createElement("div");
-        screamContent.classList.add("scream-content");
-        screamContent.innerText = content;
-    
-        scream.appendChild(screamContent);
-        document.body.appendChild(scream);
-        showedAnimationBid.current = true;
-      }
+    }
+    function showAnimation(content) {
+      const scream = document.createElement("div");
+      scream.classList.add("scream");
 
-      function displayTrickWinner(trickWinner) {
-        const trophyAnimation = document.createElement("div");
-        trophyAnimation.classList.add("trophy-animation");
-      
-        const trophyImg = document.createElement("img");
-        trophyImg.src = require('../../styles/images/pokal.png');
-        trophyImg.classList.add("trophy-img");
-        trophyAnimation.appendChild(trophyImg);
-      
-        const username = document.createElement("div");
-        username.textContent = trickWinner.username;
-        username.classList.add("trophy-username");
-        trophyAnimation.appendChild(username);
-      
-        document.body.appendChild(trophyAnimation);
-      
-        setTimeout(() => {
-          trophyAnimation.remove();
-        }, 3000);
-      }
-      
-      
+      const screamContent = document.createElement("div");
+      screamContent.classList.add("scream-content");
+      screamContent.innerText = content;
+
+      scream.appendChild(screamContent);
+      document.body.appendChild(scream);
+      showedAnimationBid.current = true;
+    }
+
+    function displayTrickWinner(trickWinner) {
+      const trophyAnimation = document.createElement("div");
+      trophyAnimation.classList.add("trophy-animation");
+
+      const trophyImg = document.createElement("img");
+      trophyImg.src = require('../../styles/images/pokal.png');
+      trophyImg.classList.add("trophy-img");
+      trophyAnimation.appendChild(trophyImg);
+
+      const username = document.createElement("div");
+      username.textContent = trickWinner.username;
+      username.classList.add("trophy-username");
+      trophyAnimation.appendChild(username);
+
+      document.body.appendChild(trophyAnimation);
+
+      setTimeout(() => {
+        trophyAnimation.remove();
+      }, 3000);
+    }
+
+
     loadData();
     fetchOrder();
     const intervalId = setInterval(async () => {
@@ -144,6 +153,9 @@ const GameView = props => {
   useEffect(() => {
     if (roundNumber !== 1 && roundNumber !== 11) {
       setShowRoundSummary(true);
+      setTimeout(() => {
+        setShowRoundSummary(false);
+      }, 4000); // Display for 4 seconds (4000 milliseconds)
     }
     if (roundNumber === 11) {
       setShowFinalScoreboard(true);
@@ -152,7 +164,7 @@ const GameView = props => {
 
   function setOrder(order) {
     const currentPlayerId = parseInt(localStorage.getItem("userId"));
-    const currentPlayerIndex = order.findIndex(player => player.id === currentPlayerId); 
+    const currentPlayerIndex = order.findIndex(player => player.id === currentPlayerId);
     if (currentPlayerIndex === -1) {
       return order;
     }
@@ -174,9 +186,9 @@ const GameView = props => {
     return newOrder;
   }
 
-    const toggleScoreboard = () => {
-      setShowScoreboard(prevState => !prevState);
-    };
+  const toggleScoreboard = () => {
+    setShowScoreboard(prevState => !prevState);
+  };
 
   const handleConfirm = async (bid) => {
     try {
@@ -184,11 +196,9 @@ const GameView = props => {
       user.id = localStorage.getItem("userId");
       user.bid = bid;
       await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
-  }catch (error){
+    } catch (error) {
       alert(`Something went wrong while entering bid: \n${handleError(error)}`);
-  }
-    // Send bid to server
-
+    }
   };
 
 
@@ -204,17 +214,20 @@ const GameView = props => {
   }
 
   function openRules() {
-    setRulesOpen(true)
+    setRulesOpen(true);
   }
 
   function closeRules() {
-    setRulesOpen(false)
+    setRulesOpen(false);
   }
 
-  function closeRoundSummary() {
-    setShowRoundSummary(false);
+  function openSettings() {
+    setSettingsOpen(true);
   }
 
+  function closeSettings() {
+    setSettingsOpen(false);
+  }
 
   return (
     <BaseContainer>
@@ -243,27 +256,36 @@ const GameView = props => {
       <PlayedCardsStack cards={playedCards} />
       <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
-      {(bid == null && roundNumber <11) && (
+      {(bid == null && roundNumber < 11) && (
         <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
       {showRoundSummary && (
-        <RoundSummary curRound={roundNumber-1} onContinue={closeRoundSummary}/>
+        <RoundSummary curRound={roundNumber - 1} />
       )}
       {showFinalScoreboard && (
-        <FinalScoreboard/>
+        <FinalScoreboard />
       )}
-      <ButtonRules
-        className="corner"
-        onClick={() => { openRules() }}
-      >?
-      </ButtonRules>
-      {rulesOpen && (
-        <RuleBook onClick={closeRules} />
-      )}
-      <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
-      {showScoreboard && (
-        <Scoreboard onClose={toggleScoreboard} />
-      )}
+      <div className='buttons'>
+        <ButtonRules
+          className="corner"
+          onClick={() => { openRules() }}
+        >?
+        </ButtonRules>
+        {rulesOpen && (
+          <RuleBook onClick={closeRules} />
+        )}
+        <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
+        {showScoreboard && (
+          <Scoreboard onClose={toggleScoreboard} />
+        )}
+        <ButtonSettings
+          className='corner'
+          onClick={() => { openSettings() }}>
+        </ButtonSettings>
+        {SettingsOpen && (
+          <Settings onClick={closeSettings} onBackgroundChange={handleBackgroundChange} />
+        )}
+      </div>
     </BaseContainer>
   );
 };

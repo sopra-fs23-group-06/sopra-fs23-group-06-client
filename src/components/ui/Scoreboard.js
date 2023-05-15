@@ -3,13 +3,14 @@ import 'styles/ui/Scoreboard.scss';
 import { api, handleError } from "../../helpers/api";
 import { ButtonPurpleMain } from './ButtonMain';
 import "../../helpers/alert";
-
+import leaveIcon from "styles/images/leave.png";
 import 'styles/ui/Arrow.scss';
 import { useHistory } from "react-router-dom";
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
-  const history = useHistory();//temporary to leave game view
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchScoreboardData = async () => {
@@ -29,12 +30,23 @@ const Scoreboard = ({ onClose }) => {
     onClose();
   };
 
-  function leaveGame() { //temporary, to leave gameview
-    localStorage.removeItem("lobbyCode")
-    localStorage.removeItem("userId")
-    localStorage.removeItem("inGame")
-    history.push("/")
-  }
+  const handleLeaveGame = () => {
+    setShowConfirmation(true);
+  };
+
+  const confirmLeaveGame = () => {
+    setShowConfirmation(false);
+    // Perform the leave game action
+    localStorage.removeItem("lobbyCode");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("inGame");
+    history.push("/");
+  };
+
+  const cancelLeaveGame = () => {
+    setShowConfirmation(false);
+  };
+
 
   return (
     <div className="scoreboard">
@@ -79,11 +91,27 @@ const Scoreboard = ({ onClose }) => {
                 </tr>
               </tbody>
             </table>
-            <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
-            <ButtonPurpleMain onClick={() => leaveGame()} >Leave</ButtonPurpleMain>
+
           </div>
         )}
-      </div>
+        <div className='scoreboard-buttons'>
+          <div className='button-group'>
+            <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
+            <ButtonPurpleMain onClick={() => handleLeaveGame()} >Leave <img className="icon" src={leaveIcon} alt="Leave Icon" /></ButtonPurpleMain>
+          </div>
+        </div>
+        {showConfirmation && (
+          <div className='confirmation'>
+            <div className="confirmation-dialog">
+              <div className="confirmation-text">Are you sure you want to leave this game?</div>
+              <div className="confirmation-buttons">
+                <ButtonPurpleMain onClick={confirmLeaveGame}>Yes</ButtonPurpleMain>
+                <ButtonPurpleMain onClick={cancelLeaveGame}>No</ButtonPurpleMain>
+              </div>
+            </div>
+          </div>
+        )}
+      </div >
     </div>
   );
 };

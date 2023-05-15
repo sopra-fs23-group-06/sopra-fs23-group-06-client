@@ -9,7 +9,5 @@ function getImagePath(cardItem) {
         return cardItem.color.toLowerCase() + '/' + cardItem.aRank.toLowerCase();
     }
     return cardItem.color.toLowerCase() + '/' + cardItem.color.toLowerCase() + '_' + cardItem.aRank.toLowerCase();
-
-    //JUST AN IDEA, NEEDS TO BE IMPROVED
 }
 export default getImagePath;

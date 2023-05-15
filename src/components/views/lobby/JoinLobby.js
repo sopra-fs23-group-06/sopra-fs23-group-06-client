@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import {ButtonPurpleList, ButtonRules} from "../../ui/ButtonMain";
-import {api, handleError} from "../../../helpers/api";
+import { ButtonPurpleList, ButtonRules, ButtonCopy } from "../../ui/ButtonMain";
+import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
-import {JitsiMeeting} from "@jitsi/react-sdk";
+import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 
@@ -41,7 +41,7 @@ const JoinLobby = () => {
     function getLobby() {
         const url = window.location.pathname
         const split = url.split("/")
-        return split[split.length-1]
+        return split[split.length - 1]
     }
 
 
@@ -66,15 +66,15 @@ const JoinLobby = () => {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
                 const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
-                if (!userExists){
+                if (!userExists) {
                     localStorage.removeItem("lobbyCode")
                     localStorage.removeItem("userId")
                     localStorage.removeItem("inGame")
                     history.push("/")
                 }
-                else{
+                else {
                     const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                    if (rounds.data > 0){
+                    if (rounds.data > 0) {
                         localStorage.setItem("inGame", "yes")
                         history.push(`/game/${getLobby()}`)
                     }
@@ -102,7 +102,7 @@ const JoinLobby = () => {
 
 
     //need to figure out how to better move buttons to the right
-    const Player = ({user}) => {
+    const Player = ({ user }) => {
         if (user.id === 1) {
             return (
                 <div className="lobby player-container-host">
@@ -144,7 +144,7 @@ const JoinLobby = () => {
             <div className="lobby">
                 <ul className="lobby user-list">
                     {users.map(user => (
-                        <Player user={user} key={user.id}/>
+                        <Player user={user} key={user.id} />
                     ))}
                 </ul>
 
@@ -160,57 +160,64 @@ const JoinLobby = () => {
         setRulesOpen(false)
     }
 
+    function copyId() {
+        navigator.clipboard.writeText(getLobby());
+    }
+
     return (
 
-    <BaseContainer>
-        <JitsiMeeting
-            configOverwrite = {{
-                startWithAudioMuted: false,
-                hiddenPremeetingButtons: ['microphone'],
-                prejoinPageEnabled: false,
-                startAudioOnly: false,
-                startWithVideoMuted: true,
-                toolbarButtons: ['microphone']
-            }}
-            interfaceConfigOverwrite = {{
-                SHOW_JITSI_WATERMARK: false,
-                SHOW_WATERMARK_FOR_GUESTS: false,
-                SHOW_BRAND_WATERMARK: false,
-                SHOW_CHROME_EXTENSION_BANNER: false,
-                TOOLBAR_ALWAYS_VISIBLE: true
-            }}
-            userInfo = {{
-                displayName: localStorage.getItem("username")
-            }}
-            roomName = { "SkullKingLobby" + getLobby() }
-            getIFrameRef = { node => {node.style.height = '50px'; node.style.width = '50px';}}
-        />
-          <div className="lobby container">
-              <div className="lobby form">
-                  <div className="lobby code">
-                      Lobby: {getLobby()}
-                  </div>
-                  {content}
-                  <div className="lobby button-container1">
-                  <ButtonPurpleList
-                      width="50%"
-                      onClick={() => leaveLobby()}
-                      >
-                      Leave
-                  </ButtonPurpleList>
-                  </div>
-              </div>
-          </div>
-        <ButtonRules
-            className= "bottom"
-            onClick={ ()=>{openRules()}}
-        >Game Rules
-        </ButtonRules>
-        {rulesOpen && (
-            <RuleBook onClick={closeRules} />
-        )}
-    </BaseContainer>
-  );
+        <BaseContainer>
+            <JitsiMeeting
+                configOverwrite={{
+                    startWithAudioMuted: false,
+                    hiddenPremeetingButtons: ['microphone'],
+                    prejoinPageEnabled: false,
+                    startAudioOnly: false,
+                    startWithVideoMuted: true,
+                    toolbarButtons: ['microphone']
+                }}
+                interfaceConfigOverwrite={{
+                    SHOW_JITSI_WATERMARK: false,
+                    SHOW_WATERMARK_FOR_GUESTS: false,
+                    SHOW_BRAND_WATERMARK: false,
+                    SHOW_CHROME_EXTENSION_BANNER: false,
+                    TOOLBAR_ALWAYS_VISIBLE: true
+                }}
+                userInfo={{
+                    displayName: localStorage.getItem("username")
+                }}
+                roomName={"SkullKingLobby" + getLobby()}
+                getIFrameRef={node => { node.style.height = '50px'; node.style.width = '50px'; }}
+            />
+            <div className="lobby container">
+                <div className="lobby form">
+                    <div className="lobby code">
+                        Lobby: {getLobby()}
+                    </div>
+                    <ButtonCopy width="100%" onClick={() => copyId()}
+                    >Copy Lobby Code
+                    </ButtonCopy>
+                    {content}
+                    <div className="lobby button-container1">
+                        <ButtonPurpleList
+                            width="50%"
+                            onClick={() => leaveLobby()}
+                        >
+                            Leave
+                        </ButtonPurpleList>
+                    </div>
+                </div>
+            </div>
+            <ButtonRules
+                className="bottom"
+                onClick={() => { openRules() }}
+            >Game Rules
+            </ButtonRules>
+            {rulesOpen && (
+                <RuleBook onClick={closeRules} />
+            )}
+        </BaseContainer>
+    );
 };
 
 
