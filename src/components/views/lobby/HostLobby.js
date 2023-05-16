@@ -7,13 +7,16 @@ import {
     ButtonKick,
     ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
-    ButtonCopy
+    ButtonCopy,ButtonSettings
 } from "../../ui/ButtonMain";
 import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
+import GameSettings from 'components/ui/GameSettings';
+
+
 
 
 const FormField = props => {
@@ -42,6 +45,9 @@ const HostLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
+    const [SettingsOpen, setSettingsOpen] = useState(false);
+    const [initialRoundsToPlay, setInitialRoundsToPlay] = useState(10);
+    const [initialPlayerSize, setInititalPlayerSize] = useState(6);
 
     let isButtonDisabled = true;
 
@@ -211,8 +217,36 @@ const HostLobby = () => {
         setRulesOpen(false)
     }
 
+    function openSettings() {
+        setSettingsOpen(true);
+      }
+    
+      function closeSettings() {
+        setSettingsOpen(false);
+      }
+
     function copyId() {
         navigator.clipboard.writeText(getLobby());
+    }
+
+    const handleSaveSettings = (roundsToPlay, playerSize) => {
+        try {
+            const player = new User();
+            player.id = localStorage.getItem("userId");
+            const lobbyCode = localStorage.getItem("lobbyCode");
+            api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
+            closeSettings();
+          } catch (error) {
+            alert(`Something went wrong playing the card: \n${handleError(error)}`);
+          }
+      };
+
+    const handleRoundChange = (roundsToPlay) => {
+        setInitialRoundsToPlay(roundsToPlay);
+    }
+
+    const handlePlayerSizeChange = (playerSize) => {
+        setInititalPlayerSize(playerSize);
     }
 
     return (
@@ -273,6 +307,20 @@ const HostLobby = () => {
             </ButtonRules>
             {rulesOpen && (
                 <RuleBook onClick={closeRules} />
+            )}
+            <ButtonSettings
+                className='corner'
+                onClick={() => { openSettings() }}>
+            </ButtonSettings>
+            {SettingsOpen && (
+                <GameSettings
+                    onSave={handleSaveSettings}
+                    onClose={closeSettings}
+                    onRoundChange={handleRoundChange}
+                    onPlayerSizeChange={handlePlayerSizeChange}
+                    initialRoundsToPlay={initialRoundsToPlay}
+                    initialPlayerSize={initialPlayerSize}
+                />
             )}
         </BaseContainer>
     );

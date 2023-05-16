@@ -3,7 +3,7 @@ import { ButtonPurpleMain } from './ButtonMain';
 import 'styles/ui/Settings.scss';
 
 
-const Settings = ({ onBackgroundChange, onClick }) => {
+const LayoutSettings = ({ onBackgroundChange, onClick }) => {
 
   const backgrounds = [
     'skully_bg1',
@@ -44,4 +44,4 @@ const Settings = ({ onBackgroundChange, onClick }) => {
   );
 };
 
-export default Settings;
+export default LayoutSettings;

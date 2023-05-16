@@ -16,7 +16,7 @@ import RoundSummary from 'components/ui/RoundSummary';
 import FinalScoreboard from 'components/ui/FinalScoreboard';
 import "helpers/alert";
 import "components/views/GameView"
-import Settings from 'components/ui/Settings';
+import LayoutSettings from 'components/ui/LayoutSettings';
 
 
 
@@ -86,7 +86,7 @@ const GameView = props => {
           if (allBidsSet) {
             players.push({ name: player.username, bid: `${player.tricks}/${player.bid}`, hand: player.hand, hasTurn: player.hasTurn });
             if (showedAnimationBid.current === false) {
-              showAnimation("YO-HO-HO!");
+              showAnimation();
             }
           }
           else {
@@ -100,18 +100,57 @@ const GameView = props => {
         alert(`Something went wrong loading players data: \n${handleError(error)}`);
       }
     }
-    function showAnimation(content) {
-      const scream = document.createElement("div");
-      scream.classList.add("scream");
 
-      const screamContent = document.createElement("div");
-      screamContent.classList.add("scream-content");
-      screamContent.innerText = content;
 
-      scream.appendChild(screamContent);
-      document.body.appendChild(scream);
+    function showAnimation() {
+      const pictures = [
+        { src: require('../../styles/images/yohoho/bomb.png') },
+        { src: require('../../styles/images/yohoho/yo.png') },
+        { src: require('../../styles/images/yohoho/ho-1.png') },
+        { src: require('../../styles/images/yohoho/ho-2.png') }
+      ];
+      const delay = 10000; 
+    
+      const container = document.createElement("div");
+      container.classList.add("animation-container");
+    
+     const soundEffect = new Audio(require('../../styles/images/yohoho/yohoho-sound.mp3')); 
+    
+      pictures.forEach((picture, index) => {
+        const img = document.createElement("img");
+        img.classList.add("animated-picture");
+        img.src = picture.src;
+        img.style.animationDelay = `${index * delay + index * 1000}ms`;
+    
+        if (index === 0) {
+          img.classList.add("bottom-middle");
+          img.classList.add("bomb-animation");
+        } else if (index === 1) {
+          img.classList.add("middle-left");
+        } else if (index === 2) {
+          img.classList.add("middle-middle");
+        } else if (index === 3) {
+          img.classList.add("middle-right");
+        }
+    
+        setTimeout(() => {
+          container.appendChild(img);
+          if (index === 0) {
+            soundEffect.play(); 
+          }
+        }, index * 800);
+      });
+    
+      document.body.appendChild(container);
+    
+      setTimeout(() => {
+        container.remove();
+      }, 3500);
+    
       showedAnimationBid.current = true;
     }
+    
+    
 
     function displayTrickWinner(trickWinner) {
       const trophyAnimation = document.createElement("div");
@@ -283,7 +322,7 @@ const GameView = props => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {SettingsOpen && (
-          <Settings onClick={closeSettings} onBackgroundChange={handleBackgroundChange} />
+          <LayoutSettings onClick={closeSettings} onBackgroundChange={handleBackgroundChange} />
         )}
       </div>
     </BaseContainer>

@@ -64,3 +64,28 @@
     border: 2px solid #626262;
     cursor: pointer;
 }
+
+
+.slider-round,
+.slider-player {
+  width: 80%;
+  height: 10px;
+  border-radius: 4px;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.settings-value {
+  color: #0275ff;
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.settings-space {
+  height: 20px;
+}
+
+.settings-button-container {
+  margin-top: 20px;
+}

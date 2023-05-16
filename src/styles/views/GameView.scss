@@ -1,32 +1,74 @@
-@import 'styles/theme';
-
 .trophy-animation {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    width: 15%;
-    height: 30%;
-    padding: 20px;
-    border-radius: 20px;
-    transform: translateX(-50%);
-    text-align: center;
-    background-color: rgba(32,67,69,0.9);
-  }
-  
-  .trophy-img {
-    width: 120px;
-    height: auto;
-    align-self: center;
-  }
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  width: 15%;
+  height: 30%;
+  padding: 20px;
+  border-radius: 20px;
+  transform: translateX(-50%);
+  text-align: center;
+  background-color: rgba(32, 67, 69, 0.9);
+}
 
-  .trophy-username {
-    margin-top: 20px;
-    font-size: 34px;
-    font-weight: bold;
-    text-align: center;
-    transform: skewX(-15deg);
-    color: white;
-    align-self: center;
+.trophy-img {
+  width: 120px;
+  height: auto;
+  align-self: center;
+}
+
+.trophy-username {
+  margin-top: 20px;
+  font-size: 34px;
+  font-weight: bold;
+  text-align: center;
+  transform: skewX(-15deg);
+  color: white;
+  align-self: center;
+}
+
+.animation-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -100;
+}
+
+.animated-picture {
+  position: absolute;
+  width: 120px;
+  height: auto;
+}
+
+.middle-left {
+  left: 30%;
+}
+
+.middle-middle {
+  left: 45%;
+}
+
+.middle-right {
+  right: 30%;
+}
+
+.bottom-middle {
+  bottom: 65%;
+  left: 45%;
+}
+@keyframes bombPulse {
+  0% {
+    transform: scale(1);
   }
-  
-  
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bomb-animation {
+  animation: bombPulse 1s infinite;
+}
+
