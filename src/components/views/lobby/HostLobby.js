@@ -229,17 +229,18 @@ const HostLobby = () => {
         navigator.clipboard.writeText(getLobby());
     }
 
-    const handleSaveSettings = (roundsToPlay, playerSize) => {
+    const handleSaveSettings = async (roundsToPlay, playerSize) => {
         try {
-            const player = new User();
-            player.id = localStorage.getItem("userId");
-            const lobbyCode = localStorage.getItem("lobbyCode");
-            api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
-            closeSettings();
-          } catch (error) {
-            alert(`Something went wrong playing the card: \n${handleError(error)}`);
-          }
+          const player = new User();
+          player.id = localStorage.getItem("userId");
+          const lobbyCode = localStorage.getItem("lobbyCode");
+          await api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
+          closeSettings();
+        } catch (error) {
+          alert(`Something went wrong while saving the settings: \n${handleError(error)}`);
+        }
       };
+      
 
     const handleRoundChange = (roundsToPlay) => {
         setInitialRoundsToPlay(roundsToPlay);
