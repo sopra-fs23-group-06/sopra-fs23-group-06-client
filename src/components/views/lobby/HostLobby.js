@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -55,11 +55,11 @@ const HostLobby = () => {
         if (users.length > 1) { isButtonDisabled = false }
     }
 
-    function getLobby() { //identifies lobby based on URL
-        const url = window.location.pathname
-        const split = url.split("/")
-        return split[split.length - 1]
-    }
+    const getLobby = useCallback(() => { //identifies lobby based on URL
+        const url = window.location.pathname;
+        const split = url.split("/");
+        return split[split.length - 1];
+    }, []);
 
 
     async function removePlayer(leavingUser) {
@@ -106,7 +106,7 @@ const HostLobby = () => {
     }
 
 
-    async function startGame() {
+    const startGame = useCallback(async () => {
         try {
             const user = new User();
             user.id = localStorage.getItem("userId");
@@ -117,7 +117,21 @@ const HostLobby = () => {
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
 
-    }
+    }, [getLobby]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter' && !isButtonDisabled) {
+                startGame();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isButtonDisabled, startGame]);
 
     useEffect(() => {
         async function fetchData() {
@@ -148,7 +162,7 @@ const HostLobby = () => {
         // Clean up the interval when the component is unmounted
         return () => { clearInterval(intervalId); };
 
-    }, [history]);
+    }, [history, getLobby]);
 
 
 

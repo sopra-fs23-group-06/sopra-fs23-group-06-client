@@ -37,8 +37,14 @@ const MakeBid = ({ roundNumber, onSubmit }) => {
     onSubmit(bid);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && isValid) {
+      handleConfirm(event);
+    }
+  };
+
   return (
-      <div className="make-bid">
+      <div className="make-bid" onKeyDown={handleKeyDown}>
         <div className="make-bid-header">
           <h2>Round {roundNumber}</h2>
         </div>
