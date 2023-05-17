@@ -7,7 +7,7 @@ import {
     ButtonKick,
     ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
-    ButtonCopy,ButtonSettings
+    ButtonCopy,ButtonSettings, ButtonGameSettings
 } from "../../ui/ButtonMain";
 import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
@@ -16,6 +16,8 @@ import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import GameSettings from 'components/ui/GameSettings';
 import { toast } from 'react-toastify';
+import LayoutSettings from 'components/ui/LayoutSettings';
+
 
 
 
@@ -47,11 +49,13 @@ const HostLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
-    const [SettingsOpen, setSettingsOpen] = useState(false);
+    const [gameSettingsOpen, setGameSettingsOpen] = useState(false);
     const [initialRoundsToPlay, setInitialRoundsToPlay] = useState(10);
     const [initialPlayerSize, setInititalPlayerSize] = useState(6);
     const showedInfos = useRef(false);
-    const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
+    const [settingsOpen, setSettingsOpen] = useState(false);
+
+
 
     let isButtonDisabled = true;
 
@@ -245,7 +249,15 @@ const HostLobby = () => {
         setRulesOpen(false)
     }
 
-    function openSettings() {
+    function openGameSettings() {
+        setGameSettingsOpen(true);
+      }
+    
+      function closeGameSettings() {
+        setGameSettingsOpen(false);
+      }
+
+      function openSettings() {
         setSettingsOpen(true);
       }
     
@@ -253,13 +265,9 @@ const HostLobby = () => {
         setSettingsOpen(false);
       }
 
+
     function copyId() {
         navigator.clipboard.writeText(getLobby());
-        setCopyButtonText("Code copied!");
-
-        setTimeout(() => {
-        setCopyButtonText("Copy Lobby Code");
-    }, 1000);
     }
 
     const handleSaveSettings = async (roundsToPlay, playerSize) => {
@@ -269,7 +277,7 @@ const HostLobby = () => {
           const lobbyCode = localStorage.getItem("lobbyCode");
           await api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
           toast.success(`Saved new game settings!`)
-          closeSettings();
+          closeGameSettings();
         } catch (error) {
           toast.error(`Something went wrong while saving the settings: \n${handleError(error)}`);
         }
@@ -315,9 +323,13 @@ const HostLobby = () => {
                         Lobby: {getLobby()}
                     </div>
                     <ButtonCopy width="100%" onClick={() => copyId()}
-                    >{copyButtonText}
+                    >Copy Lobby Code
                     </ButtonCopy>
                     {content}
+                    <ButtonGameSettings
+                    onClick={() => { openGameSettings() }}>
+                      <span className="text">Game settings</span>
+                    </ButtonGameSettings>                  
                     <div className="lobby button-container2">
                         <ButtonWhiteList
                             width="100%"
@@ -335,6 +347,16 @@ const HostLobby = () => {
                     </div>
                 </div>
             </div>
+            {gameSettingsOpen && (
+                    <GameSettings
+                    onSave={handleSaveSettings}
+                    onClose={closeGameSettings}
+                    onRoundChange={handleRoundChange}
+                    onPlayerSizeChange={handlePlayerSizeChange}
+                    initialRoundsToPlay={initialRoundsToPlay}
+                    initialPlayerSize={initialPlayerSize}
+                    />
+                    )} 
             <ButtonRules
                 className="bottom"
                 onClick={() => { openRules() }}
@@ -343,20 +365,13 @@ const HostLobby = () => {
             {rulesOpen && (
                 <RuleBook onClick={closeRules} />
             )}
-            <ButtonSettings
-                className='corner'
-                onClick={() => { openSettings() }}>
-            </ButtonSettings>
-            {SettingsOpen && (
-                <GameSettings
-                    onSave={handleSaveSettings}
-                    onClose={closeSettings}
-                    onRoundChange={handleRoundChange}
-                    onPlayerSizeChange={handlePlayerSizeChange}
-                    initialRoundsToPlay={initialRoundsToPlay}
-                    initialPlayerSize={initialPlayerSize}
-                />
-            )}
+        <ButtonSettings
+          className='corner'
+          onClick={() => { openSettings() }}>
+        </ButtonSettings>
+        {settingsOpen && (
+          <LayoutSettings onClick={closeSettings} />
+        )}          
         </BaseContainer>
     );
 };

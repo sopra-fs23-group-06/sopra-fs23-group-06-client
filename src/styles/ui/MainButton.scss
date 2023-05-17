@@ -343,3 +343,35 @@
   margin-bottom: -5px;
   margin-right: 10px;
 }
+
+.button-gameSettings {
+  &:hover {
+    transform: translateY(-1px);
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  height: auto;
+  border: none;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+  color: white;
+  background-color: $accent;
+  transition: all 0.3s ease;
+}
+
+.button-gameSettings .icon {
+  width: 40px;
+  height: 40px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.button-gameSettings .text {
+  vertical-align: middle;
+}

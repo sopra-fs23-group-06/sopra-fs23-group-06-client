@@ -2,6 +2,7 @@ import "styles/ui/MainButton.scss";
 import settingsIcon from "styles/images/settings.png";
 import trophyIcon from "styles/images/trophy.png";
 import copyIcon from "styles/images/copy.png";
+import gameSettingsIcon from "styles/images/gameSettings.png";
 
 
 export const ButtonPurpleMain = props => (
@@ -96,6 +97,18 @@ export const ButtonCopy = props => (
         {props.children}
     </button>
 );
+
+export const ButtonGameSettings = props => (
+    <button
+        {...props}
+        style={{ width: props.width, ...props.style }}
+        className={`button-gameSettings ${props.className}`}>
+        <img className="icon" src={gameSettingsIcon} alt="GameSettings Icon" />
+
+        {props.children}
+    </button>
+);
+
 
 export const ButtonSettings = props => (
     <button

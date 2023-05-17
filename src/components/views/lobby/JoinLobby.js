@@ -3,13 +3,15 @@ import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import { ButtonPurpleList, ButtonRules, ButtonCopy } from "../../ui/ButtonMain";
+import { ButtonPurpleList, ButtonRules, ButtonCopy,ButtonSettings } from "../../ui/ButtonMain";
 import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import { toast } from 'react-toastify';
+import LayoutSettings from 'components/ui/LayoutSettings';
+
 
 
 
@@ -41,6 +43,8 @@ const JoinLobby = () => {
     const [rulesOpen, setRulesOpen] = useState(false)
     const showedInfos = useRef(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
+    const [settingsOpen, setSettingsOpen] = useState(false);
+
 
     function getLobby() {
         const url = window.location.pathname
@@ -171,6 +175,14 @@ const JoinLobby = () => {
         setRulesOpen(false)
     }
 
+    function openSettings() {
+        setSettingsOpen(true);
+      }
+    
+      function closeSettings() {
+        setSettingsOpen(false);
+      }
+
     function copyId() {
         navigator.clipboard.writeText(getLobby());
         setCopyButtonText("Code copied!");
@@ -224,6 +236,13 @@ const JoinLobby = () => {
                     </div>
                 </div>
             </div>
+            <ButtonSettings
+          className='corner'
+          onClick={() => { openSettings() }}>
+        </ButtonSettings>
+        {settingsOpen && (
+          <LayoutSettings onClick={closeSettings} />
+        )}
             <ButtonRules
                 className="bottom"
                 onClick={() => { openRules() }}
