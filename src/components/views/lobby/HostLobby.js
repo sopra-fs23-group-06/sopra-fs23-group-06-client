@@ -263,6 +263,7 @@ const HostLobby = () => {
           player.id = localStorage.getItem("userId");
           const lobbyCode = localStorage.getItem("lobbyCode");
           await api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
+          toast.success(`Saved new game settings!`)
           closeSettings();
         } catch (error) {
           toast.error(`Something went wrong while saving the settings: \n${handleError(error)}`);
