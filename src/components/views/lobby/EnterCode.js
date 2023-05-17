@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderLobby from "components/views/lobby/HeaderLobby";
+import HeaderLobby from "components/views/lobby/Helpers/HeaderLobby";
 import PropTypes from "prop-types";
 import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonMain";
 import {api, handleError} from "../../../helpers/api";

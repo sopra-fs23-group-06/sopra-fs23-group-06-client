@@ -85,7 +85,7 @@ const JoinLobby = () => {
                     localStorage.removeItem("lobbyCode")
                     localStorage.removeItem("userId")
                     localStorage.removeItem("inGame")
-                    history.push("/")
+                    history.push("/kicked")
                 }
                 else {
                     const rounds = await api.get(`/games/${getLobby()}/rounds`);

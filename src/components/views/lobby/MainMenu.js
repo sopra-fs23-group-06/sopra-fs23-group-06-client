@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {ButtonPurpleMain, ButtonRules, ButtonSettings, ButtonWhiteMain} from 'components/ui/ButtonMain';
 import 'styles/views/Home.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import HeaderMain from "components/views/lobby/HeaderMain";
+import HeaderMain from "components/views/lobby/Helpers/HeaderMain";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import LayoutSettings from 'components/ui/LayoutSettings';

@@ -18,6 +18,7 @@ import "helpers/alert";
 import "components/views/GameView"
 import LayoutSettings from 'components/ui/LayoutSettings';
 import { toast } from 'react-toastify';
+import {useHistory} from "react-router-dom";
 
 
 
@@ -38,6 +39,7 @@ const GameView = props => {
   const showedAnimationBid = useRef(false);
   const showedAnimationTrickWinner = useRef(false);
   const showedInfos = useRef(false);
+  const history = useHistory();
 
 
 
@@ -82,6 +84,7 @@ const GameView = props => {
     const fetchOrder = async () => {
       try {
         const res = await api.get(`/games/${lobbyCode}/order`);
+        if (res.data){
         const order = res[Object.keys(res)[0]];
         const allBidsSet = order.every(player => player.bid !== null);
         const newOrder = setOrder(order)
@@ -99,6 +102,13 @@ const GameView = props => {
           }
         }
         setOtherPlayers(players);
+        await loadData();}
+        else{
+          localStorage.removeItem("lobbyCode")
+          localStorage.removeItem("userId")
+          localStorage.removeItem("inGame")
+          history.push("/closed")
+        }
       } catch (error) {
         clearInterval(intervalId)
         toast.error(`Something went wrong loading players data: \n${handleError(error)}`);
@@ -184,11 +194,9 @@ const GameView = props => {
     }
 
 
-    loadData();
     fetchOrder();
     const intervalId = setInterval(async () => {
       try {
-        await loadData();
         await fetchOrder();
       } catch (error) {
         clearInterval(intervalId); // Stop the interval loop
@@ -197,7 +205,7 @@ const GameView = props => {
 
     // Clean up the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     if (roundNumber !== 1 && roundNumber !== 11) {
