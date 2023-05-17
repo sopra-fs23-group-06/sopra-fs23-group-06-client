@@ -1,5 +1,4 @@
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-//import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 //import GameRouter from "components/routing/routers/GameRouter";
 import {CodeGuard, MenuGuard, HostGuard, JoinGuard} from "components/routing/routeProtectors/LoginGuard";
 import MainMenu from "../../views/lobby/MainMenu";
@@ -9,12 +8,24 @@ import HostLobby from "../../views/lobby/HostLobby";
 import JoinLobby from "../../views/lobby/JoinLobby";
 import GameView from "components/views/GameView";
 import {GameGuard} from "../routeProtectors/GameGuard";
+import Kicked from "../../views/lobby/Helpers/Kicked";
+import Closed from "../../views/lobby/Helpers/Closed";
 
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path="/kicked">
+          <MenuGuard>
+            <Kicked/>
+          </MenuGuard>
+        </Route>
+        <Route exact path="/closed">
+          <MenuGuard>
+            <Closed/>
+          </MenuGuard>
+        </Route>
         <Route exact path="/game/:id">
           <GameGuard>
             <GameView/>

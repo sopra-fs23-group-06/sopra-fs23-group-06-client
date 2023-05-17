@@ -1,0 +1,26 @@
+@import 'styles/theme';
+
+.kicked-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $background;
+  border-radius: 5px;
+  border: 4px solid #1b1b1b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  width: 750px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.kicked-text {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700 ;
+  margin-bottom: 25px;
+}
+

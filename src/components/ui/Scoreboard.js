@@ -8,7 +8,6 @@ import 'styles/ui/Arrow.scss';
 import { useHistory } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -36,14 +35,25 @@ const Scoreboard = ({ onClose }) => {
     setShowConfirmation(true);
   };
 
-  const confirmLeaveGame = () => {
+  async function confirmLeaveGame(){
     setShowConfirmation(false);
-    // Perform the leave game action
-    localStorage.removeItem("lobbyCode");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("inGame");
-    history.push("/");
-  };
+    try {
+      const lobbyCode = localStorage.getItem("lobbyCode");
+      await api.put(`/lobbies/${lobbyCode}/endHandler`);
+      localStorage.removeItem("lobbyCode")
+      localStorage.removeItem("userId")
+      localStorage.removeItem("inGame")
+      history.push("/")
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await api.put(`/lobbies/${lobbyCode}/closeHandler`, null, {
+        headers: {
+          "userId": 1
+        }
+      })
+    } catch (error) {
+      toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+    }
+  }
 
   const cancelLeaveGame = () => {
     setShowConfirmation(false);
@@ -105,7 +115,7 @@ const Scoreboard = ({ onClose }) => {
         {showConfirmation && (
           <div className='confirmation'>
             <div className="confirmation-dialog">
-              <div className="confirmation-text">Are you sure you want to leave this game?</div>
+              <div className="confirmation-text">Are you sure you want to leave this game? This will end the game for all other Players.</div>
               <div className="confirmation-buttons">
                 <ButtonPurpleMain onClick={confirmLeaveGame}>Yes</ButtonPurpleMain>
                 <ButtonPurpleMain onClick={cancelLeaveGame}>No</ButtonPurpleMain>
