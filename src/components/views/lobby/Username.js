@@ -14,7 +14,11 @@ import { toast } from 'react-toastify';
 
 
 const FormField = props => {
-
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && props.value.length > 0) {
+            props.onEnterPress();
+        }
+    };
 
     return (
         <div className="lobby field">
@@ -25,6 +29,7 @@ const FormField = props => {
                 className="lobby input"
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
         </div>
     );
@@ -33,7 +38,8 @@ const FormField = props => {
 FormField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onEnterPress: PropTypes.func,
 };
 const Username = () => {
     const [username, setUsername] = useState(null);
@@ -113,6 +119,7 @@ const Username = () => {
                   label="Enter Username"
                   value={username}
                   onChange={un => setUsername(un)}
+                  onEnterPress={goToLobby}
               />
                   <div className="lobby button-container1">
                   <ButtonPurpleLobby
