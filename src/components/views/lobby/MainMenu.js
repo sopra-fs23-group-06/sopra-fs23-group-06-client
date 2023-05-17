@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {ButtonPurpleMain, ButtonRules, ButtonWhiteMain} from 'components/ui/ButtonMain';
+import {ButtonPurpleMain, ButtonRules, ButtonSettings, ButtonWhiteMain} from 'components/ui/ButtonMain';
 import 'styles/views/Home.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderMain from "components/views/lobby/HeaderMain";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
+import LayoutSettings from 'components/ui/LayoutSettings';
 
 
 
@@ -13,6 +14,7 @@ import "../../../helpers/alert";
 const MainMenu = props => {
     const history = useHistory();
     const [rulesOpen, setRulesOpen] = useState(false)
+    const [SettingsOpen, setSettingsOpen] = useState(false);
 
 
     function doJoin() { //start join process
@@ -30,6 +32,14 @@ const MainMenu = props => {
     function closeRules() {
         setRulesOpen(false)
     }
+
+    function openSettings() {
+        setSettingsOpen(true);
+      }
+    
+      function closeSettings() {
+        setSettingsOpen(false);
+      }
 
     return (
 
@@ -56,6 +66,13 @@ const MainMenu = props => {
         </ButtonRules>
         {rulesOpen && (
             <RuleBook onClick={closeRules} />
+        )}
+        <ButtonSettings
+          className='corner'
+          onClick={() => { openSettings() }}>
+        </ButtonSettings>
+        {SettingsOpen && (
+          <LayoutSettings onClick={closeSettings} />
         )}
     </BaseContainer>
   );

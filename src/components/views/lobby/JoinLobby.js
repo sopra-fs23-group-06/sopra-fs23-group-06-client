@@ -37,6 +37,7 @@ const JoinLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
+    const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
 
     function getLobby() {
         const url = window.location.pathname
@@ -162,6 +163,11 @@ const JoinLobby = () => {
 
     function copyId() {
         navigator.clipboard.writeText(getLobby());
+        setCopyButtonText("Code copied!");
+
+        setTimeout(() => {
+        setCopyButtonText("Copy Lobby Code");
+    }, 1000);
     }
 
     return (
@@ -195,7 +201,7 @@ const JoinLobby = () => {
                         Lobby: {getLobby()}
                     </div>
                     <ButtonCopy width="100%" onClick={() => copyId()}
-                    >Copy Lobby Code
+                    >{copyButtonText}
                     </ButtonCopy>
                     {content}
                     <div className="lobby button-container1">

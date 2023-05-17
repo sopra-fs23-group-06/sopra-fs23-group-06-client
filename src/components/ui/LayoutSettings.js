@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ButtonPurpleMain } from './ButtonMain';
 import 'styles/ui/Settings.scss';
+import { BackgroundContext } from '../../helpers/BackgroundContext';
 
-
-const LayoutSettings = ({ onBackgroundChange, onClick }) => {
+const LayoutSettings = ({ onClick }) => {
+  const { selectedBackground, handleBackgroundChange } = useContext(BackgroundContext);
 
   const backgrounds = [
     'skully_bg1',
@@ -13,13 +14,24 @@ const LayoutSettings = ({ onBackgroundChange, onClick }) => {
     'skully_bg5',
     'skully_bg6',
   ];
+
+  useEffect(() => {
+    updateBodyBackground(selectedBackground);
+  }, [selectedBackground]);
+
   const handleClick = (event) => {
     event.preventDefault();
     onClick();
   };
 
   const handleBackgroundClick = (background) => {
-    onBackgroundChange(background);
+    handleBackgroundChange(background);
+  };
+
+  const updateBodyBackground = (background) => {
+    document.body.style.background = `url("../styles/images/backgrounds/${background}.png"), linear-gradient(135deg, #3b9496 10%, #1b373a 100%)`;
+    document.body.style.backgroundSize = `cover`;
+
   };
 
   return (
@@ -33,7 +45,7 @@ const LayoutSettings = ({ onBackgroundChange, onClick }) => {
               key={background}
               src={require(`styles/images/backgrounds/${background}.png`)}
               alt={`Background ${background}`}
-              className='background-image'
+              className={`background-image ${selectedBackground === background ? 'selected' : ''}`}
               onClick={() => handleBackgroundClick(background)}
             />
           ))}

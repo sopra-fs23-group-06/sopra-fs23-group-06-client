@@ -22,7 +22,6 @@ import LayoutSettings from 'components/ui/LayoutSettings';
 
 
 const GameView = props => {
-  const [backgroundImage, setBackgroundImage] = useState('skully_bg1');
   const [otherPlayers, setOtherPlayers] = useState([]);
   const [playedCards, setPlayedCards] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1)
@@ -36,15 +35,6 @@ const GameView = props => {
   const [showFinalScoreboard, setShowFinalScoreboard] = useState(false);
   const showedAnimationBid = useRef(false);
   const showedAnimationTrickWinner = useRef(false);
-
-  const handleBackgroundChange = (background) => {
-    setBackgroundImage(background);
-  };
-
-  useEffect(() => {
-    //DOESN'T WORK CORRECTLY YET!
-    document.documentElement.style.setProperty('--selected-background', `url("styles/images/backgrounds/${backgroundImage}.png")`);
-  }, [backgroundImage]);
 
 
   useEffect(() => {
@@ -322,7 +312,7 @@ const GameView = props => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {SettingsOpen && (
-          <LayoutSettings onClick={closeSettings} onBackgroundChange={handleBackgroundChange} />
+          <LayoutSettings onClick={closeSettings} />
         )}
       </div>
     </BaseContainer>

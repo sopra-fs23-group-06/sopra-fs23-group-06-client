@@ -43,7 +43,9 @@ const Username = () => {
     const [username, setUsername] = useState(null);
     const history = useHistory();
     const isHost = hostOrJoin();
-    const [rulesOpen, setRulesOpen] = useState(false)
+    const [rulesOpen, setRulesOpen] = useState(false);
+    const isUsernameTooLong = username && username.length > 10;
+
     function getLobby() {
         return localStorage.getItem("lobbyCode");
     }
@@ -121,11 +123,11 @@ const Username = () => {
               />
                   <div className="lobby button-container1">
                   <ButtonPurpleLobby
-                      disabled={!username}
-                      width="75%"
-                      onClick={() => goToLobby()}
-                      >
-                      Enter
+                    disabled={!username || isUsernameTooLong}
+                    width="75%"
+                    onClick={() => goToLobby()}
+                    >
+                    Enter
                   </ButtonPurpleLobby>
                   <ButtonWhiteLobby
                       width="75%"

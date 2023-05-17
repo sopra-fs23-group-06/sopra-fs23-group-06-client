@@ -12,10 +12,9 @@ body {
   min-height: 100vh;
   font-family: $fontDefault;
   //DOESN'T WORK CORRECTLY YET!
-  --selected-background: url("images/backgrounds/skully_bg1.png");
-  background: var(--selected-background)/*url("images/backgrounds/skully_bg4.png")*/, linear-gradient(135deg, #3b9496 10%, #1b373a 100%) ;
+  //--selected-background: url("images/backgrounds/skully_bg3.png");
+  //background-image: var(--selected-background)/*url("images/backgrounds/skully_bg4.png")*/, linear-gradient(135deg, #3b9496 10%, #1b373a 100%) ;
   background-size: cover;
-  
 }
 
 input,

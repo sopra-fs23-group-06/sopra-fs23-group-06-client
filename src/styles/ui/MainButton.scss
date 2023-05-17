@@ -280,10 +280,9 @@
   font-weight: bold;
   border: 10px;
   padding: 5px;
-  border-radius: 0.2em;
+  border-radius: $borderRadius;
   cursor: pointer;
   color: grey;
-  //background: none;
   transition: all 0.3s ease;
 
   &.bottom{

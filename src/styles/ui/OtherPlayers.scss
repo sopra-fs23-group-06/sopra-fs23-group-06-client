@@ -54,11 +54,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0.5em;
   }
   
   .card-image {
     width: 80px;
-    margin-right: -30px; /* Adjust as needed to create the overlapping effect */
+    margin-right: -60px; /* Adjust as needed to create the overlapping effect */
     border-radius: 10px;
   }
   
