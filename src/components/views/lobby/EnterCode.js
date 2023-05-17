@@ -8,6 +8,8 @@ import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonM
 import {api, handleError} from "../../../helpers/api";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
+import { toast } from 'react-toastify';
+
 
 const FormField = props => {
 
@@ -47,7 +49,7 @@ const EnterCode = () => {
             history.push('/join/username')
 
         } catch (error) {
-            alert(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+            toast.error(`Something went wrong while joining the lobby: \n${handleError(error)}`);
         }
     }
 

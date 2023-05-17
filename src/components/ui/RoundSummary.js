@@ -3,6 +3,8 @@ import 'styles/ui/RoundSummary.scss';
 import 'styles/ui/Arrow.scss';
 import { api, handleError } from "../../helpers/api";
 import "../../helpers/alert";
+import { toast } from 'react-toastify';
+
 
 
 const RoundSummary = ({ curRound }) => {
@@ -15,7 +17,7 @@ const RoundSummary = ({ curRound }) => {
         const response = await api.get(`/games/${lobbyCode}/scoreboard`);
         setScoreboardData(response.data.scoreboard);
       } catch (error) {
-        alert(`Something went wrong loading the score board: \n${handleError(error)}`);
+        toast.error(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
     };
     fetchScoreboardData();

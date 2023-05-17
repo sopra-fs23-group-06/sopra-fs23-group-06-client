@@ -7,6 +7,8 @@ import GoldMedal from "styles/images/medals/gold_medal.png";
 import SilverMedal from "styles/images/medals/silver_medal.png";
 import BronzeMedal from "styles/images/medals/bronze_medal.png";
 import "helpers/alert";
+import { toast } from 'react-toastify';
+
 
 
 
@@ -44,7 +46,7 @@ const FinalScoreboard = () => {
         setScoreboardData(scoreboardData);
         setRankings(sortedRankingsByOriginalIndex);
       } catch (error) {
-        alert(`Something went wrong loading the score board: \n${handleError(error)}`);
+        toast.error(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
     };
     fetchScoreboardData();

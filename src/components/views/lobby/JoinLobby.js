@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -9,6 +9,8 @@ import User from "../../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
+import { toast } from 'react-toastify';
+
 
 
 const FormField = props => {
@@ -37,6 +39,8 @@ const JoinLobby = () => {
     const history = useHistory();
     const [users, setUsers] = useState(null);
     const [rulesOpen, setRulesOpen] = useState(false)
+    const showedInfos = useRef(false);
+
 
     function getLobby() {
         const url = window.location.pathname
@@ -56,7 +60,7 @@ const JoinLobby = () => {
             localStorage.removeItem("inGame")
             history.push("/")
         } catch (error) {
-            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -66,6 +70,13 @@ const JoinLobby = () => {
                 const response = await api.get(`/lobbies/${getLobby()}/users`);
                 setUsers(response.data);
                 const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
+                if(!showedInfos.current){
+                    toast.warning('You are unmuted! To mute yourself press the button on the top left.')
+                    setTimeout(function() {
+                      toast.info(`You can find the rules on the bottom of your screen`);
+                    }, 6500);
+                    showedInfos.current=true;
+                  }
                 if (!userExists) {
                     localStorage.removeItem("lobbyCode")
                     localStorage.removeItem("userId")
@@ -81,7 +92,7 @@ const JoinLobby = () => {
                 }
             } catch (error) {
                 clearInterval(intervalId)
-                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 

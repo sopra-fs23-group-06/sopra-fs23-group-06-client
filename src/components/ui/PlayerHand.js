@@ -5,6 +5,8 @@ import { api, handleError } from "../../helpers/api";
 //import { bool } from 'prop-types';
 import "../../helpers/alert";
 import getImagePath from "../../helpers/getImagePath";
+import { toast } from 'react-toastify';
+
 
 
 
@@ -49,7 +51,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      toast.error(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };
@@ -62,7 +64,7 @@ const PlayerHand = (props) => {
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
     } catch (error) {
-      alert(`Something went wrong playing the card: \n${handleError(error)}`);
+      toast.error(`Something went wrong playing the card: \n${handleError(error)}`);
     }
     setSelectedCard(null);
   };
