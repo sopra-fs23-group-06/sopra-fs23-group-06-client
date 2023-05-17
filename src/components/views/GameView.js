@@ -17,6 +17,8 @@ import FinalScoreboard from 'components/ui/FinalScoreboard';
 import "helpers/alert";
 import "components/views/GameView"
 import LayoutSettings from 'components/ui/LayoutSettings';
+import { toast } from 'react-toastify';
+
 
 
 
@@ -35,6 +37,8 @@ const GameView = props => {
   const [showFinalScoreboard, setShowFinalScoreboard] = useState(false);
   const showedAnimationBid = useRef(false);
   const showedAnimationTrickWinner = useRef(false);
+  const showedInfos = useRef(false);
+
 
 
   useEffect(() => {
@@ -47,6 +51,16 @@ const GameView = props => {
         const tableCards = await api.get(`/games/${lobbyCode}/playedCards`);
         setPlayedCards(tableCards.data)
         const round = await api.get(`/games/${lobbyCode}/rounds`);
+        if(round.data===1 && !showedInfos.current){
+          toast.warning('You are unmuted! To mute yourself press the button on the top left.')
+          setTimeout(function() {
+            toast.info(`You can open the score board on the top right`);
+          }, 6500);
+          setTimeout(function() {
+            toast.info(`You can change the background in the top left`);
+          }, 9000);
+          showedInfos.current=true;
+        }
         const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
         if (tableCards.data.length === playerSize) {
           if (showedAnimationTrickWinner.current === false) {
@@ -62,7 +76,7 @@ const GameView = props => {
         if (round.data > 10) { clearInterval(intervalId); }
       } catch (error) {
         clearInterval(intervalId)
-        alert(`Something went wrong loading players data: \n${handleError(error)}`);
+        toast.error(`Something went wrong loading players data: \n${handleError(error)}`);
       }
     };
     const fetchOrder = async () => {
@@ -87,7 +101,7 @@ const GameView = props => {
         setOtherPlayers(players);
       } catch (error) {
         clearInterval(intervalId)
-        alert(`Something went wrong loading players data: \n${handleError(error)}`);
+        toast.error(`Something went wrong loading players data: \n${handleError(error)}`);
       }
     }
 
@@ -126,7 +140,13 @@ const GameView = props => {
         setTimeout(() => {
           container.appendChild(img);
           if (index === 0) {
-            soundEffect.play(); 
+            var resp = soundEffect.play();
+
+            if (resp!== undefined) {
+                resp.then(_ => {
+                }).catch(error => {
+                });
+            }
           }
         }, index * 800);
       });
@@ -226,7 +246,7 @@ const GameView = props => {
       user.bid = bid;
       await api.put(`/games/${localStorage.getItem("lobbyCode")}/bidHandler`, user);
     } catch (error) {
-      alert(`Something went wrong while entering bid: \n${handleError(error)}`);
+      toast.error(`Something went wrong while entering bid: \n${handleError(error)}`);
     }
   };
 

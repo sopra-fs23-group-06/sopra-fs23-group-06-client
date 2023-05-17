@@ -6,6 +6,8 @@ import "../../helpers/alert";
 import leaveIcon from "styles/images/leave.png";
 import 'styles/ui/Arrow.scss';
 import { useHistory } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
@@ -19,7 +21,7 @@ const Scoreboard = ({ onClose }) => {
         const response = await api.get(`/games/${lobbyCode}/scoreboard`);
         setScoreboardData(response.data.scoreboard);
       } catch (error) {
-        alert(`Something went wrong loading the score board: \n${handleError(error)}`);
+        toast.error(`Something went wrong loading the score board: \n${handleError(error)}`);
       }
     };
     fetchScoreboardData();

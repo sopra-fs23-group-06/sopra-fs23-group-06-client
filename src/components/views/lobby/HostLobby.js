@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState,useRef} from 'react';
 import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -15,6 +15,8 @@ import { JitsiMeeting } from "@jitsi/react-sdk";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import GameSettings from 'components/ui/GameSettings';
+import { toast } from 'react-toastify';
+
 
 
 
@@ -48,6 +50,7 @@ const HostLobby = () => {
     const [SettingsOpen, setSettingsOpen] = useState(false);
     const [initialRoundsToPlay, setInitialRoundsToPlay] = useState(10);
     const [initialPlayerSize, setInititalPlayerSize] = useState(6);
+    const showedInfos = useRef(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
 
     let isButtonDisabled = true;
@@ -75,7 +78,7 @@ const HostLobby = () => {
                 },
             });
         } catch (error) {
-            alert(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
+            toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
     }
 
@@ -102,7 +105,7 @@ const HostLobby = () => {
             localStorage.removeItem("inGame");
             history.push("/");
         } catch (error) {
-            alert(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
+            toast.error(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
     }
 
@@ -113,7 +116,7 @@ const HostLobby = () => {
             user.id = localStorage.getItem("userId");
             await api.post(`/games/${getLobby()}`, user);
         } catch (error) {
-            alert(`Something went wrong while starting the Game: \n${handleError(error)}`);
+            toast.error(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
         //JUST FOR TEST PURPOSE
         //yet to be implemented, function to start game
@@ -144,9 +147,19 @@ const HostLobby = () => {
                     localStorage.setItem("inGame", "yes")
                     history.push(`/game/${getLobby()}`)
                 }
+                if(!showedInfos.current){
+                    toast.warning('You are unmuted! To mute yourself press the button on the top left.')
+                    setTimeout(function() {
+                      toast.info(`You can change the game settings on the top left`);
+                    }, 6500);
+                    setTimeout(function() {
+                        toast.info(`You can find the rules on the bottom of your screen`);
+                    }, 9000);
+                    showedInfos.current=true;
+                  }
             } catch (error) {
                 clearInterval(intervalId)
-                alert(`Something went wrong while fetching the users: \n${handleError(error)}`);
+                toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
             }
         }
 
@@ -255,9 +268,10 @@ const HostLobby = () => {
           player.id = localStorage.getItem("userId");
           const lobbyCode = localStorage.getItem("lobbyCode");
           await api.post(`/games/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
+          toast.success(`Saved new game settings!`)
           closeSettings();
         } catch (error) {
-          alert(`Something went wrong while saving the settings: \n${handleError(error)}`);
+          toast.error(`Something went wrong while saving the settings: \n${handleError(error)}`);
         }
       };
       
