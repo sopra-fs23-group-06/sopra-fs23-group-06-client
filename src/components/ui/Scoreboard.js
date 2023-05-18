@@ -115,7 +115,8 @@ const Scoreboard = ({ onClose }) => {
         {showConfirmation && (
           <div className='confirmation'>
             <div className="confirmation-dialog">
-              <div className="confirmation-text">Are you sure you want to leave this game? This will end the game for all other Players.</div>
+              <div className="confirmation-text">Are you sure you want to leave this game?</div>
+              <div className="confirmation-text"> This will end the game for all other Players.</div>
               <div className="confirmation-buttons">
                 <ButtonPurpleMain onClick={confirmLeaveGame}>Yes</ButtonPurpleMain>
                 <ButtonPurpleMain onClick={cancelLeaveGame}>No</ButtonPurpleMain>

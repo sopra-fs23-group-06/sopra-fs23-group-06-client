@@ -54,7 +54,7 @@ const HostLobby = () => {
     const [initialPlayerSize, setInititalPlayerSize] = useState(6);
     const showedInfos = useRef(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
-
+    const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
 
 
     let isButtonDisabled = true;
@@ -265,9 +265,13 @@ const HostLobby = () => {
         setSettingsOpen(false);
       }
 
-
-    function copyId() {
+      function copyId() {
         navigator.clipboard.writeText(getLobby());
+        setCopyButtonText("Code copied!");
+
+        setTimeout(() => {
+        setCopyButtonText("Copy Lobby Code");
+    }, 1000);
     }
 
     const handleSaveSettings = async (roundsToPlay, playerSize) => {
@@ -323,7 +327,7 @@ const HostLobby = () => {
                         Lobby: {getLobby()}
                     </div>
                     <ButtonCopy width="100%" onClick={() => copyId()}
-                    >Copy Lobby Code
+                    >{copyButtonText}
                     </ButtonCopy>
                     {content}
                     <ButtonGameSettings
@@ -375,6 +379,5 @@ const HostLobby = () => {
         </BaseContainer>
     );
 };
-
 
 export default HostLobby;

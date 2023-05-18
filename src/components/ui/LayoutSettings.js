@@ -29,10 +29,20 @@ const LayoutSettings = ({ onClick }) => {
   };
 
   const updateBodyBackground = (background) => {
-    document.body.style.background = `url("../styles/images/backgrounds/${background}.png"), linear-gradient(135deg, #3b9496 10%, #1b373a 100%)`;
-    document.body.style.backgroundSize = `cover`;
+    const bodyElement = document.body;
+    const classNames = bodyElement.className.split(' ');
 
+    // Remove existing background classes
+    classNames.forEach((className) => {
+	  if (className.startsWith('background-')) {
+	    bodyElement.classList.remove(className);
+	  }
+    });
+
+    // Add the new background class
+    bodyElement.classList.add(`background-${background}`);
   };
+
 
   return (
     <div className="settings">
