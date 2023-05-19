@@ -97,7 +97,7 @@ const GameView = props => {
             }
           }
           else {
-            players.push({ name: player.username, bid: ``, hand: player.hand });
+            players.push({ name: player.username, bid: ``, hand: player.hand, hasTurn: player.hasTurn});
             showedAnimationBid.current = false;
           }
         }
@@ -149,7 +149,7 @@ const GameView = props => {
     
         setTimeout(() => {
           container.appendChild(img);
-          if (index === 0) {
+          if (index === 1) {
             var resp = soundEffect.play();
 
             if (resp!== undefined) {
@@ -314,7 +314,7 @@ const GameView = props => {
       <PlayerHand cards={playerHand} bid={displayBid()} />
       <OtherPlayers players={otherPlayers} />
       {(bid == null && roundNumber < 11) && (
-        <MakeBid roundNumber={roundNumber} onSubmit={handleConfirm} />
+        <MakeBid players={otherPlayers} roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
       {showRoundSummary && (
         <RoundSummary curRound={roundNumber - 1} />

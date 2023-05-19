@@ -50,6 +50,20 @@
     text-decoration: solid underline rgb(255, 255, 255) 4px
 }
 
+.make-bid h3 {
+    position: absolute;
+    margin-bottom: 10px;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-self: center;
+    font-size: 30px;
+    text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+    text-transform: uppercase;
+    color: #00ff08;
+}
+
 .make-bid-content {
     background-color: rgb(21, 23, 66);
     padding: 20px;
