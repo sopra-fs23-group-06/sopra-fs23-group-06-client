@@ -62,6 +62,7 @@ const Scoreboard = ({ onClose }) => {
 
   return (
     <div className="scoreboard">
+      <div className='scoreboard-container'>
       <div className="scoreboard-content">
         <div className="scoreboard-content-header">Scoreboard</div>
         {scoreboardData && (
@@ -76,7 +77,7 @@ const Scoreboard = ({ onClose }) => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(10)].map((_, roundIndex) => (
+                {[...Array(scoreboardData[0].length)].map((_, roundIndex) => (
                   <tr key={roundIndex}>
                     <td>{roundIndex + 1}</td>
                     {scoreboardData.map((playerData, playerIndex) => {
@@ -112,7 +113,10 @@ const Scoreboard = ({ onClose }) => {
             <ButtonPurpleMain onClick={() => handleLeaveGame()} >Leave <img className="icon" src={leaveIcon} alt="Leave Icon" /></ButtonPurpleMain>
           </div>
         </div>
-        {showConfirmation && (
+
+      </div >
+    </div>
+    {showConfirmation && (
           <div className='confirmation'>
             <div className="confirmation-dialog">
               <div className="confirmation-text">Are you sure you want to leave this game?</div>
@@ -124,7 +128,6 @@ const Scoreboard = ({ onClose }) => {
             </div>
           </div>
         )}
-      </div >
     </div>
   );
 };
