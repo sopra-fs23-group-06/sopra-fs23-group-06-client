@@ -200,16 +200,23 @@ const JoinLobby = () => {
                     startWithAudioMuted: false,
                     hiddenPremeetingButtons: ['microphone'],
                     prejoinPageEnabled: false,
-                    startAudioOnly: false,
+                    startAudioOnly: true,
                     startWithVideoMuted: true,
-                    toolbarButtons: ['microphone']
+                    enableClosePage: false,
+                    toolbarButtons: ['microphone'],
+                    conferenceInfo: {
+                        alwaysVisible: [],
+                        autoHide: []
+                    }
                 }}
                 interfaceConfigOverwrite={{
                     SHOW_JITSI_WATERMARK: false,
                     SHOW_WATERMARK_FOR_GUESTS: false,
                     SHOW_BRAND_WATERMARK: false,
                     SHOW_CHROME_EXTENSION_BANNER: false,
-                    TOOLBAR_ALWAYS_VISIBLE: true
+                    TOOLBAR_ALWAYS_VISIBLE: true,
+                    SHOW_POWERED_BY: false,
+                    SHOW_PROMOTIONAL_CLOSE_PAGE: false,
                 }}
                 userInfo={{
                     displayName: localStorage.getItem("username")
