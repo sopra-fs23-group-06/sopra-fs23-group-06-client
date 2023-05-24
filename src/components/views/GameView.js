@@ -232,8 +232,9 @@ const GameView = props => {
   }
 
   useEffect(() => {
-    if (isProduction()){webSocket.current = new WebSocket(`ws://${getDomain()}/sockets`);}
-    else {webSocket.current = new WebSocket(`ws://localhost:8080/sockets`);}
+    let domain = getDomain().replace(/^https?:\/\//, '');
+    if (isProduction()){webSocket.current = new WebSocket(`wss://${domain}/sockets`);}
+    else {webSocket.current = new WebSocket(`ws://${domain}/sockets`);}
     const openWebSocket = () => {
       webSocket.current.onopen = (event) => {
       }
