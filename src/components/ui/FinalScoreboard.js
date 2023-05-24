@@ -98,7 +98,7 @@ const FinalScoreboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {[...Array(10)].map((_, roundIndex) => (
+                {[...Array(scoreboardData[0].length)].map((_, roundIndex) => (
                   <tr key={roundIndex}>
                     <td>{roundIndex + 1}</td>
                     {scoreboardData.map((playerData, playerIndex) => {

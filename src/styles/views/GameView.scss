@@ -29,7 +29,6 @@
 .animation-container {
   position: absolute;
   width: 100%;
-  //height: 100%;
   z-index: -100;
 }
 
@@ -52,7 +51,7 @@
 }
 
 .bottom-middle {
-  bottom: 65%;
+  top: 150px;
   left: 45%;
 }
 @keyframes bombPulse {
