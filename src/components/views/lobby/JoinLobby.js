@@ -124,10 +124,8 @@ const JoinLobby = () => {
     useEffect(() => {
         webSocket.current.onmessage = (event) => {
             const chatMessageDto = event.data;
-            console.log(chatMessageDto);
             let lobby = chatMessageDto.split(" ")[0]
             if (lobby === getLobby()){
-                console.log("Same Game")
                 fetchData();
             }
         }

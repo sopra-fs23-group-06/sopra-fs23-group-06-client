@@ -46,7 +46,7 @@ const GameView = props => {
 
 
 
-  useEffect(() => {
+
     const lobbyCode = localStorage.getItem("lobbyCode");
     const loadData = async () => {
       try {
@@ -191,9 +191,7 @@ const GameView = props => {
       }, 3000);
     }
 
-    fetchOrder();
 
-  }, [history]);
 
   useEffect(() => {
     if (roundNumber !== 1 && roundNumber !== 11) {
@@ -232,6 +230,7 @@ const GameView = props => {
   }
 
   useEffect(() => {
+    fetchOrder();
     let domain = getDomain().replace(/^https?:\/\//, '');
     if (isProduction()){webSocket.current = new WebSocket(`wss://${domain}/sockets`);}
     else {webSocket.current = new WebSocket(`ws://${domain}/sockets`);}
@@ -252,10 +251,9 @@ const GameView = props => {
   useEffect(() => {
     webSocket.current.onmessage = (event) => {
       const chatMessageDto = event.data;
-      console.log(chatMessageDto);
       let lobby = chatMessageDto.split(" ")[0]
       if (lobby === getGame()){
-        console.log("Same Game")
+        fetchOrder();
       }
     }
   }, []);
@@ -354,7 +352,7 @@ const GameView = props => {
           <RuleBook onClick={closeRules} />
         )}
         <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
-        {showScoreboard && (
+        {showScoreboard && !showFinalScoreboard &&(
           <Scoreboard onClose={toggleScoreboard} />
         )}
         <ButtonSettings
