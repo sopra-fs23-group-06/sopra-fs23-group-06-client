@@ -11,6 +11,8 @@ import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import { toast } from 'react-toastify';
 import LayoutSettings from 'components/ui/LayoutSettings';
+import {isProduction} from "../../../helpers/isProduction";
+import {getDomain} from "../../../helpers/getDomain";
 
 
 
@@ -44,6 +46,7 @@ const JoinLobby = () => {
     const showedInfos = useRef(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const webSocket = useRef(null);
 
 
     function getLobby() {
@@ -58,6 +61,7 @@ const JoinLobby = () => {
             const user = new User()
             user.id = localStorage.getItem("userId");
             user.lobby = localStorage.getItem("lobbyCode");
+            webSocket.current.close();
             await api.put(`/lobbies/${getLobby()}/leaveHandler`, user);
             localStorage.removeItem("lobbyCode")
             localStorage.removeItem("userId")
@@ -68,53 +72,65 @@ const JoinLobby = () => {
         }
     }
 
+
+    async function fetchData() {
+        try {
+            const response = await api.get(`/lobbies/${getLobby()}/users`);
+            setUsers(response.data);
+            const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
+            if (!showedInfos.current) {
+                toast.warning('You are unmuted! To mute yourself press the button on the top left.')
+                setTimeout(function () {
+                    toast.info(`You can find the rules on the bottom of your screen`);
+                }, 6500);
+                showedInfos.current = true;
+            }
+            if (!userExists) {
+                localStorage.removeItem("lobbyCode")
+                localStorage.removeItem("userId")
+                localStorage.removeItem("inGame")
+                history.push("/kicked")
+            } else {
+                const rounds = await api.get(`/games/${getLobby()}/rounds`);
+                if (rounds.data > 0) {
+                    localStorage.setItem("inGame", "yes")
+                    history.push(`/game/${getLobby()}`)
+                }
+            }
+        } catch (error) {
+            toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+        }
+    }
+
+
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await api.get(`/lobbies/${getLobby()}/users`);
-                setUsers(response.data);
-                const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
-                if(!showedInfos.current){
-                    toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-                    setTimeout(function() {
-                      toast.info(`You can find the rules on the bottom of your screen`);
-                    }, 6500);
-                    showedInfos.current=true;
-                  }
-                if (!userExists) {
-                    localStorage.removeItem("lobbyCode")
-                    localStorage.removeItem("userId")
-                    localStorage.removeItem("inGame")
-                    history.push("/kicked")
-                }
-                else {
-                    const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                    if (rounds.data > 0) {
-                        localStorage.setItem("inGame", "yes")
-                        history.push(`/game/${getLobby()}`)
-                    }
-                }
-            } catch (error) {
-                clearInterval(intervalId)
-                toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+        if (isProduction()){webSocket.current = new WebSocket(`ws://${getDomain()}/sockets`);}
+        else {webSocket.current = new WebSocket(`ws://localhost:8080/sockets`);}
+        fetchData();
+        const openWebSocket = () => {
+            webSocket.current.onopen = (event) => {
+            }
+            webSocket.current.onclose = (event) => {
             }
         }
+        openWebSocket();
 
-        fetchData();
+        return () => {
+            webSocket.current.close();
+        }
+    }, []);
 
-        const intervalId = setInterval(async () => {
-            try {
-                await fetchData();
-            } catch (error) {
-                clearInterval(intervalId); // Stop the interval loop
+    useEffect(() => {
+        webSocket.current.onmessage = (event) => {
+            const chatMessageDto = event.data;
+            console.log(chatMessageDto);
+            let lobby = chatMessageDto.split(" ")[0]
+            if (lobby === getLobby()){
+                console.log("Same Game")
+                fetchData();
             }
-        }, 500);
-
-        // Clean up the interval when the component is unmounted
-        return () => clearInterval(intervalId);
-
-    }, [history]);
-
+        }
+    }, []);
 
     //need to figure out how to better move buttons to the right
     const Player = ({ user }) => {

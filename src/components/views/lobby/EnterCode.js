@@ -34,6 +34,7 @@ const FormField = props => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         inputMode="numeric"
+        minLength={6}
         maxLength={6}
       />
     </div>

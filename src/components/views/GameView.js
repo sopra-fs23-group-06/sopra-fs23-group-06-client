@@ -19,6 +19,8 @@ import "components/views/GameView"
 import LayoutSettings from 'components/ui/LayoutSettings';
 import { toast } from 'react-toastify';
 import {useHistory} from "react-router-dom";
+import {isProduction} from "../../helpers/isProduction";
+import {getDomain} from "../../helpers/getDomain";
 
 
 
@@ -40,6 +42,7 @@ const GameView = props => {
   const showedAnimationTrickWinner = useRef(false);
   const showedInfos = useRef(false);
   const history = useHistory();
+  const webSocket = useRef(null);
 
 
 
@@ -75,9 +78,7 @@ const GameView = props => {
           showedAnimationTrickWinner.current = false;
         }
         setRoundNumber(round.data)
-        if (round.data > 10) { clearInterval(intervalId); }
       } catch (error) {
-        clearInterval(intervalId)
         toast.error(`Something went wrong loading players data: \n${handleError(error)}`);
       }
     };
@@ -110,12 +111,9 @@ const GameView = props => {
           history.push("/closed")
         }
       } catch (error) {
-        clearInterval(intervalId)
         toast.error(`Something went wrong loading players data: \n${handleError(error)}`);
       }
     }
-
-
     function showAnimation() {
       const pictures = [
         { src: require('../../styles/images/yohoho/bomb.png') },
@@ -193,18 +191,8 @@ const GameView = props => {
       }, 3000);
     }
 
-
     fetchOrder();
-    const intervalId = setInterval(async () => {
-      try {
-        await fetchOrder();
-      } catch (error) {
-        clearInterval(intervalId); // Stop the interval loop
-      }
-    }, 500);
 
-    // Clean up the interval when the component is unmounted
-    return () => clearInterval(intervalId);
   }, [history]);
 
   useEffect(() => {
@@ -243,6 +231,33 @@ const GameView = props => {
     return newOrder;
   }
 
+  useEffect(() => {
+    if (isProduction()){webSocket.current = new WebSocket(`ws://${getDomain()}/sockets`);}
+    else {webSocket.current = new WebSocket(`ws://localhost:8080/sockets`);}
+    const openWebSocket = () => {
+      webSocket.current.onopen = (event) => {
+      }
+      webSocket.current.onclose = (event) => {
+      }
+    }
+    openWebSocket();
+    return () => {
+      webSocket.current.close();
+    }
+  }, []);
+
+
+
+  useEffect(() => {
+    webSocket.current.onmessage = (event) => {
+      const chatMessageDto = event.data;
+      console.log(chatMessageDto);
+      let lobby = chatMessageDto.split(" ")[0]
+      if (lobby === getGame()){
+        console.log("Same Game")
+      }
+    }
+  }, []);
   const toggleScoreboard = () => {
     setShowScoreboard(prevState => !prevState);
   };
