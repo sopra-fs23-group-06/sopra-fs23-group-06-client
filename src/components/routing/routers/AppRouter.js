@@ -61,7 +61,7 @@ const AppRouter = () => {
                         <HostLobby />
                     </HostGuard>
                 </Route>
-                <Route exact path="/">
+                <Route path="/">
                     <Redirect to="/main" />
                 </Route>
             </Switch>
