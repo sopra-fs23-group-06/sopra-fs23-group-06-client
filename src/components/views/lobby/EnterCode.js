@@ -52,12 +52,15 @@ const EnterCode = () => {
   const [lobbyCode, setLobbyCode] = useState('');
   const history = useHistory();
   const [rulesOpen, setRulesOpen] = useState(false);
+  const [recentRequest, setRecentRequest] = useState(false);
+
 
   function goBack() {
     history.go(-1);
   }
 
   async function joinLobby() {
+    setRecentRequest(true);
     try {
       await api.get(`/lobbies/${lobbyCode}`);
       await api.put(`/lobbies/${lobbyCode}`);
@@ -66,6 +69,9 @@ const EnterCode = () => {
     } catch (error) {
       toast.error(`Something went wrong while joining the lobby: \n${handleError(error)}`);
     }
+    setTimeout(() => {
+      setRecentRequest(false);
+    }, 2000)
   }
 
   function openRules() {
@@ -89,7 +95,7 @@ const EnterCode = () => {
           />
           <div className="lobby button-container1">
             <ButtonPurpleLobby
-              disabled={lobbyCode.length !== 6}
+              disabled={lobbyCode.length !== 6|| recentRequest}
               width="75%"
               onClick={joinLobby}
             >

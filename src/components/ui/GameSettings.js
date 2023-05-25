@@ -6,6 +6,7 @@ import 'styles/ui/Settings.scss';
 const GameSettings = ({initialRoundsToPlay, initialPlayerSize, onRoundChange, onPlayerSizeChange, onClose, onSave }) => {
   const [roundsToPlay, setRoundsToPlay] = useState(initialRoundsToPlay);
   const [playerSize, setPlayerSize] = useState(initialPlayerSize);
+  const [recentRequest, setRecentRequest] = useState(false);
 
   const handleRoundChange = event => {
     const value = parseInt(event.target.value);
@@ -14,7 +15,11 @@ const GameSettings = ({initialRoundsToPlay, initialPlayerSize, onRoundChange, on
   };
   
   const handleSave = () => {
+    setRecentRequest(true);
     onSave(roundsToPlay, playerSize);
+    setTimeout(() => {
+      setRecentRequest(false);
+    }, 2000)
   };
 
   const handlePlayerSizeChange = event => {
@@ -54,7 +59,7 @@ const GameSettings = ({initialRoundsToPlay, initialPlayerSize, onRoundChange, on
         <div className="settings-value">{playerSize}</div>
         <div className="settings-space"></div>
         <div className="settings-button-container">
-          <ButtonPurpleMain onClick={handleSave}>Save</ButtonPurpleMain>
+          <ButtonPurpleMain onClick={handleSave} disabled={recentRequest}>Save</ButtonPurpleMain>
           <ButtonPurpleMain onClick={handleClose}>Close</ButtonPurpleMain>
         </div>
       </div>

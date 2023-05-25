@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
-import { ButtonPurpleMain } from './ButtonMain';
+import React, { useContext, useEffect, useState } from 'react';
+import { ButtonPurpleMain, ToggleButton } from './ButtonMain';
 import 'styles/ui/Settings.scss';
 import { BackgroundContext } from '../../helpers/BackgroundContext';
 
-const LayoutSettings = ({ onClick }) => {
+const LayoutSettings = ({ onClick, onHandleMuteAudio, onHandleUnmuteAudio }) => {
   const { selectedBackground, handleBackgroundChange } = useContext(BackgroundContext);
 
   const backgrounds = [
@@ -14,6 +14,19 @@ const LayoutSettings = ({ onClick }) => {
     'skully_bg5',
     'skully_bg6',
   ];
+
+  const [isOn, setIsOn] = useState(localStorage.getItem('soundIsMuted') === 'true');
+
+  const handleToggle = () => {
+    if (isOn) {
+      onHandleUnmuteAudio();
+      setIsOn(!isOn);
+
+    } else {
+      onHandleMuteAudio();
+      setIsOn(!isOn);
+    }
+  };
 
   useEffect(() => {
     updateBodyBackground(selectedBackground);
@@ -34,15 +47,14 @@ const LayoutSettings = ({ onClick }) => {
 
     // Remove existing background classes
     classNames.forEach((className) => {
-	  if (className.startsWith('background-')) {
-	    bodyElement.classList.remove(className);
-	  }
+      if (className.startsWith('background-')) {
+        bodyElement.classList.remove(className);
+      }
     });
 
     // Add the new background class
     bodyElement.classList.add(`background-${background}`);
   };
-
 
   return (
     <div className="settings">
@@ -60,6 +72,8 @@ const LayoutSettings = ({ onClick }) => {
             />
           ))}
         </div>
+        <div className='settings-content-label'>Mute / Unmute Special Effects</div>
+        <ToggleButton isOn={isOn} onToggle={handleToggle} />
         <ButtonPurpleMain onClick={handleClick}>Close</ButtonPurpleMain>
       </div>
     </div>

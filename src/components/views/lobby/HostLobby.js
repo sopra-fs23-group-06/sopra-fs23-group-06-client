@@ -20,11 +20,6 @@ import LayoutSettings from 'components/ui/LayoutSettings';
 import {isProduction} from "../../../helpers/isProduction";
 import {getDomain} from "../../../helpers/getDomain";
 
-
-
-
-
-
 const FormField = props => {
 
 
@@ -58,6 +53,10 @@ const HostLobby = () => {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
     const webSocket = useRef(null);
+    const [recentKickRequest, setRecentKickRequest] = useState(false);
+    const [recentStartRequest, setRecentStartRequest] = useState(false);
+    const [recentCloseRequest, setRecentCloseRequest] = useState(false);
+
 
 
     let isButtonDisabled = true;
@@ -72,8 +71,20 @@ const HostLobby = () => {
         return split[split.length - 1];
     }, []);
 
+    const handleMuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'true');
+        if(localStorage.getItem('soundIsMuted') === 'true'){
+          console.log("working")
+        }
+      }; 
+      const handleUnmuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'false');
+        console.log(localStorage.getItem('soundIsMuted'));
+      }; 
+
 
     async function removePlayer(leavingUser) {
+        setRecentKickRequest(true);
         try {
             const userId = localStorage.getItem('userId'); // retrieve userId from localStorage
             const user = new User()
@@ -87,10 +98,14 @@ const HostLobby = () => {
         } catch (error) {
             toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
+        setTimeout(() => {
+            setRecentKickRequest(false);
+          }, 1000)
     }
 
 
     async function closeLobby() {
+        setRecentCloseRequest(true);
         try {
             const userId = localStorage.getItem("userId");
             if (users) {
@@ -114,10 +129,14 @@ const HostLobby = () => {
         } catch (error) {
             toast.error(`Something went wrong while closing the Lobby: \n${handleError(error)}`);
         }
+        setTimeout(() => {
+            setRecentCloseRequest(false);
+          }, 1000)
     }
 
 
     const startGame = useCallback(async () => {
+        setRecentStartRequest(true);
         try {
             const user = new User();
             user.id = localStorage.getItem("userId");
@@ -125,9 +144,9 @@ const HostLobby = () => {
         } catch (error) {
             toast.error(`Something went wrong while starting the Game: \n${handleError(error)}`);
         }
-        //JUST FOR TEST PURPOSE
-        //yet to be implemented, function to start game
-
+        setTimeout(() => {
+            setRecentStartRequest(false);
+          }, 2000)
     }, [getLobby]);
 
     useEffect(() => {
@@ -204,6 +223,7 @@ const HostLobby = () => {
                 <div className="lobby player-container-odd">
                     <div className="lobby username">{user.username}
                         <ButtonKick
+                            disabled={recentKickRequest}
                             onClick={() => removePlayer(user)}
                         >Remove</ButtonKick>
                     </div>
@@ -214,6 +234,7 @@ const HostLobby = () => {
                 <div className="lobby player-container-even">
                     <div className="lobby username">{user.username}
                         <ButtonKick
+                            disabled={recentKickRequest}
                             onClick={() => removePlayer(user)}
                         >Remove</ButtonKick>
                     </div>
@@ -349,12 +370,13 @@ const HostLobby = () => {
                     <div className="lobby button-container2">
                         <ButtonWhiteList
                             width="100%"
+                            disabled={recentCloseRequest}
                             onClick={() => closeLobby()}
                         >
                             Close
                         </ButtonWhiteList>
                         <ButtonPurpleList
-                            disabled={isButtonDisabled}
+                            disabled={isButtonDisabled || recentStartRequest}
                             width="100%"
                             onClick={() => startGame()}
                         >
@@ -386,8 +408,8 @@ const HostLobby = () => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {settingsOpen && (
-          <LayoutSettings onClick={closeSettings} />
-        )}          
+          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
+        )}        
         </BaseContainer>
     );
 };

@@ -121,3 +121,31 @@
 .background-skully_bg6 {
   background-image: url("../images/backgrounds/skully_bg6.png");
 }
+
+.toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  color: #555;
+  cursor: pointer;
+  margin-top: 5%;
+  margin-bottom: 5%;
+
+}
+
+.toggle-button .icon {
+  margin-right: 5px;
+}
+
+.toggle-button.on {
+  background-color: #5cb85c;
+  color: #fff;
+}
+
+.toggle-button.off {
+  background-color: #d9534f;
+  color: #fff;
+}
