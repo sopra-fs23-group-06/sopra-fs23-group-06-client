@@ -2,7 +2,6 @@
 
 .lobby {
 
-
   &.container {
     min-height: 300px;
     @include center;
@@ -82,7 +81,6 @@
     display: flex;
   }
 
-
   &.code {
     font-weight: 700;
     text-align: center;
@@ -91,7 +89,6 @@
     font-size: 50px;
     margin-bottom: 10px;
   }
-
 
   &.player-container-host {
     padding: 8px;
@@ -127,10 +124,9 @@
     color: White;
     font-size: 25px;
   }
+
   &.host {
     display: inline-block;
     margin-left: 10px;
   }
-
-
 }

@@ -13,19 +13,18 @@
 }
 
 .scoreboard-container {
-  position:absolute;
+  position: absolute;
   width: 80%;
-  height:80%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .scoreboard-content {
-  //background-color: rgb(215, 187, 97);
   background-image: url("../images/scoreboard.png");
-  background-position: center; 
-  background-repeat: no-repeat; 
+  background-position: center;
+  background-repeat: no-repeat;
   -moz-background-size: 100% 100%;
   -webkit-background-size: 100% 100%;
   background-size: 100% 100%;
@@ -37,9 +36,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  //border-radius: 20px;
-  //border: 4px solid rgba(255, 255, 255, 0.684);
-  //box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
 }
 
 .scoreboard-content-header {
@@ -53,7 +49,7 @@
 
 .scoreboard-buttons {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -84,7 +80,7 @@ table {
 
 thead th {
   font-weight: bold;
-  color:#000000;
+  color: #000000;
   padding: 5px;
   text-align: center;
   min-width: 60px;
@@ -93,11 +89,11 @@ thead th {
 
 tbody td {
   border: 2px solid #000000;
-  color:#000000;
+  color: #000000;
   font-size: 12px;
   font-weight: 550;
   padding: 10px;
-  text-align:center;
+  text-align: center;
 }
 
 tbody tr:last-child td.no-border {
@@ -105,7 +101,7 @@ tbody tr:last-child td.no-border {
   font-size: larger;
 }
 
-.scoreboard-content > div:last-child {
+.scoreboard-content>div:last-child {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,7 +113,7 @@ tbody tr:last-child td.no-border {
   height: 32px;
   margin-top: 2px;
   margin-bottom: -10px;
-  
+
 }
 
 .confirmation {
@@ -157,4 +153,3 @@ tbody tr:last-child td.no-border {
   justify-content: space-between;
   margin-top: 20px;
 }
-

@@ -4,9 +4,7 @@ import 'styles/ui/Arrow.scss';
 import { api, handleError } from "../../helpers/api";
 import "../../helpers/alert";
 import { toast } from 'react-toastify';
-import {ButtonPurpleList, ButtonPurpleLobby, ButtonPurpleMain} from "./ButtonMain";
-
-
+import { ButtonPurpleList, ButtonPurpleLobby, ButtonPurpleMain } from "./ButtonMain";
 
 const RoundSummary = ({ curRound, onContinue }) => {
   const [roundScoreboardData, setScoreboardData] = useState(null);
@@ -23,7 +21,6 @@ const RoundSummary = ({ curRound, onContinue }) => {
     };
     fetchScoreboardData();
   }, []);
-
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -69,7 +66,7 @@ const RoundSummary = ({ curRound, onContinue }) => {
             </table>
           </div>
         )}
-        <ButtonPurpleList onClick={handleClick}>Continue</ButtonPurpleList>
+        <ButtonPurpleList onClick={handleClick}>Continue <div class="arrow right"></div></ButtonPurpleList>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState,useRef} from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -7,7 +7,7 @@ import {
     ButtonKick,
     ButtonPurpleList, ButtonRules,
     ButtonWhiteList,
-    ButtonCopy,ButtonSettings, ButtonGameSettings
+    ButtonCopy, ButtonSettings, ButtonGameSettings
 } from "../../ui/ButtonMain";
 import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
@@ -17,11 +17,10 @@ import "../../../helpers/alert";
 import GameSettings from 'components/ui/GameSettings';
 import { toast } from 'react-toastify';
 import LayoutSettings from 'components/ui/LayoutSettings';
-import {isProduction} from "../../../helpers/isProduction";
-import {getDomain} from "../../../helpers/getDomain";
+import { isProduction } from "../../../helpers/isProduction";
+import { getDomain } from "../../../helpers/getDomain";
 
 const FormField = props => {
-
 
     return (
         <div className="lobby field">
@@ -57,12 +56,12 @@ const HostLobby = () => {
     const [recentStartRequest, setRecentStartRequest] = useState(false);
     const [recentCloseRequest, setRecentCloseRequest] = useState(false);
 
-
-
     let isButtonDisabled = true;
 
     if (users) {
-        if (users.length > 1) { isButtonDisabled = false }
+        if (users.length > 1) {
+            isButtonDisabled = false
+        }
     }
 
     const getLobby = useCallback(() => { //identifies lobby based on URL
@@ -73,15 +72,14 @@ const HostLobby = () => {
 
     const handleMuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'true');
-        if(localStorage.getItem('soundIsMuted') === 'true'){
-          console.log("working")
+        if (localStorage.getItem('soundIsMuted') === 'true') {
+            console.log("working")
         }
-      }; 
-      const handleUnmuteAudio = () => {
+    };
+    const handleUnmuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'false');
         console.log(localStorage.getItem('soundIsMuted'));
-      }; 
-
+    };
 
     async function removePlayer(leavingUser) {
         setRecentKickRequest(true);
@@ -100,9 +98,8 @@ const HostLobby = () => {
         }
         setTimeout(() => {
             setRecentKickRequest(false);
-          }, 1000)
+        }, 1000)
     }
-
 
     async function closeLobby() {
         setRecentCloseRequest(true);
@@ -131,9 +128,8 @@ const HostLobby = () => {
         }
         setTimeout(() => {
             setRecentCloseRequest(false);
-          }, 1000)
+        }, 1000)
     }
-
 
     const startGame = useCallback(async () => {
         setRecentStartRequest(true);
@@ -146,7 +142,7 @@ const HostLobby = () => {
         }
         setTimeout(() => {
             setRecentStartRequest(false);
-          }, 2000)
+        }, 2000)
     }, [getLobby]);
 
     useEffect(() => {
@@ -164,28 +160,31 @@ const HostLobby = () => {
     }, [isButtonDisabled, startGame]);
 
 
-        async function fetchData() {
-            try {
-                const response = await api.get(`/lobbies/${getLobby()}/users`);
-                setUsers(response.data);
-                const rounds = await api.get(`/games/${getLobby()}/rounds`);
-                if (rounds.data > 0) {
-                    localStorage.setItem("inGame", "yes")
-                    history.push(`/game/${getLobby()}`)
-                }
-                if(!showedInfos.current){
-                    toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-                    showedInfos.current=true;
-                  }
-            } catch (error) {
-                toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
+    async function fetchData() {
+        try {
+            const response = await api.get(`/lobbies/${getLobby()}/users`);
+            setUsers(response.data);
+            const rounds = await api.get(`/games/${getLobby()}/rounds`);
+            if (rounds.data > 0) {
+                localStorage.setItem("inGame", "yes")
+                history.push(`/game/${getLobby()}`)
             }
+            if (!showedInfos.current) {
+                toast.warning('You are unmuted! To mute yourself press the button on the top left.')
+                showedInfos.current = true;
+            }
+        } catch (error) {
+            toast.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
         }
+    }
 
     useEffect(() => {
         let domain = getDomain().replace(/^https?:\/\//, '');
-        if (isProduction()){webSocket.current = new WebSocket(`wss://${domain}/sockets`);}
-        else {webSocket.current = new WebSocket(`ws://${domain}/sockets`);}
+        if (isProduction()) {
+            webSocket.current = new WebSocket(`wss://${domain}/sockets`);
+        } else {
+            webSocket.current = new WebSocket(`ws://${domain}/sockets`);
+        }
         fetchData()
         const openWebSocket = () => {
             webSocket.current.onopen = (event) => {
@@ -203,12 +202,11 @@ const HostLobby = () => {
         webSocket.current.onmessage = (event) => {
             const chatMessageDto = event.data;
             let lobby = chatMessageDto.split(" ")[0]
-            if (lobby === getLobby()){
+            if (lobby === getLobby()) {
                 fetchData();
             }
         }
     }, []);
-    //need to figure out how to better move buttons to the right
     const Player = ({ user }) => {
         if (user.id === 1) {
             return (
@@ -241,7 +239,6 @@ const HostLobby = () => {
                 </div>)
         }
     }
-
 
     Player.propTypes = {
         user: PropTypes.object
@@ -277,42 +274,41 @@ const HostLobby = () => {
 
     function openGameSettings() {
         setGameSettingsOpen(true);
-      }
-    
-      function closeGameSettings() {
+    }
+
+    function closeGameSettings() {
         setGameSettingsOpen(false);
-      }
+    }
 
-      function openSettings() {
+    function openSettings() {
         setSettingsOpen(true);
-      }
-    
-      function closeSettings() {
-        setSettingsOpen(false);
-      }
+    }
 
-      function copyId() {
+    function closeSettings() {
+        setSettingsOpen(false);
+    }
+
+    function copyId() {
         navigator.clipboard.writeText(getLobby());
         setCopyButtonText("Code copied!");
 
         setTimeout(() => {
-        setCopyButtonText("Copy Lobby Code");
-    }, 1000);
+            setCopyButtonText("Copy Lobby Code");
+        }, 1000);
     }
 
     const handleSaveSettings = async (roundsToPlay, playerSize) => {
         try {
-          const player = new User();
-          player.id = localStorage.getItem("userId");
-          const lobbyCode = localStorage.getItem("lobbyCode");
-          await api.post(`/lobbies/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
-          toast.success(`Saved new game settings!`)
-          closeGameSettings();
+            const player = new User();
+            player.id = localStorage.getItem("userId");
+            const lobbyCode = localStorage.getItem("lobbyCode");
+            await api.post(`/lobbies/${lobbyCode}/gameSettings?roundToEndGame=${roundsToPlay}&maxPlayerSize=${playerSize}`, player);
+            toast.success(`Saved new game settings!`)
+            closeGameSettings();
         } catch (error) {
-          toast.error(`Something went wrong while saving the settings: \n${handleError(error)}`);
+            toast.error(`Something went wrong while saving the settings: \n${handleError(error)}`);
         }
-      };
-      
+    };
 
     const handleRoundChange = (roundsToPlay) => {
         setInitialRoundsToPlay(roundsToPlay);
@@ -323,7 +319,6 @@ const HostLobby = () => {
     }
 
     return (
-
         <BaseContainer>
             <JitsiMeeting
                 configOverwrite={{
@@ -352,7 +347,10 @@ const HostLobby = () => {
                     displayName: localStorage.getItem("username")
                 }}
                 roomName={"SkullKingLobby" + getLobby()}
-                getIFrameRef={node => { node.style.height = '50px'; node.style.width = '50px'; }}
+                getIFrameRef={node => {
+                    node.style.height = '50px';
+                    node.style.width = '50px';
+                }}
             />
             <div className="lobby container">
                 <div className="lobby form">
@@ -364,9 +362,11 @@ const HostLobby = () => {
                     </ButtonCopy>
                     {content}
                     <ButtonGameSettings
-                    onClick={() => { openGameSettings() }}>
-                      <span className="text">Game settings</span>
-                    </ButtonGameSettings>                  
+                        onClick={() => {
+                            openGameSettings()
+                        }}>
+                        <span className="text">Game settings</span>
+                    </ButtonGameSettings>
                     <div className="lobby button-container2">
                         <ButtonWhiteList
                             width="100%"
@@ -386,30 +386,35 @@ const HostLobby = () => {
                 </div>
             </div>
             {gameSettingsOpen && (
-                    <GameSettings
+                <GameSettings
                     onSave={handleSaveSettings}
                     onClose={closeGameSettings}
                     onRoundChange={handleRoundChange}
                     onPlayerSizeChange={handlePlayerSizeChange}
                     initialRoundsToPlay={initialRoundsToPlay}
                     initialPlayerSize={initialPlayerSize}
-                    />
-                    )} 
+                />
+            )}
             <ButtonRules
                 className="bottom"
-                onClick={() => { openRules() }}
+                onClick={() => {
+                    openRules()
+                }}
             >Game Rules
             </ButtonRules>
             {rulesOpen && (
                 <RuleBook onClick={closeRules} />
             )}
-        <ButtonSettings
-          className='corner'
-          onClick={() => { openSettings() }}>
-        </ButtonSettings>
-        {settingsOpen && (
-          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
-        )}        
+            <ButtonSettings
+                className='corner'
+                onClick={() => {
+                    openSettings()
+                }}>
+            </ButtonSettings>
+            {settingsOpen && (
+                <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio}
+                    onHandleUnmuteAudio={handleUnmuteAudio} />
+            )}
         </BaseContainer>
     );
 };

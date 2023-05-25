@@ -1,109 +1,117 @@
 @import 'styles/theme';
 
 @keyframes scream {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(0); }
-    80% { transform: translateX(10%); }
-    100% { transform: translateX(100%); }
-  }
-  
-  .scream {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: scream 2s ease-in-out forwards;
-  }
-  
-  .scream-content {
-    color: white;
-    font-size: 5em;
+  0% {
+    transform: translateX(-100%);
   }
 
+  50% {
+    transform: translateX(0);
+  }
+
+  80% {
+    transform: translateX(10%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.scream {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: scream 2s ease-in-out forwards;
+}
+
+.scream-content {
+  color: white;
+  font-size: 5em;
+}
+
 .make-bid {
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.336);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.336);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .make-bid h2 {
-    position: absolute;
-    margin-bottom: 10px;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-self: center;
-    font-size: 60px;
-    text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-    text-decoration: solid underline rgb(255, 255, 255) 4px
+  position: absolute;
+  margin-bottom: 10px;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-self: center;
+  font-size: 60px;
+  text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  text-decoration: solid underline rgb(255, 255, 255) 4px
 }
 
 .make-bid h3 {
-    position: absolute;
-    margin-bottom: 10px;
-    top: 200px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-self: center;
-    font-size: 30px;
-    text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-    color: #00ff08;
+  position: absolute;
+  margin-bottom: 10px;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-self: center;
+  font-size: 30px;
+  text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  color: #00ff08;
 }
 
 .make-bid-content {
-    background-color: rgb(21, 23, 66);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-    border: 4px solid #888888;
+  background-color: rgb(21, 23, 66);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  border: 4px solid #888888;
 }
 
-
 .make-bid-content label {
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 25px;
 }
 
 .make-bid-content input {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    margin-bottom: 20px;
-    width: 30%;
-    text-align: center;
-    background-color: #e1e3f9;
-
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 20px;
+  width: 30%;
+  text-align: center;
+  background-color: #e1e3f9;
 }
 
 .make-bid-content button {
-    padding: 10px 20px;
-    border-radius: $borderRadius;
-    border: 2px solid #1b1b1b;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-
+  padding: 10px 20px;
+  border-radius: $borderRadius;
+  border: 2px solid #1b1b1b;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
 }
 
 .timer {
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }

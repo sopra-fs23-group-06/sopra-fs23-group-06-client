@@ -16,7 +16,7 @@ const OtherPlayers = ({ players }) => {
 
   function otherPlayerHand(player) {
     const amount = player.hand.length;
-  
+
     return (
       <div className="other-player-hand">
         {Array.from({ length: amount }).map((_, index) => {
@@ -34,9 +34,6 @@ const OtherPlayers = ({ players }) => {
       </div>
     );
   }
-  
-  
-  
 
   const renderPlayers = () => {
     const numPlayers = players.length;

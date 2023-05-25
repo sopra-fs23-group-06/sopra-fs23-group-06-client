@@ -9,76 +9,76 @@ import '../../../helpers/alert';
 import LayoutSettings from 'components/ui/LayoutSettings';
 
 const MainMenu = (props) => {
-  const history = useHistory();
-  const [rulesOpen, setRulesOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+    const history = useHistory();
+    const [rulesOpen, setRulesOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const handleMuteAudio = () => {
-    localStorage.setItem('soundIsMuted', 'true');
-  };
+    const handleMuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'true');
+    };
 
-  const handleUnmuteAudio = () => {
-    localStorage.setItem('soundIsMuted', 'false');
-  };
+    const handleUnmuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'false');
+    };
 
-  useEffect(() => {
-    const firstLoad = localStorage.getItem('firstLoad');
-    if (firstLoad === null) {
-      localStorage.setItem('firstLoad', 'true');
-      localStorage.setItem('soundIsMuted', 'true');
-      console.log('Action executed.');
+    useEffect(() => {
+        const firstLoad = localStorage.getItem('firstLoad');
+        if (firstLoad === null) {
+            localStorage.setItem('firstLoad', 'true');
+            localStorage.setItem('soundIsMuted', 'true');
+            console.log('Action executed.');
+        }
+    }, []);
+
+    function doJoin() {
+        history.push('/join/code');
     }
-  }, []);
 
-  function doJoin() {
-    history.push('/join/code');
-  }
+    function doHost() {
+        history.push('/host/username');
+    }
 
-  function doHost() {
-    history.push('/host/username');
-  }
+    function openRules() {
+        setRulesOpen(true);
+    }
 
-  function openRules() {
-    setRulesOpen(true);
-  }
+    function closeRules() {
+        setRulesOpen(false);
+    }
 
-  function closeRules() {
-    setRulesOpen(false);
-  }
+    function openSettings() {
+        setSettingsOpen(true);
+    }
 
-  function openSettings() {
-    setSettingsOpen(true);
-  }
+    function closeSettings() {
+        setSettingsOpen(false);
+    }
 
-  function closeSettings() {
-    setSettingsOpen(false);
-  }
-
-  return (
-    <BaseContainer>
-      <HeaderMain />
-      <div className="home button-container">
-        <ButtonPurpleMain width="20%" onClick={() => doJoin()}>
-          Join
-        </ButtonPurpleMain>
-        <ButtonWhiteMain width="20%" onClick={() => doHost()}>
-          Host
-        </ButtonWhiteMain>
-      </div>
-      <ButtonRules className="bottom" onClick={() => openRules()}>
-        Game Rules
-      </ButtonRules>
-      {rulesOpen && <RuleBook onClick={closeRules} />}
-      <ButtonSettings className="corner" onClick={() => openSettings()}></ButtonSettings>
-      {settingsOpen && (
-        <LayoutSettings
-          onClick={closeSettings}
-          onHandleMuteAudio={handleMuteAudio}
-          onHandleUnmuteAudio={handleUnmuteAudio}
-        />
-      )}
-    </BaseContainer>
-  );
+    return (
+        <BaseContainer>
+            <HeaderMain />
+            <div className="home button-container">
+                <ButtonPurpleMain width="20%" onClick={() => doJoin()}>
+                    Join
+                </ButtonPurpleMain>
+                <ButtonWhiteMain width="20%" onClick={() => doHost()}>
+                    Host
+                </ButtonWhiteMain>
+            </div>
+            <ButtonRules className="bottom" onClick={() => openRules()}>
+                Game Rules
+            </ButtonRules>
+            {rulesOpen && <RuleBook onClick={closeRules} />}
+            <ButtonSettings className="corner" onClick={() => openSettings()}></ButtonSettings>
+            {settingsOpen && (
+                <LayoutSettings
+                    onClick={closeSettings}
+                    onHandleMuteAudio={handleMuteAudio}
+                    onHandleUnmuteAudio={handleUnmuteAudio}
+                />
+            )}
+        </BaseContainer>
+    );
 };
 
 export default MainMenu;

@@ -11,116 +11,115 @@ import "../../../helpers/alert";
 import { toast } from 'react-toastify';
 
 const FormField = props => {
-  const handleKeyDown = e => {
-    if (e.key === 'Enter' && props.value.length > 0) {
-      props.onEnterPress();
-    }
-  };
+    const handleKeyDown = e => {
+        if (e.key === 'Enter' && props.value.length > 0) {
+            props.onEnterPress();
+        }
+    };
 
-  const handleChange = e => {
-    let numericValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    numericValue = numericValue.slice(0, 6); // Limit the length to 6 characters
-    props.onChange(numericValue);
-  };
+    const handleChange = e => {
+        let numericValue = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+        numericValue = numericValue.slice(0, 6); // Limit the length to 6 characters
+        props.onChange(numericValue);
+    };
 
-  return (
-    <div className="lobby field">
-      <label className="lobby label">
-        {props.label}
-      </label>
-      <input
-        className="lobby input"
-        value={props.value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        inputMode="numeric"
-        minLength={6}
-        maxLength={6}
-      />
-    </div>
-  );
+    return (
+        <div className="lobby field">
+            <label className="lobby label">
+                {props.label}
+            </label>
+            <input
+                className="lobby input"
+                value={props.value}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                inputMode="numeric"
+                minLength={6}
+                maxLength={6}
+            />
+        </div>
+    );
 };
 
 FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  onEnterPress: PropTypes.func,
+    label: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onEnterPress: PropTypes.func,
 };
 
 const EnterCode = () => {
-  const [lobbyCode, setLobbyCode] = useState('');
-  const history = useHistory();
-  const [rulesOpen, setRulesOpen] = useState(false);
-  const [recentRequest, setRecentRequest] = useState(false);
+    const [lobbyCode, setLobbyCode] = useState('');
+    const history = useHistory();
+    const [rulesOpen, setRulesOpen] = useState(false);
+    const [recentRequest, setRecentRequest] = useState(false);
 
-
-  function goBack() {
-    history.go(-1);
-  }
-
-  async function joinLobby() {
-    setRecentRequest(true);
-    try {
-      await api.get(`/lobbies/${lobbyCode}`);
-      await api.put(`/lobbies/${lobbyCode}`);
-      localStorage.setItem("lobbyCode", lobbyCode);
-      history.push('/join/username');
-    } catch (error) {
-      toast.error(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+    function goBack() {
+        history.go(-1);
     }
-    setTimeout(() => {
-      setRecentRequest(false);
-    }, 2000)
-  }
 
-  function openRules() {
-    setRulesOpen(true);
-  }
+    async function joinLobby() {
+        setRecentRequest(true);
+        try {
+            await api.get(`/lobbies/${lobbyCode}`);
+            await api.put(`/lobbies/${lobbyCode}`);
+            localStorage.setItem("lobbyCode", lobbyCode);
+            history.push('/join/username');
+        } catch (error) {
+            toast.error(`Something went wrong while joining the lobby: \n${handleError(error)}`);
+        }
+        setTimeout(() => {
+            setRecentRequest(false);
+        }, 2000)
+    }
 
-  function closeRules() {
-    setRulesOpen(false);
-  }
+    function openRules() {
+        setRulesOpen(true);
+    }
 
-  return (
-    <BaseContainer>
-      <HeaderLobby />
-      <div className="lobby container">
-        <div className="lobby form2">
-          <FormField
-            label="Enter Code"
-            value={lobbyCode}
-            onChange={un => setLobbyCode(un)}
-            onEnterPress={joinLobby}
-          />
-          <div className="lobby button-container1">
-            <ButtonPurpleLobby
-              disabled={lobbyCode.length !== 6|| recentRequest}
-              width="75%"
-              onClick={joinLobby}
+    function closeRules() {
+        setRulesOpen(false);
+    }
+
+    return (
+        <BaseContainer>
+            <HeaderLobby />
+            <div className="lobby container">
+                <div className="lobby form2">
+                    <FormField
+                        label="Enter Code"
+                        value={lobbyCode}
+                        onChange={un => setLobbyCode(un)}
+                        onEnterPress={joinLobby}
+                    />
+                    <div className="lobby button-container1">
+                        <ButtonPurpleLobby
+                            disabled={lobbyCode.length !== 6 || recentRequest}
+                            width="75%"
+                            onClick={joinLobby}
+                        >
+                            Enter
+                        </ButtonPurpleLobby>
+                        <ButtonWhiteLobby
+                            width="75%"
+                            onClick={goBack}
+                        >
+                            Cancel
+                        </ButtonWhiteLobby>
+                    </div>
+                </div>
+            </div>
+            <ButtonRules
+                className="bottom"
+                onClick={openRules}
             >
-              Enter
-            </ButtonPurpleLobby>
-            <ButtonWhiteLobby
-              width="75%"
-              onClick={goBack}
-            >
-              Cancel
-            </ButtonWhiteLobby>
-          </div>
-        </div>
-      </div>
-      <ButtonRules
-        className="bottom"
-        onClick={openRules}
-      >
-        Game Rules
-      </ButtonRules>
-      {rulesOpen && (
-        <RuleBook onClick={closeRules} />
-      )}
-    </BaseContainer>
-  );
+                Game Rules
+            </ButtonRules>
+            {rulesOpen && (
+                <RuleBook onClick={closeRules} />
+            )}
+        </BaseContainer>
+    );
 };
 
 export default EnterCode;

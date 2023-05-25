@@ -1,51 +1,51 @@
 @import 'styles/theme';
 
 .rule-book {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.336);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.336);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rule-book h2 {
-    position: absolute;
-    top: 7%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-self: center;
-    font-size: 50px;
-    text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
-    color: white;
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-self: center;
+  font-size: 50px;
+  text-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  color: white;
 }
 
 .rule-book-container {
-    height: 66%;
-    width: 50%;
-    background-color: rgb(24, 26, 70);
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
-    text-align: justify;
-    text-align-last: center;
-    display: inline-flex;
-    color: white;
-    line-height: 1.4;
+  height: 66%;
+  width: 50%;
+  background-color: rgb(24, 26, 70);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  text-align: justify;
+  text-align-last: center;
+  display: inline-flex;
+  color: white;
+  line-height: 1.4;
 }
 
 .rule-book-button {
-    position: absolute;
-    bottom: 10%;
-    border-radius: 20px;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 10%;
+  border-radius: 20px;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.6);
 }
 
-.rule-book-content{
-    overflow-y:auto;
+.rule-book-content {
+  overflow-y: auto;
 }

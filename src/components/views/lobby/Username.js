@@ -1,16 +1,15 @@
-import React, {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import HeaderLobby from "components/views/lobby/Helpers/HeaderLobby";
 import PropTypes from "prop-types";
-import {ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby} from "../../ui/ButtonMain";
-import {api, handleError} from 'helpers/api';
+import { ButtonPurpleLobby, ButtonRules, ButtonWhiteLobby } from "../../ui/ButtonMain";
+import { api, handleError } from 'helpers/api';
 import User from "../../../models/User";
 import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import { toast } from 'react-toastify';
-
 
 
 const FormField = props => {
@@ -52,21 +51,18 @@ const Username = () => {
         return localStorage.getItem("lobbyCode");
     }
 
-
-
-    function hostOrJoin(){ //differentiate if user is in host or join process
+    function hostOrJoin() { //differentiate if user is in host or join process
         const url = window.location.pathname
         const split = url.split("/")
-        return "host" === split[split.length-2]
+        return "host" === split[split.length - 2]
     }
-
 
     function goBack() { //goes back to previous screen, could be used if wrong lobby was entered on join process
         localStorage.removeItem("lobbyCode")
         history.go(-1)
     }
 
-    const createNewLobby = async () =>{ //creates new lobby
+    const createNewLobby = async () => { //creates new lobby
         try {
             const lobbies = await api.post('/lobbies');
             const lobby = lobbies.data
@@ -77,29 +73,29 @@ const Username = () => {
         }
     }
 
-
-
-    const addUserToLobby = async () =>{ //adds user to the playerList in the lobby
+    const addUserToLobby = async () => { //adds user to the playerList in the lobby
         try {
             const user = new User()
             user.username = username;
             user.lobby = getLobby();
             const response = await api.post('/users', user);
-            const created = new User (response.data);
+            const created = new User(response.data);
             localStorage.setItem("userId", created.id)
             localStorage.setItem("username", created.username);
-            if(!isHost){history.push('/join/lobby/'+getLobby())}
-            else { history.push('/host/lobby/'+getLobby())}
+            if (!isHost) {
+                history.push('/join/lobby/' + getLobby())
+            } else {
+                history.push('/host/lobby/' + getLobby())
+            }
         } catch (error) {
             toast.error(`Something went wrong while adding user to the lobby: \n${handleError(error)}`);
         }
     }
 
     function goToLobby() {
-        if (isHost){
-            createNewLobby().then(() =>addUserToLobby());
-        }
-        else {
+        if (isHost) {
+            createNewLobby().then(() => addUserToLobby());
+        } else {
             addUserToLobby();
         }
     }
@@ -111,46 +107,48 @@ const Username = () => {
     function closeRules() {
         setRulesOpen(false)
     }
+
     return (
 
-    <BaseContainer>
-      <HeaderLobby/>
-          <div className="lobby container">
-              <div className="lobby form2">
-              <FormField
-                  label="Enter Username"
-                  value={username}
-                  onChange={un => setUsername(un)}
-                  onEnterPress={goToLobby}
-              />
-                  <div className="lobby button-container1">
-                  <ButtonPurpleLobby
-                    disabled={!username || isUsernameTooLong}
-                    width="75%"
-                    onClick={() => goToLobby()}
-                    >
-                    Enter
-                  </ButtonPurpleLobby>
-                  <ButtonWhiteLobby
-                      width="75%"
-                      onClick={() => goBack()}
-                      >
-                      Cancel
-                  </ButtonWhiteLobby>
-                  </div>
-              </div>
-          </div>
-        <ButtonRules
-            className= "bottom"
-            onClick={ ()=>{openRules()}}
-        >Game Rules
-        </ButtonRules>
-        {rulesOpen && (
-            <RuleBook onClick={closeRules} />
-        )}
-    </BaseContainer>
-  );
+        <BaseContainer>
+            <HeaderLobby />
+            <div className="lobby container">
+                <div className="lobby form2">
+                    <FormField
+                        label="Enter Username"
+                        value={username}
+                        onChange={un => setUsername(un)}
+                        onEnterPress={goToLobby}
+                    />
+                    <div className="lobby button-container1">
+                        <ButtonPurpleLobby
+                            disabled={!username || isUsernameTooLong}
+                            width="75%"
+                            onClick={() => goToLobby()}
+                        >
+                            Enter
+                        </ButtonPurpleLobby>
+                        <ButtonWhiteLobby
+                            width="75%"
+                            onClick={() => goBack()}
+                        >
+                            Cancel
+                        </ButtonWhiteLobby>
+                    </div>
+                </div>
+            </div>
+            <ButtonRules
+                className="bottom"
+                onClick={() => {
+                    openRules()
+                }}
+            >Game Rules
+            </ButtonRules>
+            {rulesOpen && (
+                <RuleBook onClick={closeRules} />
+            )}
+        </BaseContainer>
+    );
 };
-
 
 export default Username;

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "styles/index.scss";
 import App from "App";
-import { BackgroundProvider } from "./helpers/BackgroundContext.js";
+import {BackgroundProvider} from "./helpers/BackgroundContext.js";
 
 /**
  * This is the entry point of your React application where the root element is in the public/index.html.
@@ -12,9 +12,9 @@ import { BackgroundProvider } from "./helpers/BackgroundContext.js";
  */
 ReactDOM.render(
     <React.StrictMode>
-      <BackgroundProvider>
-        <App />
-      </BackgroundProvider>
+        <BackgroundProvider>
+            <App/>
+        </BackgroundProvider>
     </React.StrictMode>,
     document.getElementById('root')
-  );
+);

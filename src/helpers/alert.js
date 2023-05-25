@@ -1,9 +1,9 @@
-window.alert = function(message,timeout=5000){
+window.alert = function (message, timeout = 5000) {
     const alert = document.createElement('div');
     const alertButton = document.createElement('button')
-    alertButton.innerText= 'OK'
+    alertButton.innerText = 'OK'
     alert.classList.add('alert');
-    alert.setAttribute('style',`
+    alert.setAttribute('style', `
         position: absolute;
         top: 0;
         left: 0;
@@ -19,7 +19,7 @@ window.alert = function(message,timeout=5000){
         align-items: center;
         color: white;
     `);
-    alertButton.setAttribute('style',`
+    alertButton.setAttribute('style', `
         border: 1px solid #333;
         background: blue;
         width: 10%;
@@ -30,13 +30,13 @@ window.alert = function(message,timeout=5000){
     `);
     alert.innerHTML = `<span style="padding: 20px">${message}</span>`;
     alert.appendChild(alertButton);
-    alertButton.addEventListener('click',(e)=>{
+    alertButton.addEventListener('click', (e) => {
         alert.remove();
     })
-    if(timeout!=null){
-        setTimeout(()=>{
-            if(alert) alert.remove();
-        },Number(timeout))
+    if (timeout != null) {
+        setTimeout(() => {
+            if (alert) alert.remove();
+        }, Number(timeout))
     }
     document.body.appendChild(alert);
 }

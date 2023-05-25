@@ -1,16 +1,16 @@
 @import 'styles/theme';
 
 .card {
-    padding: 1px;
-    height: auto;
-    border-radius: $borderRadius + 1;
-    transition: all 0.3s ease;
-    margin-inline: 5px;
+  padding: 1px;
+  height: auto;
+  border-radius: $borderRadius + 1;
+  transition: all 0.3s ease;
+  margin-inline: 5px;
 
   &.unplayable {
     filter: grayscale(60%);
     opacity: 0.75;
-    &:hover{
+    &:hover {
       transform: rotate(calc(var(--initial-angle) + var(--rotation-angle) * var(--index)));
       cursor: not-allowed;
     }

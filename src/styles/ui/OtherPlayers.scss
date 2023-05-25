@@ -1,73 +1,72 @@
 @import 'styles/theme';
 
 .other-players-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100%;
-    padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 10px;
 }
 
 .other-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .other-player.upper {
-    align-self: flex-start;
-    margin-top: -10px;
-    margin-left: 100px;
-    margin-right: 100px;
-    justify-content: center;
+  align-self: flex-start;
+  margin-top: -10px;
+  margin-left: 100px;
+  margin-right: 100px;
+  justify-content: center;
 }
 
 .other-player.left {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    align-self: center;
-    margin-right: 0px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  align-self: center;
+  margin-right: 0px;
 }
 
 .other-player.right {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    align-self: center;
-    margin-left: 0px;
-
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  align-self: center;
+  margin-left: 0px;
 }
 
 .other-player-name {
-    font-weight: bold;
-    font-size: 20px;
-    text-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
-    &.hasTurn{
-        color: rgb(60, 190, 90);
-    }
+  font-weight: bold;
+  font-size: 20px;
+  text-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+  &.hasTurn {
+    color: rgb(60, 190, 90);
+  }
 }
 
 .other-player-hand {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.5em;
-    margin-right: 60px;
-  }
-  
-  .card-image {
-    width: 80px;
-    margin-right: -60px; /* Adjust as needed to create the overlapping effect */
-    border-radius: 10px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5em;
+  margin-right: 60px;
+}
+
+.card-image {
+  width: 80px;
+  margin-right: -60px; /* Adjust as needed to create the overlapping effect */
+  border-radius: 10px;
+}
+
 .other-player-bid {
-    font-weight: bold;
-    font-size: 15px;
-    &.hasTurn{
-        color: rgb(60, 190, 90);
-    }
+  font-weight: bold;
+  font-size: 15px;
+  &.hasTurn {
+    color: rgb(60, 190, 90);
+  }
 }

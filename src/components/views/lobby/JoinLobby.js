@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import { ButtonPurpleList, ButtonRules, ButtonCopy,ButtonSettings } from "../../ui/ButtonMain";
+import { ButtonPurpleList, ButtonRules, ButtonCopy, ButtonSettings } from "../../ui/ButtonMain";
 import { api, handleError } from "../../../helpers/api";
 import User from "../../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
@@ -11,14 +11,11 @@ import RuleBook from "../../ui/RuleBook";
 import "../../../helpers/alert";
 import { toast } from 'react-toastify';
 import LayoutSettings from 'components/ui/LayoutSettings';
-import {isProduction} from "../../../helpers/isProduction";
-import {getDomain} from "../../../helpers/getDomain";
-
-
+import { isProduction } from "../../../helpers/isProduction";
+import { getDomain } from "../../../helpers/getDomain";
 
 
 const FormField = props => {
-
 
     return (
         <div className="lobby field">
@@ -57,10 +54,10 @@ const JoinLobby = () => {
 
     const handleMuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'true');
-      }; 
-      const handleUnmuteAudio = () => {
+    };
+    const handleUnmuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'false');
-      }; 
+    };
 
     async function leaveLobby() { //removes player from the lobby and returns to main screen
         setRecentRequest(true);
@@ -79,9 +76,8 @@ const JoinLobby = () => {
         }
         setTimeout(() => {
             setRecentRequest(false);
-          }, 1000)
+        }, 1000)
     }
-
 
     async function fetchData() {
         try {
@@ -109,11 +105,13 @@ const JoinLobby = () => {
         }
     }
 
-
     useEffect(() => {
         let domain = getDomain().replace(/^https?:\/\//, '');
-        if (isProduction()){webSocket.current = new WebSocket(`wss://${domain}/sockets`);}
-        else {webSocket.current = new WebSocket(`ws://${domain}/sockets`);}
+        if (isProduction()) {
+            webSocket.current = new WebSocket(`wss://${domain}/sockets`);
+        } else {
+            webSocket.current = new WebSocket(`ws://${domain}/sockets`);
+        }
         fetchData();
         const openWebSocket = () => {
             webSocket.current.onopen = (event) => {
@@ -132,13 +130,12 @@ const JoinLobby = () => {
         webSocket.current.onmessage = (event) => {
             const chatMessageDto = event.data;
             let lobby = chatMessageDto.split(" ")[0]
-            if (lobby === getLobby()){
+            if (lobby === getLobby()) {
                 fetchData();
             }
         }
     }, []);
 
-    //need to figure out how to better move buttons to the right
     const Player = ({ user }) => {
         if (user.id === 1) {
             return (
@@ -163,7 +160,6 @@ const JoinLobby = () => {
                 </div>)
         }
     }
-
 
     Player.propTypes = {
         user: PropTypes.object
@@ -199,23 +195,22 @@ const JoinLobby = () => {
 
     function openSettings() {
         setSettingsOpen(true);
-      }
-    
-      function closeSettings() {
+    }
+
+    function closeSettings() {
         setSettingsOpen(false);
-      }
+    }
 
     function copyId() {
         navigator.clipboard.writeText(getLobby());
         setCopyButtonText("Code copied!");
 
         setTimeout(() => {
-        setCopyButtonText("Copy Lobby Code");
-    }, 1000);
+            setCopyButtonText("Copy Lobby Code");
+        }, 1000);
     }
 
     return (
-
         <BaseContainer>
             <JitsiMeeting
                 configOverwrite={{
@@ -244,7 +239,10 @@ const JoinLobby = () => {
                     displayName: localStorage.getItem("username")
                 }}
                 roomName={"SkullKingLobby" + getLobby()}
-                getIFrameRef={node => { node.style.height = '50px'; node.style.width = '50px'; }}
+                getIFrameRef={node => {
+                    node.style.height = '50px';
+                    node.style.width = '50px';
+                }}
             />
             <div className="lobby container">
                 <div className="lobby form">
@@ -267,15 +265,20 @@ const JoinLobby = () => {
                 </div>
             </div>
             <ButtonSettings
-          className='corner'
-          onClick={() => { openSettings() }}>
-        </ButtonSettings>
-        {settingsOpen && (
-          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
-        )}
+                className='corner'
+                onClick={() => {
+                    openSettings()
+                }}>
+            </ButtonSettings>
+            {settingsOpen && (
+                <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio}
+                    onHandleUnmuteAudio={handleUnmuteAudio} />
+            )}
             <ButtonRules
                 className="bottom"
-                onClick={() => { openRules() }}
+                onClick={() => {
+                    openRules()
+                }}
             >Game Rules
             </ButtonRules>
             {rulesOpen && (
