@@ -9,6 +9,7 @@ Whether you're a seasoned Skull King player or new to the game, our online versi
 - [High-level components](#high-level-components)
 - [Deployment](#deployment)
 - [Illustrations](#illustrations)
+- [Known issues](#known-issues)
 - [Roadmap](#roadmap)
 - [Authors and acknowledgment](#authors-and-acknowledgment)
 - [License](#license)
@@ -100,6 +101,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 #### Scoreboard
 <img src="screenshots/scoreboard.png" width="600">
+
+## Known issues
+The free version of the voice chat API being used has a limitation where calls cannot exceed 5 minutes in duration. To address this limitation, the voice chat reloads every 5 minutes, resulting in a brief 2-3 second interruption where the player is temporarily removed from the meeting. Once the call automatically reconnects, it should continue to function smoothly without any further problems.
 
 ## Roadmap
 Developers who want to contribute to our project could add the following features:
