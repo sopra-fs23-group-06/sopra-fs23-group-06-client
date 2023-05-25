@@ -93,6 +93,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 #### Game settings
 <img src="screenshots/game_settings.png" width="600">
 
+#### Enter bid
+<img src="screenshots/enter_bid.png" width="600">
+
 #### Game view
 <img src="screenshots/game_view.png" width="600">
 
