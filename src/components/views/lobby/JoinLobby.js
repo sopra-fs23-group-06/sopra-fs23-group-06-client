@@ -55,6 +55,12 @@ const JoinLobby = () => {
         return split[split.length - 1]
     }
 
+    const handleMuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'true');
+      }; 
+      const handleUnmuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'false');
+      }; 
 
     async function leaveLobby() { //removes player from the lobby and returns to main screen
         setRecentRequest(true);
@@ -268,7 +274,7 @@ const JoinLobby = () => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {settingsOpen && (
-          <LayoutSettings onClick={closeSettings} />
+          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
         )}
             <ButtonRules
                 className="bottom"

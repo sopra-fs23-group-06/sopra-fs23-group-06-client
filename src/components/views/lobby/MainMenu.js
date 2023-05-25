@@ -16,6 +16,13 @@ const MainMenu = props => {
     const [rulesOpen, setRulesOpen] = useState(false)
     const [SettingsOpen, setSettingsOpen] = useState(false);
 
+    const handleMuteAudio = () => {
+      localStorage.setItem('soundIsMuted', 'true');
+    }; 
+    const handleUnmuteAudio = () => {
+      localStorage.setItem('soundIsMuted', 'false');
+    }; 
+
 
     function doJoin() { //start join process
         history.push('/join/code')
@@ -72,8 +79,8 @@ const MainMenu = props => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {SettingsOpen && (
-          <LayoutSettings onClick={closeSettings} />
-        )}
+          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
+          )}
     </BaseContainer>
   );
 };
