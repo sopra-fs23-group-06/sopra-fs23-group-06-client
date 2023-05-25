@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 const Scoreboard = ({ onClose }) => {
   const [scoreboardData, setScoreboardData] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [recentRequest, setRecentRequest] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const Scoreboard = ({ onClose }) => {
   };
 
   async function confirmLeaveGame(){
+    setRecentRequest(true);
     setShowConfirmation(false);
     try {
       const lobbyCode = localStorage.getItem("lobbyCode");
@@ -53,6 +55,9 @@ const Scoreboard = ({ onClose }) => {
     } catch (error) {
       toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
     }
+    setTimeout(() => {
+      setRecentRequest(false);
+    }, 2000)
   }
 
   const cancelLeaveGame = () => {
@@ -110,7 +115,7 @@ const Scoreboard = ({ onClose }) => {
         <div className='scoreboard-buttons'>
           <div className='button-group'>
             <ButtonPurpleMain onClick={handleClick}><div class="arrow left"></div>Back</ButtonPurpleMain>
-            <ButtonPurpleMain onClick={() => handleLeaveGame()} >Leave <img className="icon" src={leaveIcon} alt="Leave Icon" /></ButtonPurpleMain>
+            <ButtonPurpleMain onClick={() => handleLeaveGame()} disabled={recentRequest}>Leave <img className="icon" src={leaveIcon} alt="Leave Icon" /></ButtonPurpleMain>
           </div>
         </div>
 

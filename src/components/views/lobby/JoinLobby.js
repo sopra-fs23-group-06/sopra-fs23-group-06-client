@@ -47,7 +47,7 @@ const JoinLobby = () => {
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
     const [settingsOpen, setSettingsOpen] = useState(false);
     const webSocket = useRef(null);
-
+    const [recentRequest, setRecentRequest] = useState(false);
 
     function getLobby() {
         const url = window.location.pathname
@@ -63,6 +63,7 @@ const JoinLobby = () => {
       }; 
 
     async function leaveLobby() { //removes player from the lobby and returns to main screen
+        setRecentRequest(true);
         try {
             const user = new User()
             user.id = localStorage.getItem("userId");
@@ -76,6 +77,9 @@ const JoinLobby = () => {
         } catch (error) {
             toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
+        setTimeout(() => {
+            setRecentRequest(false);
+          }, 1000)
     }
 
 
@@ -86,9 +90,6 @@ const JoinLobby = () => {
             const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
             if (!showedInfos.current) {
                 toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-                setTimeout(function () {
-                    toast.info(`You can find the rules on the bottom of your screen`);
-                }, 6500);
                 showedInfos.current = true;
             }
             if (!userExists) {
@@ -257,6 +258,7 @@ const JoinLobby = () => {
                     <div className="lobby button-container1">
                         <ButtonPurpleList
                             width="50%"
+                            disabled={recentRequest}
                             onClick={() => leaveLobby()}
                         >
                             Leave

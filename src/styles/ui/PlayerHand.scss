@@ -70,3 +70,8 @@
   background-color: #3c4a4a;
   transform: translateY(0px);
 }
+
+.selected-card-button:disabled {
+  opacity: 0.8;
+  transform: translateY(0px);
+}
