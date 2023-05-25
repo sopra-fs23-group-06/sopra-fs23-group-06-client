@@ -15,8 +15,9 @@ const LayoutSettings = ({ onClick, onHandleMuteAudio, onHandleUnmuteAudio }) => 
     'skully_bg6',
   ];
 
-  const [isOn, setIsOn] = useState(localStorage.getItem('soundIsMuted') === 'true');
-
+  const initialSoundState = localStorage.getItem('soundIsMuted') === 'true';
+  const [isOn, setIsOn] = useState(initialSoundState);
+  
   const handleToggle = () => {
     if (isOn) {
       onHandleUnmuteAudio();
