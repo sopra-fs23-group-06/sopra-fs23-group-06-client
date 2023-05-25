@@ -1,5 +1,5 @@
 # SoPra Group 6 - Skull King Online
-The goal of this project is to create an online version of the popular game [Skull King](https://www.grandpabecksgames.com/products/skull-king). Skull King
+The goal of this project is to create an online version of the popular game [Skull King](https://www.schmidtspiele.de/details/produkt/skull-king.html). Skull King
 Online allows up to 6 players to play this exciting pirates' contest in which you have to win tricks in order to get or lose glory and fame.
 Whether you're a seasoned Skull King player or new to the game, our online version provides an immersive experience that will keep you coming back for more.
 
@@ -110,7 +110,7 @@ The free version of the voice chat API being used has a limitation where calls c
 
 ## Roadmap
 Developers who want to contribute to our project could add the following features:
-- Add some new and exciting game modes, such as playing with a reduced deck of cards.
+- Add some new and exciting game modes, such as playing with the cards from the [expanded version](https://www.grandpabecksgames.com/products/skull-king)
 - Extend the functionality of the voice chat API to highlight the player who is talking at any moment during the game.
 - Add a persistent high score view so that one could see the all-time highest scores achieved in the game.
 
