@@ -128,7 +128,7 @@ const GameView = props => {
 
   function showAnimation() {
     const pictures = [
-      { src: require('../../styles/images/yohoho/bomb.png') },
+      { src: require('../../styles/images/yohoho/skull.png') },
       { src: require('../../styles/images/yohoho/yo.png') },
       { src: require('../../styles/images/yohoho/ho-1.png') },
       { src: require('../../styles/images/yohoho/ho-2.png') }
@@ -148,7 +148,7 @@ const GameView = props => {
 
       if (index === 0) {
         img.classList.add("bottom-middle");
-        img.classList.add("bomb-animation");
+        img.classList.add("skull-animation");
       } else if (index === 1) {
         img.classList.add("middle-left");
       } else if (index === 2) {
@@ -297,10 +297,20 @@ const GameView = props => {
 
   const displayBid = () => {
     if (bid === null) {
-      return ""
+      return "";
     }
-    return tricks + "/" + bid
-  }
+
+    for (let i = 0; i < otherPlayers.length; i++) {
+      const player = otherPlayers[i];
+  
+      if (player.hasTurn) {
+        return <span className="player-hand-bid">{tricks}/{bid}</span>;
+      }
+    }
+  
+    return <span className="player-hand-bid hasTurn">{tricks}/{bid}</span>;
+  };
+  
 
   function openRules() {
     setRulesOpen(true);

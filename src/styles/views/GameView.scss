@@ -54,8 +54,7 @@
   top: 150px;
   left: 45%;
 }
-
-@keyframes bombPulse {
+@keyframes skullPulse {
   0% {
     transform: scale(1);
   }
@@ -69,6 +68,10 @@
   }
 }
 
-.bomb-animation {
-  animation: bombPulse 1s infinite;
+.skull-animation {
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  animation: skullPulse 1s infinite;
 }

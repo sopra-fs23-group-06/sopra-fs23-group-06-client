@@ -33,6 +33,9 @@
   left: 20px;
   font-size: 45px;
   font-weight: bold;
+  &.hasTurn{
+    color: rgb(60, 190, 90);
+}
 }
 
 .selected-card-buttons {
