@@ -57,6 +57,17 @@ const HostLobby = () => {
     const [recentStartRequest, setRecentStartRequest] = useState(false);
     const [recentCloseRequest, setRecentCloseRequest] = useState(false);
 
+    const [reloadCount, setReloadCount] = useState(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setReloadCount((prevCount) => prevCount + 1);
+        }, 300000); // 20 seconds
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
 
     let isButtonDisabled = true;
@@ -76,11 +87,11 @@ const HostLobby = () => {
         if(localStorage.getItem('soundIsMuted') === 'true'){
           console.log("working")
         }
-      }; 
+      };
       const handleUnmuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'false');
         console.log(localStorage.getItem('soundIsMuted'));
-      }; 
+      };
 
 
     async function removePlayer(leavingUser) {
@@ -325,7 +336,7 @@ const HostLobby = () => {
     return (
 
         <BaseContainer>
-            <JitsiMeeting
+            <JitsiMeeting key={reloadCount}
                 configOverwrite={{
                     startWithAudioMuted: false,
                     hiddenPremeetingButtons: ['microphone'],
@@ -409,7 +420,7 @@ const HostLobby = () => {
         </ButtonSettings>
         {settingsOpen && (
           <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
-        )}        
+        )}
         </BaseContainer>
     );
 };

@@ -43,6 +43,17 @@ const GameView = props => {
   const showedInfos = useRef(false);
   const history = useHistory();
   const webSocket = useRef(null);
+  const [reloadCount, setReloadCount] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setReloadCount((prevCount) => prevCount + 1);
+    }, 300000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
 
 
@@ -166,10 +177,10 @@ const GameView = props => {
 
     const handleMuteAudio = () => {
       localStorage.setItem('soundIsMuted', 'true');
-    }; 
+    };
     const handleUnmuteAudio = () => {
       localStorage.setItem('soundIsMuted', 'false');
-    }; 
+    };
 
     function displayTrickWinner(trickWinner) {
       const trophyAnimation = document.createElement("div");
@@ -307,7 +318,7 @@ const GameView = props => {
 
   return (
     <BaseContainer>
-      <JitsiMeeting
+      <JitsiMeeting key={reloadCount}
         configOverwrite={{
           startWithAudioMuted: false,
           hiddenPremeetingButtons: ['microphone'],

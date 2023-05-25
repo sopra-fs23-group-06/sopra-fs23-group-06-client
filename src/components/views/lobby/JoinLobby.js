@@ -48,6 +48,18 @@ const JoinLobby = () => {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const webSocket = useRef(null);
     const [recentRequest, setRecentRequest] = useState(false);
+    const [reloadCount, setReloadCount] = useState(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setReloadCount((prevCount) => prevCount + 1);
+        }, 300000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
 
     function getLobby() {
         const url = window.location.pathname
@@ -57,10 +69,10 @@ const JoinLobby = () => {
 
     const handleMuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'true');
-      }; 
+      };
       const handleUnmuteAudio = () => {
         localStorage.setItem('soundIsMuted', 'false');
-      }; 
+      };
 
     async function leaveLobby() { //removes player from the lobby and returns to main screen
         setRecentRequest(true);
@@ -217,7 +229,7 @@ const JoinLobby = () => {
     return (
 
         <BaseContainer>
-            <JitsiMeeting
+            <JitsiMeeting key={reloadCount}
                 configOverwrite={{
                     startWithAudioMuted: false,
                     hiddenPremeetingButtons: ['microphone'],
