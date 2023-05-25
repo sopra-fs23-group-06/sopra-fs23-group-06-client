@@ -38,7 +38,7 @@ const GameView = props => {
   const [showScoreboard, setShowScoreboard] = useState(false);
   const [showRoundSummary, setShowRoundSummary] = useState(false);
   const [showFinalScoreboard, setShowFinalScoreboard] = useState(false);
-  const showedAnimationBid = useRef(false);
+  const showedAnimationBid = useRef(localStorage.getItem('showedAnimationBid') === 'true');
   const showedAnimationTrickWinner = useRef(false);
   const showedInfos = useRef(false);
   const history = useHistory();
@@ -94,6 +94,7 @@ const GameView = props => {
           else {
             players.push({ name: player.username, bid: ``, hand: player.hand, hasTurn: player.hasTurn});
             showedAnimationBid.current = false;
+            localStorage.setItem('showedAnimationBid', showedAnimationBid.current.toString());
           }
         }
         setOtherPlayers(players);
@@ -160,6 +161,7 @@ const GameView = props => {
       }, 3500);
     
       showedAnimationBid.current = true;
+      localStorage.setItem('showedAnimationBid', showedAnimationBid.current.toString());
     }
 
     const handleMuteAudio = () => {
