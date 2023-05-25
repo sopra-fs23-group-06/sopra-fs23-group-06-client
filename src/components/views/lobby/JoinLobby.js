@@ -80,9 +80,6 @@ const JoinLobby = () => {
             const userExists = response.data.some(user => user.id === parseInt(localStorage.getItem("userId")));
             if (!showedInfos.current) {
                 toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-                setTimeout(function () {
-                    toast.info(`You can find the rules on the bottom of your screen`);
-                }, 6500);
                 showedInfos.current = true;
             }
             if (!userExists) {

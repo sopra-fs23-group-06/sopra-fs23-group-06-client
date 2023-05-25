@@ -89,7 +89,7 @@ const EnterCode = () => {
           />
           <div className="lobby button-container1">
             <ButtonPurpleLobby
-              disabled={!lobbyCode}
+              disabled={lobbyCode.length !== 6}
               width="75%"
               onClick={joinLobby}
             >

@@ -245,13 +245,13 @@
   padding: 5px;
   border-radius: 0.2em;
   cursor: pointer;
-  color: rgb(246, 255, 0);
   transition: all 0.3s ease;
 
   &.bottom{
     &:hover {
       font-size: 22px;
     }
+    color: rgb(246, 255, 0);
     font-size: 24px;
     position: absolute;
     bottom: 1%;
@@ -264,6 +264,7 @@
     &:hover {
       font-size: 18px;
     }
+    color: black;
     top: 2%;
     right: 5%;
     position: absolute;

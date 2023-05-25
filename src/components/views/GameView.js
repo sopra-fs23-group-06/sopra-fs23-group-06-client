@@ -58,12 +58,6 @@ const GameView = props => {
         const round = await api.get(`/games/${lobbyCode}/rounds`);
         if(round.data===1 && !showedInfos.current){
           toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-          setTimeout(function() {
-            toast.info(`You can open the score board on the top right`);
-          }, 6500);
-          setTimeout(function() {
-            toast.info(`You can change the background in the top left`);
-          }, 9000);
           showedInfos.current=true;
         }
         const playerSize = (await api.get(`/games/${lobbyCode}/order`)).data.length;
@@ -198,7 +192,7 @@ const GameView = props => {
       setShowRoundSummary(true);
       setTimeout(() => {
         setShowRoundSummary(false);
-      }, 6000); // Display for 6 seconds (6000 milliseconds)
+      }, 10000); // Display for 6 seconds (6000 milliseconds)
     }
     if (roundNumber === 11) {
       setShowFinalScoreboard(true);
@@ -300,6 +294,10 @@ const GameView = props => {
     setSettingsOpen(false);
   }
 
+  function closeRoundSummary() {
+    setShowRoundSummary(false);
+  }
+
   return (
     <BaseContainer>
       <JitsiMeeting
@@ -337,7 +335,7 @@ const GameView = props => {
         <MakeBid players={otherPlayers} roundNumber={roundNumber} onSubmit={handleConfirm} />
       )}
       {showRoundSummary && (
-        <RoundSummary curRound={roundNumber - 1} />
+          <RoundSummary curRound={roundNumber-1} onContinue={closeRoundSummary}/>
       )}
       {showFinalScoreboard && (
         <FinalScoreboard />

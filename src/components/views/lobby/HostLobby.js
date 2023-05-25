@@ -101,7 +101,6 @@ const HostLobby = () => {
                     }
                 }
             }
-            await new Promise(resolve => setTimeout(resolve, 500));
             webSocket.current.close();
             await api.put(`/lobbies/${getLobby()}/closeHandler`, null, {
                 headers: {
@@ -157,9 +156,6 @@ const HostLobby = () => {
                 }
                 if(!showedInfos.current){
                     toast.warning('You are unmuted! To mute yourself press the button on the top left.')
-                    setTimeout(function() {
-                        toast.info(`You can find the rules on the bottom of your screen`);
-                    }, 6500);
                     showedInfos.current=true;
                   }
             } catch (error) {
