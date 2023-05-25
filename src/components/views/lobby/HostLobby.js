@@ -60,6 +60,7 @@ const HostLobby = () => {
     const webSocket = useRef(null);
 
 
+
     let isButtonDisabled = true;
 
     if (users) {
@@ -71,6 +72,17 @@ const HostLobby = () => {
         const split = url.split("/");
         return split[split.length - 1];
     }, []);
+
+    const handleMuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'true');
+        if(localStorage.getItem('soundIsMuted') === 'true'){
+          console.log("working")
+        }
+      }; 
+      const handleUnmuteAudio = () => {
+        localStorage.setItem('soundIsMuted', 'false');
+        console.log(localStorage.getItem('soundIsMuted'));
+      }; 
 
 
     async function removePlayer(leavingUser) {
@@ -390,8 +402,8 @@ const HostLobby = () => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {settingsOpen && (
-          <LayoutSettings onClick={closeSettings} />
-        )}          
+          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
+        )}        
         </BaseContainer>
     );
 };

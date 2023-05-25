@@ -3,6 +3,9 @@ import settingsIcon from "styles/images/settings.png";
 import trophyIcon from "styles/images/trophy.png";
 import copyIcon from "styles/images/copy.png";
 import gameSettingsIcon from "styles/images/gameSettings.png";
+import muteIcon from "styles/images/mute.png";
+import unmuteIcon from "styles/images/unmute.png";
+
 
 
 export const ButtonPurpleMain = props => (
@@ -120,3 +123,18 @@ export const ButtonSettings = props => (
         {props.children}
     </button>
 );
+
+export const ToggleButton = ({ isOn, onToggle }) => (
+    <button
+      className={`toggle-button ${isOn ? 'on' : 'off'}`}
+      onClick={onToggle}
+    >
+      <img
+        className="icon"
+        src={isOn ? unmuteIcon : muteIcon}
+        alt={isOn ? "On" : "Off"}
+      />
+      {isOn ? "ON" : "OFF"}
+    </button>
+  );
+  

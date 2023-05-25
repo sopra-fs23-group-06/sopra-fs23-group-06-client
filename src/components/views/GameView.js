@@ -8,7 +8,7 @@ import { api, handleError } from "../../helpers/api";
 import PlayedCardsStack from 'components/ui/PlayedCardsStack';
 import User from "../../models/User";
 import { JitsiMeeting } from "@jitsi/react-sdk";
-import { ButtonRules, ButtonSettings } from "../ui/ButtonMain";
+import { ButtonGameSettings, ButtonMute, ButtonPurpleLobby, ButtonPurpleMain, ButtonRules, ButtonSettings, ButtonUnmute } from "../ui/ButtonMain";
 import RuleBook from "../ui/RuleBook";
 import { ButtonScoreboard } from 'components/ui/ButtonMain';
 import Scoreboard from "components/ui/Scoreboard";
@@ -126,7 +126,7 @@ const GameView = props => {
       const container = document.createElement("div");
       container.classList.add("animation-container");
     
-     const soundEffect = new Audio(require('../../styles/images/yohoho/yohoho-sound.mp3')); 
+     const soundEffect = new Audio(require('../../styles/images/yohoho/yohoho-sound.mp3'));
     
       pictures.forEach((picture, index) => {
         const img = document.createElement("img");
@@ -147,7 +147,7 @@ const GameView = props => {
     
         setTimeout(() => {
           container.appendChild(img);
-          if (index === 1) {
+          if (index === 1 && localStorage.getItem('soundIsMuted') === 'true') {
             var resp = soundEffect.play();
 
             if (resp!== undefined) {
@@ -167,8 +167,13 @@ const GameView = props => {
     
       showedAnimationBid.current = true;
     }
-    
-    
+
+    const handleMuteAudio = () => {
+      localStorage.setItem('soundIsMuted', 'true');
+    }; 
+    const handleUnmuteAudio = () => {
+      localStorage.setItem('soundIsMuted', 'false');
+    }; 
 
     function displayTrickWinner(trickWinner) {
       const trophyAnimation = document.createElement("div");
@@ -360,7 +365,7 @@ const GameView = props => {
           onClick={() => { openSettings() }}>
         </ButtonSettings>
         {SettingsOpen && (
-          <LayoutSettings onClick={closeSettings} />
+          <LayoutSettings onClick={closeSettings} onHandleMuteAudio={handleMuteAudio} onHandleUnmuteAudio={handleUnmuteAudio} />
         )}
       </div>
     </BaseContainer>
