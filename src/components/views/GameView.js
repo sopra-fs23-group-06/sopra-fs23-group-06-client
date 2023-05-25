@@ -351,7 +351,7 @@ const GameView = props => {
         {rulesOpen && (
           <RuleBook onClick={closeRules} />
         )}
-        <ButtonScoreboard onClick={toggleScoreboard} ></ButtonScoreboard>
+        <ButtonScoreboard onClick={toggleScoreboard} disabled={showFinalScoreboard}></ButtonScoreboard>
         {showScoreboard && !showFinalScoreboard &&(
           <Scoreboard onClose={toggleScoreboard} />
         )}

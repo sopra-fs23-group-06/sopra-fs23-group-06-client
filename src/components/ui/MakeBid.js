@@ -9,6 +9,8 @@ const MakeBid = ({ roundNumber, onSubmit, players }) => {
   const [secondsLeft, setSecondsLeft] = useState(35);
   const [bidSubmitted, setBidSubmitted] = useState(false);
   const [startingPlayer, setStartingPlayer] = useState('');
+  const [recentRequest, setRecentRequest] = useState(false);
+
 
   useEffect(() => {
     if (secondsLeft === 0 && !bidSubmitted) {
@@ -42,9 +44,13 @@ const MakeBid = ({ roundNumber, onSubmit, players }) => {
   };
 
   const handleConfirm = (event) => {
+    setRecentRequest(true);
     event.preventDefault();
     setBidSubmitted(true);
     onSubmit(bid);
+    setTimeout(() => {
+      setRecentRequest(false);
+    }, 1000)
   };
 
   const handleKeyDown = (event) => {
@@ -63,7 +69,7 @@ const MakeBid = ({ roundNumber, onSubmit, players }) => {
         <label htmlFor="bid-input">Make bid:</label>
         <input type="number" id="bid-input" min="0" max={maxBid} value={bid} onChange={handleChange} />
         <div className="timer">Time left: {secondsLeft}s</div>
-        <ButtonPurpleMain onClick={handleConfirm} disabled={!isValid}>
+        <ButtonPurpleMain onClick={handleConfirm} disabled={!isValid || recentRequest}>
           Confirm
         </ButtonPurpleMain>
       </div>

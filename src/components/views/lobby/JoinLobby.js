@@ -47,7 +47,7 @@ const JoinLobby = () => {
     const [copyButtonText, setCopyButtonText] = useState("Copy Lobby Code");
     const [settingsOpen, setSettingsOpen] = useState(false);
     const webSocket = useRef(null);
-
+    const [recentRequest, setRecentRequest] = useState(false);
 
     function getLobby() {
         const url = window.location.pathname
@@ -57,6 +57,7 @@ const JoinLobby = () => {
 
 
     async function leaveLobby() { //removes player from the lobby and returns to main screen
+        setRecentRequest(true);
         try {
             const user = new User()
             user.id = localStorage.getItem("userId");
@@ -70,6 +71,9 @@ const JoinLobby = () => {
         } catch (error) {
             toast.error(`Something went wrong while leaving the lobby: \n${handleError(error)}`);
         }
+        setTimeout(() => {
+            setRecentRequest(false);
+          }, 1000)
     }
 
 
@@ -251,6 +255,7 @@ const JoinLobby = () => {
                     <div className="lobby button-container1">
                         <ButtonPurpleList
                             width="50%"
+                            disabled={recentRequest}
                             onClick={() => leaveLobby()}
                         >
                             Leave

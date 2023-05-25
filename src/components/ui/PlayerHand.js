@@ -15,6 +15,7 @@ const PlayerHand = (props) => {
   const { cards, bid } = props;
   const [selectedCard, setSelectedCard] = useState(null);
   const [scarryMarry, setScaryMary] = useState(null);
+  const [recentRequest, setRecentRequest] = useState(false);
 
 
   const handleCardClick = (card, index) => {
@@ -47,12 +48,17 @@ const PlayerHand = (props) => {
         return;
       }
       else{handlePlayClick(false);}
+      setRecentRequest(true);
       const requestBody = JSON.stringify({ color: selectedCard.color, aRank: selectedCard.aRank, aOption: selectedCard.aOption});
       const lobbyCode = localStorage.getItem("lobbyCode");
       await api.put(`/games/${lobbyCode}/cardHandler?userId=${userId}`, requestBody);
+      
     } catch (error) {
       toast.error(`Something went wrong playing the card: \n${handleError(error)}`);
     }
+    setTimeout(() => {
+      setRecentRequest(false);
+    }, 2000)
     setSelectedCard(null);
   };
 
@@ -109,7 +115,7 @@ const PlayerHand = (props) => {
         <div className="selected-card-buttons" style={selectedCardWrapperStyle}>
           <Card path={getImagePath(selectedCard)} />
           <button className="selected-card-button cancel-button" style={cancelButtonStyle} onClick={handleCancel}>Cancel</button>
-          <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay}>Play</button>
+          <button className="selected-card-button play-button" style={playButtonStyle} onClick={handlePlay} disabled={recentRequest}>Play</button>
         </div>
       )}
       {scarryMarry &&(
@@ -125,9 +131,6 @@ const PlayerHand = (props) => {
           }}>Escape</button>
         </div>
       )}
-
-
-
     </div>
   );
 

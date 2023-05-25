@@ -204,6 +204,10 @@
 }
 
 .button-scoreboard {
+  &:disabled {
+    opacity: 0.5;
+    cursor:default;
+  }
   top: 2%;
   right: 1%;
   position: absolute;
@@ -271,7 +275,7 @@
     height: 58px;
     width: 40px;
     background-color: white;
-
+    color: grey;
   }
 }
 
